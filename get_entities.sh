@@ -52,8 +52,8 @@ get_entities_source_words () {
 	local labels2=$1
 	local labels=$2
 	if [ ${#piped_pair_text} -ge 2 ]; then
-		local matches=$(egrep '^('$piped_pair_text')$' $labels2 | grep '[[:alpha:]]{5,}' | tr '\n' '|')
-		if [ ${#matches} -ge 2 ]; then
+		local matches=$(egrep '^('$piped_pair_text')$' $labels2 | egrep '[[:alpha:]]{5,}' | tr '\n' '|')
+                if [ ${#matches} -ge 2 ]; then
 		    local fullmatches=$(egrep '^('$matches')' $labels | tr '\n' '|')
 		fi
 		if [ ${#fullmatches} -ge 2 ]; then
