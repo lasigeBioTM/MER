@@ -11,6 +11,7 @@ text=$(sed "s/[^[:alpha:][:digit:][:space:]]/./g" <<< $text) # replace special c
 #text=$(tr '[[:space:]]' ' ' <<< $text) # standard space
 text=$(sed -e 's/^ *//' -e 's/ *$//' <<< $text) # remove leading and trailing whitespace
 text=$(sed -e 's/[[:space:]]\+/ /' <<< $text) # remove multiple whitespace
+text=$(sed -e 's/\.$//' -e 's/\. / /' <<< $text) # remove full stops
 text=$(tr ' ' '\n' <<< $text | grep -v -w -f stopwords.txt | egrep '[[:alpha:]]{3,}' | tr '\n' ' ') # only words with 3 chars and remove stopwords 
 
 
