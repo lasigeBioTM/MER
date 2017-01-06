@@ -3,11 +3,11 @@
 # set -x #debug
 
 declare document_id=$1
-
-declare original_text=$2
+declare section=$2
+declare original_text=$3
 
 # Process text
-declare text=${2,,} # Make text lowercase so the system is case insensitive
+declare text=${3,,} # Make text lowercase so the system is case insensitive
 text=$(sed "s/[^[:alnum:][:space:]]/./g" <<< $text) # Replace special characters
 #text=$(tr '[[:space:]]' ' ' <<< $text) # standard space
 text=$(sed -e 's/^ *//' -e 's/ *$//' <<< $text) # Remove leading and trailing whitespace
@@ -81,8 +81,8 @@ get_entities_source () {
 
 	local result=$result1$'\n'$result2$'\n'$result3
 	result=$(sed '{/^$/d}' <<< $result) # remove empty lines
-	result=$(awk -F: '{ print '"$document_id"',"\t", #DOCUMENT_ID\
-							  "A","\t", #SECTION\
+	result=$(awk -F: '{ print "'$document_id'","\t", #DOCUMENT_ID\
+							  "'$section'","\t", #SECTION\
 							  $1,"\t",#INIT\
 							  length($2) + $1,"\t",#END\
 							  1-1/log(length($2)),"\t",#SCORE\
