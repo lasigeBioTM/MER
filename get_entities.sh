@@ -64,7 +64,7 @@ get_entities_source_words () {
 declare get_entities_source_words_result=''
 get_entities_source () {
 	local source=$1
-	echo "== BEGIN SOURCE == $source =="
+	# echo "== BEGIN SOURCE == $source =="
 	cd data/
 
 	SAVEIFS=$IFS; IFS=$(echo -en "");
@@ -82,9 +82,11 @@ get_entities_source () {
 	result=$(sed '{/^$/d}' <<< $result) # remove empty lines
 	result=$(awk -F: '{ print '"$document_id"',"\t",$1,"\t",length($2),"\t",$2,"\t",1-1/log(length($2)) }' <<< $result) # convert to the output format
 	echo $result
-	echo "== END SOURCE =="
+	# echo "== END SOURCE =="
 	}
 
-for i in $(ls data/*words.txt | xargs -i basename {} _words.txt); do
-    get_entities_source $i
-done
+get_entities_source all_terms
+
+# for i in $(ls data/*words.txt | xargs -i basename {} _words.txt); do
+#     get_entities_source $i
+# done
