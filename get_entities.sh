@@ -81,7 +81,15 @@ get_entities_source () {
 
 	local result=$result1$'\n'$result2$'\n'$result3
 	result=$(sed '{/^$/d}' <<< $result) # remove empty lines
-	result=$(awk -F: '{ print '"$document_id"',"\t",$1,"\t",length($2),"\t",$2,"\t",1-1/log(length($2)) }' <<< $result) # convert to the output format
+	result=$(awk -F: '{ print '"$document_id"',"\t", #DOCUMENT_ID\
+							  "A","\t", #SECTION\
+							  $1,"\t",#INIT\
+							  length($2) + $1,"\t",#END\
+							  1-1/log(length($2)),"\t",#SCORE\
+							  $2,"\t",#ANNOTATED_TEXT\
+							  "unknown","\t",#TYPE\
+							  "1","\t"}'#DATABASE_ID\
+							  <<< $result) # convert to the output format
 	echo $result
 	# echo "== END SOURCE =="
 	}
