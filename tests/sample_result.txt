@@ -1,0 +1,70 @@
+== BEGIN SOURCE == ChEBI ==
+1 	 0 	 12 	 Androsterone 	 0.59757
+1 	 162 	 22 	 dehydroepiandrosterone 	 0.676485
+1 	 271 	 22 	 Dehydroepiandrosterone 	 0.676485
+1 	 737 	 21 	 2-hydroxybutyric acid 	 0.671541
+== END SOURCE ==
+== BEGIN SOURCE == ChEMBL ==
+1 	  	 0 	  	 1
+== END SOURCE ==
+== BEGIN SOURCE == comparative_toxigenomics_database ==
+1 	 0 	 12 	 Androsterone 	 0.59757
+1 	 162 	 22 	 dehydroepiandrosterone 	 0.676485
+1 	 271 	 22 	 Dehydroepiandrosterone 	 0.676485
+1 	 737 	 21 	 2-hydroxybutyric acid 	 0.671541
+== END SOURCE ==
+== BEGIN SOURCE == DrugBank ==
+1 	 146 	 7 	 adrenal 	 0.486102
+1 	 162 	 22 	 dehydroepiandrosterone 	 0.676485
+1 	 271 	 22 	 Dehydroepiandrosterone 	 0.676485
+1 	 754 	 4 	 acid 	 0.278652
+== END SOURCE ==
+== BEGIN SOURCE == HMDB ==
+1 	 0 	 12 	 Androsterone 	 0.59757
+1 	 146 	 7 	 adrenal 	 0.486102
+1 	 162 	 22 	 dehydroepiandrosterone 	 0.676485
+1 	 271 	 22 	 Dehydroepiandrosterone 	 0.676485
+1 	 754 	 4 	 acid 	 0.278652
+1 	 737 	 21 	 2-hydroxybutyric acid 	 0.671541
+== END SOURCE ==
+== BEGIN SOURCE == jchem ==
+1 	 0 	 12 	 Androsterone 	 0.59757
+1 	 172 	 12 	 androsterone 	 0.59757
+1 	 281 	 12 	 androsterone 	 0.59757
+1 	 737 	 21 	 2-hydroxybutyric acid 	 0.671541
+== END SOURCE ==
+== BEGIN SOURCE == mesh_substances ==
+1 	 162 	 22 	 dehydroepiandrosterone 	 0.676485
+1 	 271 	 22 	 Dehydroepiandrosterone 	 0.676485
+== END SOURCE ==
+== BEGIN SOURCE == NPC ==
+1 	 78 	 6 	 muscle 	 0.441889
+1 	 146 	 7 	 adrenal 	 0.486102
+1 	 162 	 22 	 dehydroepiandrosterone 	 0.676485
+1 	 271 	 22 	 Dehydroepiandrosterone 	 0.676485
+== END SOURCE ==
+== BEGIN SOURCE == PubChem ==
+1 	 0 	 12 	 Androsterone 	 0.59757
+1 	 40 	 3 	 dna 	 0.0897608
+1 	 146 	 7 	 adrenal 	 0.486102
+1 	 162 	 22 	 dehydroepiandrosterone 	 0.676485
+1 	 271 	 22 	 Dehydroepiandrosterone 	 0.676485
+1 	 754 	 4 	 acid 	 0.278652
+1 	 737 	 21 	 2-hydroxybutyric acid 	 0.671541
+== END SOURCE ==
+== BEGIN SOURCE == rxnorm ==
+1 	 0 	 12 	 Androsterone 	 0.59757
+1 	 40 	 3 	 dna 	 0.0897608
+1 	 154 	 7 	 steroid 	 0.486102
+1 	 162 	 22 	 dehydroepiandrosterone 	 0.676485
+1 	 271 	 22 	 Dehydroepiandrosterone 	 0.676485
+== END SOURCE ==
+== BEGIN SOURCE == toxnet ==
+1 	  	 0 	  	 1
+== END SOURCE ==
+== BEGIN SOURCE == TTD ==
+1 	 0 	 12 	 Androsterone 	 0.59757
+1 	 146 	 7 	 adrenal 	 0.486102
+1 	 172 	 12 	 androsterone 	 0.59757
+1 	 281 	 12 	 androsterone 	 0.59757
+== END SOURCE ==
