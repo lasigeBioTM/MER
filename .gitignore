@@ -1,3 +1,7 @@
 data/*
 old/*
 parsers/*
+cemp/test_set_annots.tsv
+cemp/training_set_annots.tsv
+cemp/subset_test_set_annots.tsv
+cemp/subset_test_set.txt
