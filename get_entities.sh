@@ -79,6 +79,11 @@ get_entities_source () {
 	wait
 	cd ..
 
+	# Check if all the results are empty. If yes, terminate function.
+	if [[ -z $result1 && -z $result2 && -z $result3 ]]; then
+		return
+	fi
+
 	local result=$result1$'\n'$result2$'\n'$result3
 	result=$(sed '{/^$/d}' <<< $result) # remove empty lines
 	# DOCUMENT_ID, SECTION, INIT, END, SCORE, ANNOTATED_TEXT, TYPE, DATABASE_ID
