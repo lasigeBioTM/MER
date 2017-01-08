@@ -1,13 +1,26 @@
 import sys
 import subprocess
 
-# "test" or "training"
+'''
+Annotates CEMP corpus to BioCalm TSV Format
+
+python annotate_to_tsv [type_of_set]
+
+type_of_set is "test" or "training", for example
+'''
+
+
+def escape_special_characters(string):
+    '''Escape characters so that they can be used in bash command'''
+    return string.replace('"', '\\"').replace('`', '\`')
+
+
 set_to_annotate = sys.argv[1]
 
 becalm_tsv_header = 'DOCUMENT_ID\tSECTION\tINIT\tEND\tSCORE\tANNOTATED_TEXT\tTYPE\tDATABASE_ID\n'
 
-final_tsv = ''
-final_tsv += becalm_tsv_header
+annotatons_file = open('{}_set_annots.tsv'.format(set_to_annotate), 'w')
+annotatons_file.write(becalm_tsv_header)
 
 with open('{}_set.txt'.format(set_to_annotate)) as f:
     documents = f.readlines()
@@ -15,11 +28,13 @@ with open('{}_set.txt'.format(set_to_annotate)) as f:
 for document in documents:
     document_id, abstract, text = document.split('\t')
 
+    abstract = escape_special_characters(abstract)
+    text = escape_special_characters(text)
+
     annot_abstract_commant = 'cd ..; bash get_entities.sh {} {} "{}"'.format(document_id, 'A', abstract)
     annot_text_commant = 'cd ..; bash get_entities.sh {} {} "{}"'.format(document_id, 'T', text)
 
-    final_tsv += subprocess.check_output(annot_abstract_commant, shell=True)
-    final_tsv += subprocess.check_output(annot_text_commant, shell=True)
+    annotatons_file.write(subprocess.check_output(annot_abstract_commant, shell=True))
+    annotatons_file.write(subprocess.check_output(annot_text_commant, shell=True))
 
-with open('{}_set_annots.tsv'.format(set_to_annotate), 'w') as f:
-    f.write(final_tsv)
+annotatons_file.close()
