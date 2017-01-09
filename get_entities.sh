@@ -29,7 +29,7 @@ declare get_entities_source_word1_result=''
 get_entities_source_word1 () {
 	local labels=$1
 	if [ ${#piped_text} -ge 2 ]; then
-		local matches=$(egrep '^('$piped_text')$' $labels | tr '\n' '|')
+		local matches=$(egrep '^('$piped_text')$' $labels | tr '\n' '|' | sed 's/|[[:space:]]*$//')
 		if [ ${#matches} -ge 2 ]; then
 		    get_entities_source_word1_result=$(egrep -iaob $matches <<< "$original_text")
 		fi
@@ -40,7 +40,7 @@ declare get_entities_source_word2_result=''
 get_entities_source_word2 () {
 	local labels=$1
 	if [ ${#piped_pair_text} -ge 2 ]; then
-		local matches=$(egrep '^('$piped_pair_text')$' $labels | tr '\n' '|')
+		local matches=$(egrep '^('$piped_pair_text')$' $labels | tr '\n' '|' | sed 's/|[[:space:]]*$//' )
 		if [ ${#matches} -ge 2 ]; then
 		    get_entities_source_word2_result=$(egrep -iaob "$matches" <<< "$original_text")
 		fi
@@ -52,7 +52,7 @@ get_entities_source_words () {
 	local labels2=$1
 	local labels=$2
 	if [ ${#piped_pair_text} -ge 2 ]; then
-		local matches=$(egrep '^('$piped_pair_text')$' $labels2 | egrep '[[:alpha:]]{5,}' | tr '\n' '|')
+		local matches=$(egrep '^('$piped_pair_text')$' $labels2 | egrep '[[:alpha:]]{5,}' | tr '\n' '|' | sed 's/|[[:space:]]*$//' )
                 if [ ${#matches} -ge 2 ]; then
 		    local fullmatches=$(egrep '^('$matches')' $labels | tr '\n' '|')
 		fi
