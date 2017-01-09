@@ -5,6 +5,7 @@
 declare document_id=$1
 declare section=$2
 declare original_text=$3
+declare data_source=$4
 
 # Process text
 declare text=${3,,} # Make text lowercase so the system is case insensitive
@@ -100,8 +101,4 @@ get_entities_source () {
 	# echo "== END SOURCE =="
 	}
 
-get_entities_source all_terms
-
-# for i in $(ls data/*words.txt | xargs -i basename {} _words.txt); do
-#     get_entities_source $i
-# done
+get_entities_source $data_source
