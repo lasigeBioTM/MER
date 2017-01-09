@@ -3,11 +3,11 @@
 # set -x #debug
 
 declare document_id=$1
-
-declare original_text=$2
+declare section=$2
+declare original_text=$3
 
 # Process text
-declare text=${2,,} # Make text lowercase so the system is case insensitive
+declare text=${3,,} # Make text lowercase so the system is case insensitive
 text=$(sed "s/[^[:alnum:][:space:]]/./g" <<< $text) # Replace special characters
 #text=$(tr '[[:space:]]' ' ' <<< $text) # standard space
 text=$(sed -e 's/^ *//' -e 's/ *$//' <<< $text) # Remove leading and trailing whitespace
@@ -65,7 +65,7 @@ get_entities_source_words () {
 declare get_entities_source_words_result=''
 get_entities_source () {
 	local source=$1
-	echo "== BEGIN SOURCE == $source =="
+	# echo "== BEGIN SOURCE == $source =="
 	cd data/
 
 	SAVEIFS=$IFS; IFS=$(echo -en "");
@@ -79,13 +79,29 @@ get_entities_source () {
 	wait
 	cd ..
 
+	# Check if all the results are empty. If yes, terminate function.
+	if [[ -z $result1 && -z $result2 && -z $result3 ]]; then
+		return
+	fi
+
 	local result=$result1$'\n'$result2$'\n'$result3
 	result=$(sed '{/^$/d}' <<< $result) # remove empty lines
-	result=$(awk -F: '{ print '"$document_id"',"\t",$1,"\t",length($2),"\t",$2,"\t",1-1/log(length($2)) }' <<< $result) # convert to the output format
+	# DOCUMENT_ID, SECTION, INIT, END, SCORE, ANNOTATED_TEXT, TYPE, DATABASE_ID
+	result=$(awk -F: '{ print "'$document_id'" "\t" \
+							  "'$section'" "\t" \
+							  $1 "\t" \
+							  length($2) + $1 "\t" \
+							  1-1/log(length($2)) "\t" \
+							  $2 "\t" \
+							  "unknown" "\t" \
+							  "1"}'\
+							  <<< $result) # convert to the output format
 	echo $result
-	echo "== END SOURCE =="
+	# echo "== END SOURCE =="
 	}
 
-for i in $(ls data/*words.txt | xargs -i basename {} _words.txt); do
-    get_entities_source $i
-done
+get_entities_source all_terms
+
+# for i in $(ls data/*words.txt | xargs -i basename {} _words.txt); do
+#     get_entities_source $i
+# done
