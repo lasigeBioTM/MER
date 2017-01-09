@@ -14,5 +14,5 @@ with open('data/{}.txt'.format(source)) as f:
 
 filtered_pubchem_words = pubchem_words.difference(common_words)
 
-with open('data/{}_filtered.txt'.format(source), 'w') as f:
+with open('data/{}_english_filtered.txt'.format(source), 'w') as f:
     map(f.write, filtered_pubchem_words)
