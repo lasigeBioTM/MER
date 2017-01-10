@@ -32,7 +32,7 @@ get_entities_source_word1 () {
 	if [ ${#piped_text} -ge 2 ]; then
 		local matches=$(egrep '^('$piped_text')$' $labels | tr '\n' '|' | sed 's/|[[:space:]]*$//')
 		if [ ${#matches} -ge 2 ]; then
-		    get_entities_source_word1_result=$(egrep -iaob $matches <<< "$original_text")
+		    get_entities_source_word1_result=$(egrep -iaobw $matches <<< "$original_text")
 		fi
 	fi
 }
@@ -43,7 +43,7 @@ get_entities_source_word2 () {
 	if [ ${#piped_pair_text} -ge 2 ]; then
 		local matches=$(egrep '^('$piped_pair_text')$' $labels | tr '\n' '|' | sed 's/|[[:space:]]*$//' )
 		if [ ${#matches} -ge 2 ]; then
-		    get_entities_source_word2_result=$(egrep -iaob "$matches" <<< "$original_text")
+		    get_entities_source_word2_result=$(egrep -iaobw "$matches" <<< "$original_text")
 		fi
 	fi
 }
@@ -58,7 +58,7 @@ get_entities_source_words () {
 		    local fullmatches=$(egrep '^('$matches')' $labels | tr '\n' '|')
 		fi
 		if [ ${#fullmatches} -ge 2 ]; then
-			get_entities_source_words_result=$(egrep -iaob "$fullmatches" <<< "$original_text")
+			get_entities_source_words_result=$(egrep -iaobw "$fullmatches" <<< "$original_text")
 		fi
 	fi
 }
