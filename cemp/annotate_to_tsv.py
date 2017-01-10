@@ -27,19 +27,21 @@ with open('{}_set.txt'.format(set_to_annotate)) as f:
     documents = f.readlines()
 
 for document in documents:
-    document_id, abstract, text = document.split('\t')
+    document_id, title, abstract = document.split('\t')
 
+    title = escape_special_characters(title)
     abstract = escape_special_characters(abstract)
-    text = escape_special_characters(text)
 
+    annot_title_commant = 'cd ..; bash get_entities.sh {} {} "{}" {}'.format(
+        document_id, 'T', title, data_source
+    )
     annot_abstract_commant = 'cd ..; bash get_entities.sh {} {} "{}" {}'.format(
         document_id, 'A', abstract, data_source
     )
-    annot_text_commant = 'cd ..; bash get_entities.sh {} {} "{}" {}'.format(
-        document_id, 'T', text, data_source
-    )
 
+    annotatons_file.write(subprocess.check_output(annot_title_commant, shell=True))
     annotatons_file.write(subprocess.check_output(annot_abstract_commant, shell=True))
-    annotatons_file.write(subprocess.check_output(annot_text_commant, shell=True))
 
 annotatons_file.close()
+
+print data_source + ' ok'
