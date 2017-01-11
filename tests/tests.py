@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import unittest
 import subprocess
 
@@ -42,6 +44,15 @@ class SanityCheckTests(unittest.TestCase):
         #                      '1\tA\t0\t20\t0.666192\tnicotinic acid amide\tunknown\t1\n')
 
         self.assertEqual(correct_annotations, result)
+
+    def test_handling_special_characters(self):
+        """Test fix of issue #11"""
+        bash_command = 'bash get_entities.sh 1 A "‘ oxygen" ChEBI'
+        result = subprocess.check_output(bash_command, shell=True)
+
+        correct_annotation = '1\tA\t2\t8\t0.441889\toxygen\tunknown\t1\n'
+
+        self.assertEqual(correct_annotation, result)
 
 
 if __name__ == '__main__':

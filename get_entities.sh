@@ -4,7 +4,8 @@
 
 declare document_id=$1
 declare section=$2
-declare original_text=$3
+# Replace special characters because of encoding problems
+declare original_text_no_special_characters=$(sed "s/[^[:alnum:][:space:]]/./g" <<< $3)
 declare data_source=$4
 
 # Process text
@@ -15,7 +16,6 @@ text=$(sed -e 's/^ *//' -e 's/ *$//' <<< $text) # Remove leading and trailing wh
 text=$(sed -e 's/[[:space:]]\+/ /' <<< $text) # remove multiple whitespace
 text=$(sed -e 's/\.$//' -e 's/\. / /' <<< $text) # remove full stops
 text=$(tr ' ' '\n' <<< $text | grep -v -w -f stopwords.txt | egrep '[[:alpha:]]{3,}' | tr '\n' ' ') # Remove stopwords and words with less than 3 characters
-
 
 # Separates all the words in the text by pipes
 declare piped_text=$(sed -e 's/ \+/|/g' <<< $text)
@@ -32,7 +32,7 @@ get_entities_source_word1 () {
 	if [ ${#piped_text} -ge 2 ]; then
 		local matches=$(egrep '^('$piped_text')$' $labels | tr '\n' '|' | sed 's/|[[:space:]]*$//')
 		if [ ${#matches} -ge 2 ]; then
-		    get_entities_source_word1_result=$(egrep -iaobw $matches <<< "$original_text")
+		    get_entities_source_word1_result=$(egrep -iaobw $matches <<< "$original_text_no_special_characters")
 		fi
 	fi
 }
@@ -43,7 +43,7 @@ get_entities_source_word2 () {
 	if [ ${#piped_pair_text} -ge 2 ]; then
 		local matches=$(egrep '^('$piped_pair_text')$' $labels | tr '\n' '|' | sed 's/|[[:space:]]*$//' )
 		if [ ${#matches} -ge 2 ]; then
-		    get_entities_source_word2_result=$(egrep -iaobw "$matches" <<< "$original_text")
+		    get_entities_source_word2_result=$(egrep -iaobw "$matches" <<< "$original_text_no_special_characters")
 		fi
 	fi
 }
@@ -58,7 +58,7 @@ get_entities_source_words () {
 		    local fullmatches=$(egrep '^('$matches')' $labels | tr '\n' '|')
 		fi
 		if [ ${#fullmatches} -ge 2 ]; then
-			get_entities_source_words_result=$(egrep -iaobw "$fullmatches" <<< "$original_text")
+			get_entities_source_words_result=$(egrep -iaobw "$fullmatches" <<< "$original_text_no_special_characters")
 		fi
 	fi
 }
