@@ -5,7 +5,7 @@
 declare document_id=$1
 declare section=$2
 # Replace special characters because of encoding problems
-declare original_text_no_special_characters=$(sed "s/[^[:alnum:][:space:]]/./g" <<< "$3")
+declare original_text_no_special_characters=$(sed "s/[^A-Za-z0-9[:space:]]/./g" <<< "$3")
 declare data_source=$4
 
 # Process text
