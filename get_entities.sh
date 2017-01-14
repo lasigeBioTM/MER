@@ -5,12 +5,12 @@
 declare document_id=$1
 declare section=$2
 # Replace special characters because of encoding problems
-declare original_text_no_special_characters=$(sed "s/[^[:alnum:][:space:]]/./g" <<< $3)
+declare original_text_no_special_characters=$(sed "s/[^[:alnum:][:space:]]/./g" <<< "$3")
 declare data_source=$4
 
 # Process text
 declare text=${3,,} # Make text lowercase so the system is case insensitive
-text=$(sed "s/[^[:alnum:][:space:]]/./g" <<< $text) # Replace special characters
+text=$(sed "s/[^[:alnum:][:space:]]/./g" <<< "$text") # Replace special characters
 #text=$(tr '[[:space:]]' ' ' <<< $text) # standard space
 text=$(sed -e 's/^ *//' -e 's/ *$//' <<< $text) # Remove leading and trailing whitespace
 text=$(sed -e 's/[[:space:]]\+/ /' <<< $text) # remove multiple whitespace
