@@ -105,6 +105,16 @@ class SanityCheckTests(unittest.TestCase):
 
         self.assertEqual(correct_annotation, result)
 
+    def test_annotate_words_between_parenthesis(self):
+        """https://github.com/LLCampos/IBELight/issues/16"""
+
+        bash_command = 'bash get_entities.sh 1 T "(water)" ChEBI'
+        result = subprocess.check_output(bash_command, shell=True)
+
+        correct_annotation = ('1\tT\t1\t6\t0.378665\twater\tunknown\t1\n')
+
+        self.assertEqual(correct_annotation, result)
+
 
 if __name__ == '__main__':
     unittest.main()
