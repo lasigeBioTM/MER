@@ -32,21 +32,30 @@ class SanityCheckTests(unittest.TestCase):
         calculating position of annotation."""
 
         # https://github.com/LLCampos/IBELight/issues/11
-        bash_command = 'bash get_entities.sh 1 A "‘ oxygen" ChEBI'
-        result = subprocess.check_output(bash_command, shell=True)
+        bash_command_1 = 'bash get_entities.sh 1 A "‘ oxygen" ChEBI'
+        result_1 = subprocess.check_output(bash_command_1, shell=True)
 
-        correct_annotation = '1\tA\t2\t8\t0.441889\toxygen\tunknown\t1\n'
+        correct_annotation_1 = '1\tA\t2\t8\t0.441889\toxygen\tunknown\t1\n'
 
-        self.assertEqual(correct_annotation, result)
+        self.assertEqual(correct_annotation_1, result_1)
 
         # https://github.com/LLCampos/IBELight/issues/14
 
-        bash_command = 'bash get_entities.sh 1 T "µ testosterone" HMDB_ChEMBL_ChEBI'
-        result = subprocess.check_output(bash_command, shell=True)
+        bash_command_2 = 'bash get_entities.sh 1 T "µ testosterone" HMDB_ChEMBL_ChEBI'
+        result_2 = subprocess.check_output(bash_command_2, shell=True)
 
-        correct_annotation = '1\tT\t2\t14\t0.59757\ttestosterone\tunknown\t1\n'
+        correct_annotation_2 = '1\tT\t2\t14\t0.59757\ttestosterone\tunknown\t1\n'
 
-        self.assertEqual(correct_annotation, result)
+        self.assertEqual(correct_annotation_2, result_2)
+
+        # https://github.com/LLCampos/IBELight/issues/15
+
+        bash_command_3 = 'bash get_entities.sh 1 T " water" ChEBI'
+        result_3 = subprocess.check_output(bash_command_3, shell=True)
+
+        correct_annotation_3 = '1\tT\t1\t6\t0.378665\twater\tunknown\t1\n'
+
+        self.assertEqual(correct_annotation_3, result_3)
 
     def test_ignore_full_stop(self):
         """Terms should be annotated even if followed by a full stop.
