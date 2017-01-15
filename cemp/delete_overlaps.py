@@ -45,7 +45,7 @@ for document_id in annots_by_document.keys():
             if section_j != section_i:
                 continue
 
-            if init_j >= init_i and end_j <= end_i:
+            if init_j >= init_i and end_j <= end_i and i > j:
                 indexes_to_delete.append(j)
 
             if (init_j < init_i and end_j < end_i and end_j > init_i) or (init_j > init_i and end_j > end_i and init_j < end_i):
