@@ -27,9 +27,9 @@ class SanityCheckTests(unittest.TestCase):
 
         self.assertEqual(correct_annotations, result)
 
-    def test_handling_special_characters(self):
-        """Special characters should only counted as one character when
-        calculating position of annotation."""
+    def test_return_character_offset(self):
+        """Annotation offsets returned should be character offsets, not byte
+        offsets."""
 
         # https://github.com/LLCampos/IBELight/issues/11
         bash_command_1 = 'bash get_entities.sh 1 A "‘ oxygen" ChEBI'
