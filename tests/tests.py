@@ -125,6 +125,15 @@ class SanityCheckTests(unittest.TestCase):
 
         self.assertEqual(correct_annotation, result)
 
+    def test_case_insensitivity(self):
+
+        bash_command = 'bash get_entities.sh 1 T "Water" ChEBI'
+        result = subprocess.check_output(bash_command, shell=True)
+
+        correct_annotation = ('1\tT\t0\t5\t0.378665\tWater\tunknown\t1\n')
+
+        self.assertEqual(correct_annotation, result)
+
 
 if __name__ == '__main__':
     unittest.main()
