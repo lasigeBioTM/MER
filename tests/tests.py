@@ -115,6 +115,16 @@ class SanityCheckTests(unittest.TestCase):
 
         self.assertEqual(correct_annotation, result)
 
+    def test_special_characters_are_retained_in_output(self):
+        """https://github.com/LLCampos/IBELight/issues/17"""
+
+        bash_command = 'bash get_entities.sh 1 T "N-methyl-D-aspartate" ChEBI'
+        result = subprocess.check_output(bash_command, shell=True)
+
+        correct_annotation = ('1\tT\t0\t20\t0.666192\tN-methyl-D-aspartate\tunknown\t1\n')
+
+        self.assertEqual(correct_annotation, result)
+
 
 if __name__ == '__main__':
     unittest.main()
