@@ -9,9 +9,9 @@ declare data_source=$4
 
 # Process text
 declare text=${3,,} # Make text lowercase so the system is case insensitive
-text=$(sed "s/[^[:alnum:][:space:]]/./g" <<< "$text") # Replace special characters
+text=$(sed "s/[^[:alnum:][:space:]()]/./g" <<< "$text") # Replace special characters
 text=$(sed -e 's/^ *//' -e 's/ *$//' <<< $text) # Remove leading and trailing whitespace
-text=$(sed -e 's/[[:space:]]\+/ /' <<< $text) # remove multiple whitespace
+text=$(sed -e 's/[[:space:]()]\+/ /g' <<< $text) # remove multiple whitespace
 text=$(sed -e 's/\.$//' -e 's/\. / /g' <<< $text) # remove full stops
 text=$(tr ' ' '\n' <<< $text | grep -v -w -f stopwords.txt | egrep '[[:alpha:]]{3,}' | tr '\n' ' ') # Remove stopwords and words with less than 3 characters
 
