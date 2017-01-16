@@ -4,7 +4,7 @@
 
 declare document_id=$1
 declare section=$2
-declare original_text=$3
+declare original_text=$(iconv -f utf-8 -t ascii//TRANSLIT <<< $3)
 declare data_source=$4
 
 # Process text
