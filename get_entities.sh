@@ -4,7 +4,7 @@
 
 declare document_id=$1
 declare section=$2
-declare original_text=$(iconv -f utf-8 -t ascii//TRANSLIT <<< $3)
+declare original_text=$(iconv -f utf-8 -t ascii//TRANSLIT <<< "$3")
 declare data_source=$4
 
 # Process text
@@ -12,7 +12,7 @@ declare text=${3,,} # Make text lowercase so the system is case insensitive
 text=$(sed "s/[^[:alnum:][:space:]()]/./g" <<< "$text") # Replace special characters
 text=$(sed -e 's/[[:space:]()]\+/ /g' <<< $text) # remove multiple whitespace
 text=$(sed -e 's/\.$//' -e 's/\. / /g' <<< $text) # remove full stops
-text=$(tr ' ' '\n' <<< $text | grep -v -w -f stopwords.txt | tr '\n' ' ') # Remove stopwords 
+text=$(tr ' ' '\n' <<< $text | grep -v -w -f stopwords.txt | tr '\n' ' ') # Remove stopwords
 # | egrep '[[:alpha:]]{3,}'  and words with less than 3 characters
 text=$(sed -e 's/^ *//' -e 's/ *$//' <<< $text) # Remove leading and trailing whitespace
 
