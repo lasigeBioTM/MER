@@ -10,19 +10,18 @@ declare data_source=$4
 # Process text
 declare text=${3,,} # Make text lowercase so the system is case insensitive
 text=$(sed "s/[^[:alnum:][:space:]()]/./g" <<< "$text") # Replace special characters
-text=$(sed -e 's/^ *//' -e 's/ *$//' <<< $text) # Remove leading and trailing whitespace
 text=$(sed -e 's/[[:space:]()]\+/ /g' <<< $text) # remove multiple whitespace
 text=$(sed -e 's/\.$//' -e 's/\. / /g' <<< $text) # remove full stops
 text=$(tr ' ' '\n' <<< $text | grep -v -w -f stopwords.txt | egrep '[[:alpha:]]{3,}' | tr '\n' ' ') # Remove stopwords and words with less than 3 characters
+text=$(sed -e 's/^ *//' -e 's/ *$//' <<< $text) # Remove leading and trailing whitespace
 
 # Separates all the words in the text by pipes
 declare piped_text=$(sed -e 's/ \+/|/g' <<< $text)
 
 # Creates all combinations of pairs of consecutive words in the text.
 declare piped_pair_text1=$(sed -e 's/\([^ ]\+ \+[^ ]\+\) /\1|/g' <<< $text" XXX" | sed 's/|[^|]*$//')
-declare piped_pair_text2=$(sed -e 's/\([^ ]\+ \+[^ ]\+\) /\1|/g' <<< "XXX "$text | sed 's/^[^|]*|//')
+declare piped_pair_text2=$(sed -e 's/\([^ ]\+ \+[^ ]\+\) /\1|/g' <<< "XXX "$text" XXX"| sed 's/^[^|]*|//' | sed 's/|[^|]*$//')
 declare piped_pair_text=$piped_pair_text1'|'$piped_pair_text2
-
 
 declare get_entities_source_word1_result=''
 get_entities_source_word1 () {
