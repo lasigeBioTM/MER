@@ -7,3 +7,7 @@ Before using the program, you'll have to run `bash process_all_vocabularies.sh`
 To run the tests do:
 
 `python tests/tests.py`
+
+## Bash Dependencies 
+
+[command-line tools needed for this program to work]
