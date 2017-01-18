@@ -4,13 +4,14 @@
 
 declare document_id=$1
 declare section=$2
-declare original_text=$(iconv -f utf-8 -t ascii//TRANSLIT <<< "$3")
+declare original_text=$3
+original_text_ascii=$(sed 's/[^ -~]/@/g' <<< $original_text)
 declare data_source=$4
 
 # Process text
 declare text=${3,,} # Make text lowercase so the system is case insensitive
-text=$(sed "s/[^[:alnum:][:space:]()]/./g" <<< "$text") # Replace special characters
-text=$(sed -e 's/[[:space:]()]\+/ /g' <<< $text) # remove multiple whitespace
+text=$(sed "s/[^[:alnum:][:space:]()@]/./g" <<< "$text") # Replace special characters
+text=$(sed -e 's/[[:space:]()@]\+/ /g' <<< $text) # remove multiple whitespace
 text=$(sed -e 's/\.$//' -e 's/\. / /g' <<< $text) # remove full stops
 text=$(tr ' ' '\n' <<< $text | grep -v -w -f stopwords.txt | tr '\n' ' ') # Remove stopwords
 # | egrep '[[:alpha:]]{3,}'  and words with less than 3 characters
@@ -24,13 +25,27 @@ declare piped_pair_text1=$(sed -e 's/\([^ ]\+ \+[^ ]\+\) /\1|/g' <<< $text" XXX"
 declare piped_pair_text2=$(sed -e 's/\([^ ]\+ \+[^ ]\+\) /\1|/g' <<< "XXX "$text" XXX"| sed 's/^[^|]*|//' | sed 's/|[^|]*$//')
 declare piped_pair_text=$piped_pair_text1'|'$piped_pair_text2
 
+
+declare get_matches_positions_result=''
+get_matches_positions () {
+	local matches=$1	
+	while read -r match
+		do
+			match_ascii=$(sed 's/[^ -~]/@/g' <<< $match)
+			results=$results$'\n'$(egrep -iaobw $match_ascii <<< "$original_text_ascii" | sed "s/$match_ascii/$match/")
+		done <<< $matches
+	get_matches_positions_result=$results;
+}
+	
 declare get_entities_source_word1_result=''
 get_entities_source_word1 () {
 	local labels=$1
+	get_entities_source_word1_result=''
 	if [ ${#piped_text} -ge 2 ]; then
-		local matches=$(egrep '^('$piped_text')$' $labels | tr '\n' '|' | sed 's/|[[:space:]]*$//')
+		local matches=$(egrep '^('$piped_text')$' $labels)
 		if [ ${#matches} -ge 2 ]; then
-		    get_entities_source_word1_result=$(egrep -iaobw $matches <<< "$original_text")
+			get_matches_positions $matches
+			get_entities_source_word1_result=$get_matches_positions_result
 		fi
 	fi
 }
@@ -38,10 +53,12 @@ get_entities_source_word1 () {
 declare get_entities_source_word2_result=''
 get_entities_source_word2 () {
 	local labels=$1
+	get_entities_source_word2_result=''
 	if [ ${#piped_pair_text} -ge 2 ]; then
 		local matches=$(egrep '^('$piped_pair_text')$' $labels | tr '\n' '|' | sed 's/|[[:space:]]*$//' )
 		if [ ${#matches} -ge 2 ]; then
-		    get_entities_source_word2_result=$(egrep -iaobw "$matches" <<< "$original_text")
+			get_matches_positions $matches
+			get_entities_source_word2_result=$get_matches_positions_result
 		fi
 	fi
 }
@@ -50,13 +67,13 @@ declare get_entities_source_words_result=''
 get_entities_source_words () {
 	local labels2=$1
 	local labels=$2
+	get_entities_source_words_result=''
 	if [ ${#piped_pair_text} -ge 2 ]; then
 		local matches=$(egrep '^('$piped_pair_text')$' $labels2 | egrep '[[:alpha:]]{5,}' | tr '\n' '|' | sed 's/|[[:space:]]*$//' )
-                if [ ${#matches} -ge 2 ]; then
+        if [ ${#matches} -ge 2 ]; then
 		    local fullmatches=$(egrep '^('$matches')' $labels | tr '\n' '|')
-		fi
-		if [ ${#fullmatches} -ge 2 ]; then
-			get_entities_source_words_result=$(egrep -iaobw "$fullmatches" <<< "$original_text")
+			get_matches_positions $fullmatches
+			get_entities_source_words_result=$get_matches_positions_result
 		fi
 	fi
 }
