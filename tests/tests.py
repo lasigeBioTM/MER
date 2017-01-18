@@ -11,7 +11,7 @@ class SanityCheckTests(unittest.TestCase):
 
         https://github.com/LLCampos/IBELight/issues/7"""
 
-        bash_command = 'bash get_entities.sh 1 T "not a entity" DrugBank'
+        bash_command = 'bash get_entities.sh 1 T "not a entity" ChEBI'
         result = subprocess.check_output(bash_command, shell=True)
 
         self.assertEqual('', result)
@@ -41,7 +41,7 @@ class SanityCheckTests(unittest.TestCase):
 
         # https://github.com/LLCampos/IBELight/issues/14
 
-        bash_command_2 = 'bash get_entities.sh 1 T "µ testosterone" HMDB_ChEMBL_ChEBI'
+        bash_command_2 = 'bash get_entities.sh 1 T "µ testosterone" ChEBI'
         result_2 = subprocess.check_output(bash_command_2, shell=True)
 
         correct_annotation_2 = '1\tT\t2\t14\t0.59757\ttestosterone\tunknown\t1\n'
@@ -62,7 +62,7 @@ class SanityCheckTests(unittest.TestCase):
 
         https://github.com/LLCampos/IBELight/issues/2"""
 
-        bash_command = 'bash get_entities.sh 1 T "I love testosterone." DrugBank'
+        bash_command = 'bash get_entities.sh 1 T "I love testosterone." ChEBI'
         result = subprocess.check_output(bash_command, shell=True)
 
         correct_annotation = '1\tT\t7\t19\t0.59757\ttestosterone\tunknown\t1\n'
@@ -84,7 +84,7 @@ class SanityCheckTests(unittest.TestCase):
     def test_word_position_indexes_consider_multi_whitespaces(self):
         """"https://github.com/LLCampos/IBELight/issues/12"""
 
-        bash_command = 'bash get_entities.sh 1 A "the  potassium" HMDB_ChEMBL_ChEBI'
+        bash_command = 'bash get_entities.sh 1 A "the  potassium" ChEBI'
         result = subprocess.check_output(bash_command, shell=True)
 
         correct_annotation = ('1\tA\t5\t14\t0.54488\tpotassium\tunknown\t1\n')
@@ -96,7 +96,7 @@ class SanityCheckTests(unittest.TestCase):
 
         https://github.com/LLCampos/IBELight/issues/13"""
 
-        bash_command = 'bash get_entities.sh 1 A "water, potassium, oxygen" HMDB_ChEMBL_ChEBI'
+        bash_command = 'bash get_entities.sh 1 A "water, potassium, oxygen" ChEBI'
         result = subprocess.check_output(bash_command, shell=True)
 
         correct_annotation = ('1\tA\t0\t5\t0.378665\twater\tunknown\t1\n'
