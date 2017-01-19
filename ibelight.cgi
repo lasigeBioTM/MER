@@ -1,5 +1,4 @@
 #!/bin/bash
-PATH=$PATH:/usr/local/bin
 echo "HTTP/1.0 200 OK"
 
 if [ "$REQUEST_METHOD" = "POST" ]; then
@@ -55,6 +54,11 @@ if [ $becalm_key = '"3deb66a13349fc7889549dfda065a3d8877ac04f"' ]; then
         do
             IFS=',' read docid source <<< $(echo $i | tr -d '"') 
             # fetch document
+            echo $source
+            if [ $source = "PUBMED" ]; then
+                ./external_services/pubmed.sh $docid 2>/dev/null
+            fi
+
             # call get_entities.sh
             # use ts
             declare results=$(echo "DOCUMENT_ID\tSECTION\tINIT\tEND\tSCORE\tANNOTATED_TEXT\tTYPE\tDATABASE_ID\nUS20090023775\tA\t798\t805\t1\tsulfate\nCHEMICAL\t13\n")
