@@ -25,7 +25,7 @@ declare doc_source='pubmed'
 
 # If document ID is valid
 if grep -q [1-9] <<< $document_id; then
-    declare xml_response=$(efetch -db pubmed -id $document_id -mode xml)
+    declare xml_response=$(curl -s "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=$doc_source&retmode=xml&id=$document_id")
     declare title=$(xmlstarlet sel -t -v //ArticleTitle <<< $xml_response)
     declare abstract=$(xmlstarlet sel -t -v //AbstractText <<< $xml_response)
 fi

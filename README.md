@@ -8,13 +8,8 @@ To run the tests do:
 
 `python tests/tests.py`
 
-## Bash Dependencies 
+## Bash Dependencies
 
 ### xmlstarlet
 
 http://xmlstar.sourceforge.net/download.php
-
-### Entrez Direct
-
-https://www.ncbi.nlm.nih.gov/books/NBK179288/
-
