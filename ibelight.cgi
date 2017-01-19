@@ -53,13 +53,11 @@ if [ $becalm_key = '"3deb66a13349fc7889549dfda065a3d8877ac04f"' ]; then
         IFS=$'\n'
         for i in $docs
         do
-            #IFS=',' read docid source <<< $(echo $i | tr -d '"') 
-            # fetch document
-            #IFS=',' TASKID=$(ts ./process_document.sh $i)
-            IFS=',' results=$(./process_document.sh $i)
             # use ts
+            IFS=',' TASKID=$(ts ./process_document.sh $i)
+            declare results=$(ts -c $TASKID)
             # save annotations
-            declare results=$(echo $header $results)
+            #declare results=$(echo $header $results)
             echo $results
             declare responseurl=$(echo 'http://www.becalm.eu/api/saveAnnotations/TSV?apikey='$key'&communicationId='$cid)
             #echo $responseurl
