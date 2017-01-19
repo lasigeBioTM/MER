@@ -140,7 +140,7 @@ class SanityCheckTests(unittest.TestCase):
         result = subprocess.check_output(bash_command, shell=True)
 
         correct_annotation = ('1\tT\t0\t9\t0.544880\tα-amilase\tunknown\t1\n'
-                              '1\tT\t11\t20\t0.544880\tα-amilase\tunknown\t1\n')
+                              '1\tT\t10\t19\t0.544880\tα-amilase\tunknown\t1\n')
 
         self.assertEqual(correct_annotation, result)
 
