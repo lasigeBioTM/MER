@@ -47,25 +47,23 @@ if [ $becalm_key = '"3deb66a13349fc7889549dfda065a3d8877ac04f"' ]; then
         echo $response
         # process request
         declare cid=$(echo $POST_DATA | jq '.parameters.communication_id' | tr -d '"')
-        declare docs=$(echo $POST_DATA | jq '.parameters.documents[] | .document_id + "," + .source')
+        declare docs=$(echo $POST_DATA | jq '.parameters.documents[] | .document_id + "," + .source' | tr -d '"')
+        declare header=$(echo "DOCUMENT_ID\tSECTION\tINIT\tEND\tSCORE\tANNOTATED_TEXT\tTYPE\tDATABASE_ID\n")
         SAVEIFS=$IFS;
         IFS=$'\n'
         for i in $docs
         do
-            IFS=',' read docid source <<< $(echo $i | tr -d '"') 
+            #IFS=',' read docid source <<< $(echo $i | tr -d '"') 
             # fetch document
-            echo $source
-            if [ $source = "PUBMED" ]; then
-                ./external_services/pubmed.sh $docid 2>/dev/null
-            fi
-
-            # call get_entities.sh
+            #IFS=',' TASKID=$(ts ./process_document.sh $i)
+            IFS=',' results=$(./process_document.sh $i)
             # use ts
-            declare results=$(echo "DOCUMENT_ID\tSECTION\tINIT\tEND\tSCORE\tANNOTATED_TEXT\tTYPE\tDATABASE_ID\nUS20090023775\tA\t798\t805\t1\tsulfate\nCHEMICAL\t13\n")
             # save annotations
+            declare results=$(echo $header $results)
+            echo $results
             declare responseurl=$(echo 'http://www.becalm.eu/api/saveAnnotations/TSV?apikey='$key'&communicationId='$cid)
             #echo $responseurl
-            #curl --data $response $responseurl
+            #curl --data $results $responseurl
         done
         IFS=$SAVEIFS
     fi
