@@ -1,5 +1,5 @@
 #!/bin/bash
-
+PATH=$PATH:/usr/local/bin
 echo "HTTP/1.0 200 OK"
 
 if [ "$REQUEST_METHOD" = "POST" ]; then
@@ -30,10 +30,10 @@ timestamp() {
 
 echo $(timestamp) $POST_DATA >> request_log.txt
 declare key=$(echo "e2b88b40674b13e92fc6e41aa2a858910e3ac3b8")
-declare becalm_key=$(echo $POST_DATA | /usr/local/bin/jq '.becalm_key')
+declare becalm_key=$(echo $POST_DATA | jq '.becalm_key')
 
 if [ $becalm_key = '"3deb66a13349fc7889549dfda065a3d8877ac04f"' ]; then
-    declare method=$(echo $POST_DATA | /usr/local/bin/jq '.method')
+    declare method=$(echo $POST_DATA | jq '.method')
     if [ $method = '"getState"' ]; then
         declare serverstatus=$(echo 'Running')
         declare statuscode=$(echo '200')
@@ -47,14 +47,13 @@ if [ $becalm_key = '"3deb66a13349fc7889549dfda065a3d8877ac04f"' ]; then
         declare response=$(echo '{"status": 200, "success": true, "key":"'$key'"}')
         echo $response
         # process request
-        declare cid=$(echo $POST_DATA | /usr/local/bin/jq '.parameters.communication_id' | tr -d '"')
-        declare docs=$(echo $POST_DATA | /usr/local/bin/jq '.parameters.documents[] | .document_id + "," + .source')
+        declare cid=$(echo $POST_DATA | jq '.parameters.communication_id' | tr -d '"')
+        declare docs=$(echo $POST_DATA | jq '.parameters.documents[] | .document_id + "," + .source')
         SAVEIFS=$IFS;
         IFS=$'\n'
         for i in $docs
         do
             IFS=',' read docid source <<< $(echo $i | tr -d '"') 
-            
             # fetch document
             # call get_entities.sh
             # use ts
