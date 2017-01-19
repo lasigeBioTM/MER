@@ -10,4 +10,11 @@ To run the tests do:
 
 ## Bash Dependencies 
 
-[command-line tools needed for this program to work]
+### xmlstarlet
+
+http://xmlstar.sourceforge.net/download.php
+
+### Entrez Direct
+
+https://www.ncbi.nlm.nih.gov/books/NBK179288/
+
