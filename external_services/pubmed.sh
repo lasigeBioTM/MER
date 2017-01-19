@@ -24,14 +24,18 @@ declare document_id=$1
 declare doc_source='pubmed'
 
 # If document ID is valid
-if grep -q [1-9] <<< $document_id; then
-    declare xml_response=$(curl -s "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=$doc_source&retmode=xml&id=$document_id")
-    declare title=$(xmlstarlet sel -t -v //ArticleTitle <<< $xml_response)
-    declare abstract=$(xmlstarlet sel -t -v //AbstractText <<< $xml_response)
+if grep -q "[1-9]" <<< $document_id; then
+    declare xml_response
+    declare title
+    declare abstract
+
+    xml_response=$(curl -s "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=$doc_source&retmode=xml&id=$document_id")
+    title=$(xmlstarlet sel -t -v //ArticleTitle <<< $xml_response)
+    abstract=$(xmlstarlet sel -t -v //AbstractText <<< $xml_response)
 fi
 
 # If document ID is not valid
-if ! grep -q [1-9] <<< $document_id; then
+if ! grep -q "[1-9]" <<< $document_id; then
     output=$(jq -n --arg document_id "$document_id" \
                    --arg doc_source "$doc_source" \
                    --arg non_valid_id_message "$non_valid_id_message" \
@@ -56,4 +60,4 @@ else
                 '{"doc_id": $document_id, "source": $doc_source, "title": $title, "abstract": $abstract}')
 fi
 
-echo $output
+echo "$output"
