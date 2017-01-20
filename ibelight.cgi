@@ -60,8 +60,8 @@ if [ $becalm_key = '"3deb66a13349fc7889549dfda065a3d8877ac04f"' ]; then
             #declare results=$(echo $header $results)
             echo $results
             declare responseurl=$(echo 'http://www.becalm.eu/api/saveAnnotations/TSV?apikey='$key'&communicationId='$cid)
-            #echo $responseurl
-            #curl --data $results $responseurl
+            echo $responseurl
+            #curl -X POST --data "$results" $responseurl --header "Content-Type:text/tab-separated-values"
         done
         IFS=$SAVEIFS
     fi
