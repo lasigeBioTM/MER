@@ -10,7 +10,7 @@
 # -> doc_id
 # -> doc_source
 # -> title
-# -> abstract
+# -> abstract (if available)
 
 declare document_id=$1
 declare doc_source="Patent server"
@@ -25,12 +25,21 @@ abstract=$(jq '.abstractText' <<< $json_response)
 
 # Removes double quotes
 title=${title:1:-1}
-abstract=${abstract:1:-1}
 
-output=$(jq -n --arg document_id "$document_id" \
+# If abstract is available
+if [[ ! $abstract = 'null' ]]; then
+    abstract=${abstract:1:-1}
+
+    output=$(jq -n --arg document_id "$document_id" \
+                --arg doc_source "$doc_source" \
+                --arg title "$title" \
+                --arg abstract "$abstract" \
+                '{"doc_id": $document_id, "source": $doc_source, "title": $title, "abstract": $abstract}')
+else
+   output=$(jq -n --arg document_id "$document_id" \
             --arg doc_source "$doc_source" \
             --arg title "$title" \
-            --arg abstract "$abstract" \
-            '{"doc_id": $document_id, "source": $doc_source, "title": $title, "abstract": $abstract}')
+            '{"doc_id": $document_id, "source": $doc_source, "title": $title}')
+fi
 
 echo "$output"
