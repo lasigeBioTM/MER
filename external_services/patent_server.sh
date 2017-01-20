@@ -1,16 +1,34 @@
 #!/bin/bash
 
 # Usage:
-# bash patent_server.sh [document_id]
+# bash patent_server.sh [document_id1] [document_id2] [document_id3] (...)
 #
 # Some error messages will be outputted, but they do not affect the result
 # and can't quiet them.
 #
-# Output is in JSON. Parameters:
-# -> doc_id
-# -> doc_source
-# -> title
-# -> abstract (if available)
+# Output is in JSON and it is something like this:
+#
+# {
+#   "id1": {
+#     "doc_id": "document_id",
+#     "doc_source": "document_provider1",
+#     "title": "title1",
+#     "abstract": "abstract1" (if available)
+#   },
+#   "id2": {
+#     "doc_id": "document_id",
+#     "doc_source": "document_provider2",
+#     "title": "title2",
+#     "abstract": "abstract2" (if available)
+#   },
+#   "id3": {
+#     "doc_id": "document_id",
+#     "doc_source": "document_provider3",
+#     "title": "title3",
+#     "abstract": "abstract3" (if available)
+#   }
+# }
+#
 
 
 declare doc_source="Patent server"

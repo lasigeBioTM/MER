@@ -1,17 +1,36 @@
 #!/bin/bash
 
 # Usage:
-# bash pubmed.sh [document_id]
+# bash pubmed.sh [document_id1] [document_id2] [document_id3] (...)
 #
 # Some error messages will be outputted, but they do not affect the result
 # and can't quiet them.
 #
-# Output is in JSON. Parameters:
-# -> doc_id
-# -> doc_source
-# -> title
-# -> abstract (if it exists)
-# -> error message (if necessary)
+# Output is in JSON and it is something like this:
+#
+# {
+#   "id1": {
+#     "doc_id": "document_id",
+#     "doc_source": "document_provider1",
+#     "title": "title1",
+#     "abstract": "abstract1" (if available)
+#     "error_message": "error_message1" (if necessary)
+#   },
+#   "id2": {
+#     "doc_id": "document_id",
+#     "doc_source": "document_provider2",
+#     "title": "title2",
+#     "abstract": "abstract2" (if available)
+#     "error_message": "error_message2" (if necessary)
+#   },
+#   "id3": {
+#     "doc_id": "document_id",
+#     "doc_source": "document_provider3",
+#     "title": "title3",
+#     "abstract": "abstract3" (if available)
+#     "error_message": "error_message3" (if necessary)
+#   }
+# }
 #
 # Possible error messages:
 # -> 'Non-valid id' - ID does not contain any digit between 1 and 9
