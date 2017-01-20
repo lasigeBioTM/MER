@@ -10,21 +10,21 @@
 #
 # {
 #   "id1": {
-#     "doc_id": "document_id",
+#     "doc_id": "id1",
 #     "doc_source": "document_provider1",
 #     "title": "title1",
 #     "abstract": "abstract1" (if available)
 #     "error_message": "error_message1" (if necessary)
 #   },
 #   "id2": {
-#     "doc_id": "document_id",
+#     "doc_id": "id2",
 #     "doc_source": "document_provider2",
 #     "title": "title2",
 #     "abstract": "abstract2" (if available)
 #     "error_message": "error_message2" (if necessary)
 #   },
 #   "id3": {
-#     "doc_id": "document_id",
+#     "doc_id": "id3",
 #     "doc_source": "document_provider3",
 #     "title": "title3",
 #     "abstract": "abstract3" (if available)
