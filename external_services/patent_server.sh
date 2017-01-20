@@ -12,34 +12,42 @@
 # -> title
 # -> abstract (if available)
 
-declare document_id=$1
+
 declare doc_source="Patent server"
 
-declare json_response
-declare title
-declare abstract
+declare output='{}'
 
-json_response=$(curl -s http://193.147.85.10:8087/patentserver/json/"$document_id")
-title=$(jq '.title' <<< $json_response)
-abstract=$(jq '.abstractText' <<< $json_response)
+for document_id in "$@"; do
 
-# Removes double quotes
-title=${title:1:-1}
+    declare json_response
+    declare title
+    declare abstract
 
-# If abstract is available
-if [[ ! $abstract = 'null' ]]; then
-    abstract=${abstract:1:-1}
+    json_response=$(curl -s http://193.147.85.10:8087/patentserver/json/"$document_id")
+    title=$(jq '.title' <<< $json_response)
+    abstract=$(jq '.abstractText' <<< $json_response)
 
-    output=$(jq -n --arg document_id "$document_id" \
-                --arg doc_source "$doc_source" \
-                --arg title "$title" \
-                --arg abstract "$abstract" \
-                '{"doc_id": $document_id, "source": $doc_source, "title": $title, "abstract": $abstract}')
-else
-   output=$(jq -n --arg document_id "$document_id" \
-            --arg doc_source "$doc_source" \
-            --arg title "$title" \
-            '{"doc_id": $document_id, "source": $doc_source, "title": $title}')
-fi
+    # Removes double quotes
+    title=${title:1:-1}
+
+    # If abstract is available
+    if [[ ! $abstract = 'null' ]]; then
+        abstract=${abstract:1:-1}
+
+        output_section=$(jq -n --arg document_id "$document_id" \
+                        --arg doc_source "$doc_source" \
+                        --arg title "$title" \
+                        --arg abstract "$abstract" \
+                        '{($document_id): {"source": $doc_source, "title": $title, "abstract": $abstract}}')
+    else
+        output_section=$(jq -n --arg document_id "$document_id" \
+                         --arg doc_source "$doc_source" \
+                         --arg title "$title" \
+                         '{($document_id): {"source": $doc_source, "title": $title}}')
+    fi
+
+    output=$(echo $output "$output_section" | jq -s '.[0] * .[1]')
+
+done
 
 echo "$output"

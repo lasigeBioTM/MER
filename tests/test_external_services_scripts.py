@@ -168,7 +168,9 @@ class PubmedTests(unittest.TestCase):
 
 class PatentServerTests(unittest.TestCase):
 
-    def test_return__json_with_abstract_and_title(self):
+    def test_return_json_with_abstract_and_title(self):
+
+        correct_dict = {}
 
         source = u'Patent server'
         doc_id = u'CN101371925B'
@@ -198,13 +200,76 @@ class PatentServerTests(unittest.TestCase):
                          'composite body as well as preparation method and use '
                          'thereof')
 
-        correct_dict = {}
-        correct_dict[u'source'] = source
-        correct_dict[u'doc_id'] = doc_id
-        correct_dict[u'abstract'] = correct_abstract
-        correct_dict[u'title'] = correct_title
+        correct_dict[doc_id] = {}
+        correct_dict[doc_id][u'source'] = source
+        correct_dict[doc_id][u'abstract'] = correct_abstract
+        correct_dict[doc_id][u'title'] = correct_title
 
         bash_command = 'bash external_services/patent_server.sh {}'.format(doc_id)
+        result = subprocess.check_output(bash_command, shell=True)
+
+        result_dict = json.loads(result)
+
+        self.assertEqual(correct_dict, result_dict)
+
+    def test_return_more_than_one_article_json_with_abstract_and_title(self):
+
+        correct_dict = {}
+
+        source_1 = u'Patent server'
+        doc_id_1 = u'CN101371925B'
+
+        correct_abstract_1 = (u'The invention relates to a sustained-release '
+                              'matter of a cell peptide growth factor. The '
+                              'invention further relates to a preparation method '
+                              'of the sustained-release matter of the cell '
+                              'peptide growth factor and a use thereof. The '
+                              'provided sustained-release matter of the cell '
+                              'peptide growth factor is a nano-silver-cell '
+                              'growth factor complex, the peptide growth factor '
+                              'bonds with Ag by the nano-absorption or/and -COO, '
+                              '-CN and -H, thereby being absorbed on the surface '
+                              'of the nano-silver to form the complex. The '
+                              'sustained-release matter utilizes the natural '
+                              'anti-inflection effect of the nano-silver to '
+                              'provide a clean micro-environment for the '
+                              'biological action of the growth factor, promotes '
+                              'faster repair and healing of wound/wound surface, '
+                              'reduces adverse reactions, reduces the times of '
+                              'drug administration and the waste of drugs, '
+                              'alleviates suffering of patients and '
+                              'simultaneously reduces medical costs.')
+
+        correct_title_1 = (u'Nano silver-cell growth factor sustained-release '
+                           'composite body as well as preparation method and use '
+                           'thereof')
+
+        correct_dict[doc_id_1] = {}
+        correct_dict[doc_id_1][u'source'] = source_1
+        correct_dict[doc_id_1][u'abstract'] = correct_abstract_1
+        correct_dict[doc_id_1][u'title'] = correct_title_1
+
+        source_2 = u'Patent server'
+        doc_id_2 = u'WO2010018435A1'
+
+        correct_abstract_2 = (u'The invention relates to the O-glucosylated '
+                              'amide derivatives, which are inhibitors of '
+                              'Sodium dependent glucose co transporter '
+                              '(SGLT), particularly SGLT2 and method of '
+                              'treating diseases, conditions and/or disorders '
+                              'inhibited by SGLT2 with them, and processes '
+                              'for preparing them.')
+
+        correct_title_2 = (u'Amide glycosides')
+
+        correct_dict[doc_id_2] = {}
+        correct_dict[doc_id_2][u'source'] = source_2
+        correct_dict[doc_id_2][u'abstract'] = correct_abstract_2
+        correct_dict[doc_id_2][u'title'] = correct_title_2
+
+        bash_command = 'bash external_services/patent_server.sh {} {}'.format(
+            doc_id_1, doc_id_2
+        )
         result = subprocess.check_output(bash_command, shell=True)
 
         result_dict = json.loads(result)
