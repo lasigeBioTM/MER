@@ -42,25 +42,25 @@ for document_id in "$@"; do
       output_section=$(jq -n --arg document_id "$document_id" \
                        --arg doc_source "$doc_source" \
                        --arg non_valid_id_message "$non_valid_id_message" \
-                       '{($document_id): {"source": $doc_source, "error_message": $non_valid_id_message}}')
+                       '{($document_id): {"doc_id": $document_id, "source": $doc_source, "error_message": $non_valid_id_message}}')
   # If there is not title, then the ID is non-existent
   elif [[ -z $title ]]; then
       output_section=$(jq -n --arg document_id "$document_id" \
                        --arg doc_source "$doc_source" \
                        --arg non_existent_id_message "$non_existent_id_message" \
-                       '{($document_id): {"source": $doc_source, "error_message": $non_existent_id_message}}')
+                       '{($document_id): {"doc_id": $document_id, "source": $doc_source, "error_message": $non_existent_id_message}}')
   # If there is no abstract
   elif [[ -z $abstract ]]; then
       output_section=$(jq -n --arg document_id "$document_id" \
                       --arg doc_source "$doc_source" \
                       --arg title "$title" \
-                      '{($document_id): {"source": $doc_source, "title": $title}}')
+                      '{($document_id): {"doc_id": $document_id, "source": $doc_source, "title": $title}}')
   else
       output_section=$(jq -n --arg document_id "$document_id" \
                        --arg doc_source "$doc_source" \
                        --arg title "$title" \
                        --arg abstract "$abstract" \
-                       '{($document_id): {"source": $doc_source, "title": $title, "abstract": $abstract}}')
+                       '{($document_id): {"doc_id": $document_id, "source": $doc_source, "title": $title, "abstract": $abstract}}')
   fi
 
   # Merge with output being constructed

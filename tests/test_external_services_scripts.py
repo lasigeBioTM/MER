@@ -40,6 +40,7 @@ class PubmedTests(unittest.TestCase):
         correct_dict = {}
 
         correct_dict[doc_id] = {}
+        correct_dict[doc_id][u'doc_id'] = doc_id
         correct_dict[doc_id][u'source'] = source
         correct_dict[doc_id][u'abstract'] = correct_abstract
         correct_dict[doc_id][u'title'] = correct_title
@@ -62,6 +63,7 @@ class PubmedTests(unittest.TestCase):
         correct_dict = {}
 
         correct_dict[doc_id] = {}
+        correct_dict[doc_id][u'doc_id'] = doc_id
         correct_dict[doc_id][u'source'] = source
         correct_dict[doc_id][u'title'] = correct_title
 
@@ -80,6 +82,7 @@ class PubmedTests(unittest.TestCase):
         correct_dict = {}
 
         correct_dict[doc_id] = {}
+        correct_dict[doc_id][u'doc_id'] = doc_id
         correct_dict[doc_id][u'source'] = source
         correct_dict[doc_id][u'error_message'] = 'Non-valid id'
 
@@ -98,6 +101,7 @@ class PubmedTests(unittest.TestCase):
         correct_dict = {}
 
         correct_dict[doc_id] = {}
+        correct_dict[doc_id][u'doc_id'] = doc_id
         correct_dict[doc_id][u'source'] = source
         correct_dict[doc_id][u'error_message'] = 'Non-existent id'
 
@@ -141,6 +145,7 @@ class PubmedTests(unittest.TestCase):
                            'disease: clinical disease and laboratory findings.')
 
         correct_dict[doc_id_1] = {}
+        correct_dict[doc_id_1][u'doc_id'] = doc_id_1
         correct_dict[doc_id_1][u'source'] = source_1
         correct_dict[doc_id_1][u'abstract'] = correct_abstract_1
         correct_dict[doc_id_1][u'title'] = correct_title_1
@@ -152,6 +157,7 @@ class PubmedTests(unittest.TestCase):
                            'psoas fiber bundles.')
 
         correct_dict[doc_id_2] = {}
+        correct_dict[doc_id_2][u'doc_id'] = doc_id_2
         correct_dict[doc_id_2][u'source'] = source_2
         correct_dict[doc_id_2][u'title'] = correct_title_2
 
@@ -201,6 +207,7 @@ class PatentServerTests(unittest.TestCase):
                          'thereof')
 
         correct_dict[doc_id] = {}
+        correct_dict[doc_id][u'doc_id'] = doc_id
         correct_dict[doc_id][u'source'] = source
         correct_dict[doc_id][u'abstract'] = correct_abstract
         correct_dict[doc_id][u'title'] = correct_title
@@ -245,6 +252,7 @@ class PatentServerTests(unittest.TestCase):
                            'thereof')
 
         correct_dict[doc_id_1] = {}
+        correct_dict[doc_id_1][u'doc_id'] = doc_id_1
         correct_dict[doc_id_1][u'source'] = source_1
         correct_dict[doc_id_1][u'abstract'] = correct_abstract_1
         correct_dict[doc_id_1][u'title'] = correct_title_1
@@ -263,6 +271,7 @@ class PatentServerTests(unittest.TestCase):
         correct_title_2 = (u'Amide glycosides')
 
         correct_dict[doc_id_2] = {}
+        correct_dict[doc_id_2][u'doc_id'] = doc_id_2
         correct_dict[doc_id_2][u'source'] = source_2
         correct_dict[doc_id_2][u'abstract'] = correct_abstract_2
         correct_dict[doc_id_2][u'title'] = correct_title_2

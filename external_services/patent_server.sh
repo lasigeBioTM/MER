@@ -38,12 +38,12 @@ for document_id in "$@"; do
                         --arg doc_source "$doc_source" \
                         --arg title "$title" \
                         --arg abstract "$abstract" \
-                        '{($document_id): {"source": $doc_source, "title": $title, "abstract": $abstract}}')
+                        '{($document_id): {"doc_id": $document_id, "source": $doc_source, "title": $title, "abstract": $abstract}}')
     else
         output_section=$(jq -n --arg document_id "$document_id" \
                          --arg doc_source "$doc_source" \
                          --arg title "$title" \
-                         '{($document_id): {"source": $doc_source, "title": $title}}')
+                         '{($document_id): {"doc_id": $document_id, "source": $doc_source, "title": $title}}')
     fi
 
     output=$(echo $output "$output_section" | jq -s '.[0] * .[1]')
