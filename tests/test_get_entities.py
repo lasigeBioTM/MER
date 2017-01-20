@@ -21,9 +21,9 @@ class SanityCheckTests(unittest.TestCase):
         bash_command = 'bash get_entities.sh 1 A "nicotinic acid amide, isonicotinic acid amide" ChEMBL'
         result = subprocess.check_output(bash_command, shell=True)
 
-        correct_annotations = ('1\tA\t0\t14\t0.621077\tnicotinic acid\tunknown\t1\n'
-                               '1\tA\t22\t39\t0.647044\tisonicotinic acid\tunknown\t1\n'
-                               '1\tA\t0\t20\t0.666192\tnicotinic acid amide\tunknown\t1\n')
+        correct_annotations = ('1\tA\t0\t14\t0.621077\tnicotinic acid\tChEMBL\t1\n'
+                               '1\tA\t22\t39\t0.647044\tisonicotinic acid\tChEMBL\t1\n'
+                               '1\tA\t0\t20\t0.666192\tnicotinic acid amide\tChEMBL\t1\n')
 
         self.assertEqual(correct_annotations, result)
 
@@ -35,7 +35,7 @@ class SanityCheckTests(unittest.TestCase):
         bash_command_1 = 'bash get_entities.sh 1 A "‘ oxygen" ChEBI'
         result_1 = subprocess.check_output(bash_command_1, shell=True)
 
-        correct_annotation_1 = '1\tA\t2\t8\t0.441889\toxygen\tunknown\t1\n'
+        correct_annotation_1 = '1\tA\t2\t8\t0.441889\toxygen\tChEBI\t1\n'
 
         self.assertEqual(correct_annotation_1, result_1)
 
@@ -44,7 +44,7 @@ class SanityCheckTests(unittest.TestCase):
         bash_command_2 = 'bash get_entities.sh 1 T "µ testosterone" ChEBI'
         result_2 = subprocess.check_output(bash_command_2, shell=True)
 
-        correct_annotation_2 = '1\tT\t2\t14\t0.59757\ttestosterone\tunknown\t1\n'
+        correct_annotation_2 = '1\tT\t2\t14\t0.59757\ttestosterone\tChEBI\t1\n'
 
         self.assertEqual(correct_annotation_2, result_2)
 
@@ -53,7 +53,7 @@ class SanityCheckTests(unittest.TestCase):
         bash_command_3 = 'bash get_entities.sh 1 T " water" ChEBI'
         result_3 = subprocess.check_output(bash_command_3, shell=True)
 
-        correct_annotation_3 = '1\tT\t1\t6\t0.378665\twater\tunknown\t1\n'
+        correct_annotation_3 = '1\tT\t1\t6\t0.378665\twater\tChEBI\t1\n'
 
         self.assertEqual(correct_annotation_3, result_3)
 
@@ -65,7 +65,7 @@ class SanityCheckTests(unittest.TestCase):
         bash_command = 'bash get_entities.sh 1 T "I love testosterone." ChEBI'
         result = subprocess.check_output(bash_command, shell=True)
 
-        correct_annotation = '1\tT\t7\t19\t0.59757\ttestosterone\tunknown\t1\n'
+        correct_annotation = '1\tT\t7\t19\t0.59757\ttestosterone\tChEBI\t1\n'
 
         self.assertEqual(correct_annotation, result)
 
@@ -75,9 +75,9 @@ class SanityCheckTests(unittest.TestCase):
         bash_command = 'bash get_entities.sh 1 T "Cetyl trimethyl ammonium bromide" ChEBI'
         result = subprocess.check_output(bash_command, shell=True)
 
-        correct_annotation = ('1\tT\t16\t24\t0.519102\tammonium\tunknown\t1\n'
-                              '1\tT\t25\t32\t0.486102\tbromide\tunknown\t1\n'
-                              '1\tT\t0\t32\t0.711461\tCetyl trimethyl ammonium bromide\tunknown\t1\n')
+        correct_annotation = ('1\tT\t16\t24\t0.519102\tammonium\tChEBI\t1\n'
+                              '1\tT\t25\t32\t0.486102\tbromide\tChEBI\t1\n'
+                              '1\tT\t0\t32\t0.711461\tCetyl trimethyl ammonium bromide\tChEBI\t1\n')
 
         self.assertEqual(correct_annotation, result)
 
@@ -87,7 +87,7 @@ class SanityCheckTests(unittest.TestCase):
         bash_command = 'bash get_entities.sh 1 A "the  potassium" ChEBI'
         result = subprocess.check_output(bash_command, shell=True)
 
-        correct_annotation = ('1\tA\t5\t14\t0.54488\tpotassium\tunknown\t1\n')
+        correct_annotation = ('1\tA\t5\t14\t0.54488\tpotassium\tChEBI\t1\n')
 
         self.assertEqual(correct_annotation, result)
 
@@ -99,9 +99,9 @@ class SanityCheckTests(unittest.TestCase):
         bash_command = 'bash get_entities.sh 1 A "water, potassium, oxygen" ChEBI'
         result = subprocess.check_output(bash_command, shell=True)
 
-        correct_annotation = ('1\tA\t0\t5\t0.378665\twater\tunknown\t1\n'
-                              '1\tA\t7\t16\t0.54488\tpotassium\tunknown\t1\n'
-                              '1\tA\t18\t24\t0.441889\toxygen\tunknown\t1\n')
+        correct_annotation = ('1\tA\t0\t5\t0.378665\twater\tChEBI\t1\n'
+                              '1\tA\t7\t16\t0.54488\tpotassium\tChEBI\t1\n'
+                              '1\tA\t18\t24\t0.441889\toxygen\tChEBI\t1\n')
 
         self.assertEqual(correct_annotation, result)
 
@@ -111,7 +111,7 @@ class SanityCheckTests(unittest.TestCase):
         bash_command = 'bash get_entities.sh 1 T "(water)" ChEBI'
         result = subprocess.check_output(bash_command, shell=True)
 
-        correct_annotation = ('1\tT\t1\t6\t0.378665\twater\tunknown\t1\n')
+        correct_annotation = ('1\tT\t1\t6\t0.378665\twater\tChEBI\t1\n')
 
         self.assertEqual(correct_annotation, result)
 
@@ -121,7 +121,7 @@ class SanityCheckTests(unittest.TestCase):
         bash_command = 'bash get_entities.sh 1 T "N-methyl-D-aspartate" ChEBI'
         result = subprocess.check_output(bash_command, shell=True)
 
-        correct_annotation = ('1\tT\t0\t20\t0.666192\tN-methyl-D-aspartate\tunknown\t1\n')
+        correct_annotation = ('1\tT\t0\t20\t0.666192\tN-methyl-D-aspartate\tChEBI\t1\n')
 
         self.assertEqual(correct_annotation, result)
 
@@ -130,7 +130,7 @@ class SanityCheckTests(unittest.TestCase):
         bash_command = 'bash get_entities.sh 1 T "Water" ChEBI'
         result = subprocess.check_output(bash_command, shell=True)
 
-        correct_annotation = ('1\tT\t0\t5\t0.378665\tWater\tunknown\t1\n')
+        correct_annotation = ('1\tT\t0\t5\t0.378665\tWater\tChEBI\t1\n')
 
         self.assertEqual(correct_annotation, result)
 
@@ -139,8 +139,8 @@ class SanityCheckTests(unittest.TestCase):
         bash_command = 'bash get_entities.sh 1 T "α-amilase α-amilase" alpha-amylase'
         result = subprocess.check_output(bash_command, shell=True)
 
-        correct_annotation = ('1\tT\t0\t9\t0.54488\tα-amilase\tunknown\t1\n'
-                              '1\tT\t10\t19\t0.54488\tα-amilase\tunknown\t1\n')
+        correct_annotation = ('1\tT\t0\t9\t0.54488\tα-amilase\talpha-amylase\t1\n'
+                              '1\tT\t10\t19\t0.54488\tα-amilase\talpha-amylase\t1\n')
 
         self.assertEqual(correct_annotation, result)
 
