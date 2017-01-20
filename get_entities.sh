@@ -6,6 +6,7 @@ declare document_id=$1
 declare section=$2
 declare original_text=$(iconv -f utf-8 -t ascii//TRANSLIT <<< "$3")
 declare data_source=$4
+declare entity_type=$5
 
 # Process text
 declare text=${3,,} # Make text lowercase so the system is case insensitive
@@ -92,7 +93,7 @@ get_entities_source () {
 							  length($2) + $1 "\t" \
 							  1-1/log(length($2)) "\t" \
 							  $2 "\t" \
-							  "unknown" "\t" \
+							  "'$entity_type'" "\t" \
 							  "1"}'\
 							  <<< $result) # convert to the output format
 	echo $result
