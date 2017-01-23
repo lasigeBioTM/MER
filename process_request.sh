@@ -3,9 +3,9 @@
 #set -x #debug
 ts -S 3 > /dev/null 2>&1  # set ts to run 3 parallel jobs
 
-declare POST_DATA=$1
+declare POST_DATA=$2
+declare key=$1
 
-declare key=$(echo "ad05c12336cc9c137f8010051ad0c2cc8f99bdff")
 declare cid=$(echo $POST_DATA | jq '.parameters.communication_id' | tr -d '"')
 
 timestamp() {
