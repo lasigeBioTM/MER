@@ -30,10 +30,12 @@ timestamp() {
 }
 
 echo $(timestamp) $POST_DATA >> request_log.txt
-declare key=$(echo "e2b88b40674b13e92fc6e41aa2a858910e3ac3b8")
+#declare key=$(echo "e2b88b40674b13e92fc6e41aa2a858910e3ac3b8")
+declare key=$(echo "ad05c12336cc9c137f8010051ad0c2cc8f99bdff")
 declare becalm_key=$(echo $POST_DATA | jq '.becalm_key')
 
-if [ $becalm_key = '"3deb66a13349fc7889549dfda065a3d8877ac04f"' ]; then
+#if [ $becalm_key = '"3deb66a13349fc7889549dfda065a3d8877ac04f"' ]; then
+if [ $becalm_key = '"10924ad95a9800e21087271f08b1e360c2acbdbd"' ]; then
     declare method=$(echo $POST_DATA | jq '.method')
     if [ $method = '"getState"' ]; then
         declare serverstatus=$(echo 'Running')
@@ -49,6 +51,7 @@ if [ $becalm_key = '"3deb66a13349fc7889549dfda065a3d8877ac04f"' ]; then
         declare response=$(echo '{"status": 200, "success": true, "key":"'$key'"}')
         echo $response
         # process request
+        #./process_request.sh "$POST_DATA" >> response_log.txt 2>&1 &       
         ./process_request.sh "$POST_DATA" >> response_log.txt 2>&1 &       
     fi
     
