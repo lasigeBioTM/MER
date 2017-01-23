@@ -44,6 +44,7 @@ if [ $becalm_key = '"3deb66a13349fc7889549dfda065a3d8877ac04f"' ]; then
         echo $response
     
     elif [ $method = '"getAnnotations"' ]; then
+        # ts -S 3 # set ts to run 3 parallel jobs
         # acknowledge request
         declare response=$(echo '{"status": 200, "success": true, "key":"'$key'"}')
         echo $response
@@ -74,11 +75,12 @@ if [ $becalm_key = '"3deb66a13349fc7889549dfda065a3d8877ac04f"' ]; then
             results=$(echo -e "$results\n$task_results")
         done
         IFS=$SAVEIFS
-        echo -e $results
+        # echo $(ts)
+        #echo -e $results
         # save annotations
         declare responseurl=$(echo 'http://www.becalm.eu/api/saveAnnotations/TSV?apikey='$key'&communicationId='$cid)
-        echo $responseurl
-        #curl -X POST --data "$results" $responseurl --header "Content-Type:text/tab-separated-values"
+        #echo $responseurl
+        curl -X POST --data "$results" $responseurl --header "Content-Type:text/tab-separated-values" >> response_log.txt
     fi
     
 fi
