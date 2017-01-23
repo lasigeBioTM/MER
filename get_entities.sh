@@ -34,9 +34,9 @@ get_matches_positions () {
 	while [ "$new_matching_text" != "$matching_text" ];
 	do
 		matching_text=$new_matching_text
-		local position=$(awk 'BEGIN {IGNORECASE = 1} 
-			match($0,/'$matches'/,a){
-				if (substr($0, RSTART-1, 1) ~ "[[:space:]()]" && substr($0, RSTART+RLENGTH, 1) ~ "[[:space:]()]")
+		local result=$(awk 'BEGIN {IGNORECASE = 1} 
+			match($0,/'$matches'/){
+				if (substr($0, RSTART-1, 1) ~ "[^[:alnum:]]" && substr($0, RSTART+RLENGTH, 1) ~ "[^[:alnum:]]")
 						print "'$document_id'" "\t" \
 							  "'$section'" "\t"  \
 							  RSTART-2 "\t" \
@@ -45,9 +45,10 @@ get_matches_positions () {
 							  substr($0, RSTART, RLENGTH) "\t" \
 							  "'$data_source'" "\t" \
 							  "1"}' <<< " $matching_text ")
-		new_matching_text=$(awk 'BEGIN {IGNORECASE = 1} {for(i=1;i<=NF;i++)if($i~/'$matches'/){gsub(/./,".",$i);break}}1' <<< $matching_text)		
-		if [ ${#position} -ge 2 ]; then 
-			results=$results$'\n'$position	
+		local match_hidden=$(awk -F $'\t' '{print $6}' <<< $result | sed 's/./@/1')  # to remove overlaps: tr '[:alnum:]' '@')
+		new_matching_text=$(awk 'BEGIN {IGNORECASE = 1} {sub(/'$matches'/,"'$match_hidden'",$0)}1' <<< $matching_text)		
+		if [ ${#result} -ge 2 ]; then 
+			results=$results$'\n'$result	
 		fi
 	done
 	get_matches_positions_result=$results;
