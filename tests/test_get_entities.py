@@ -144,6 +144,16 @@ class SanityCheckTests(unittest.TestCase):
 
         self.assertEqual(correct_annotation, result)
 
+    def test_no_double_annot_when_em_dash_in_term(self):
+        # Tests fix of issue #24
+
+        bash_command = 'bash get_entities.sh 1 A " —ONO2;" ChEBI'
+        result = subprocess.check_output(bash_command, shell=True)
+
+        correct_annotation = ('1\tA\t1\t6\t0.378665\t—ONO2\tChEBI\t1')
+
+        self.assertEqual(correct_annotation, result)
+
 
 if __name__ == '__main__':
     unittest.main()
