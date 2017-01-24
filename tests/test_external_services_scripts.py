@@ -320,9 +320,11 @@ class PatentServerTests(unittest.TestCase):
 
     def test_return_json_with_abstract_and_title(self):
 
-        correct_dict = {}
+        correct_result = []
 
-        source = u'Patent server'
+        correct_dict1 = {}
+        correct_result.append(correct_dict1)
+
         doc_id = u'CN101371925B'
 
         correct_abstract = (u'The invention relates to a sustained-release '
@@ -350,24 +352,24 @@ class PatentServerTests(unittest.TestCase):
                          'composite body as well as preparation method and use '
                          'thereof')
 
-        correct_dict[doc_id] = {}
-        correct_dict[doc_id][u'doc_id'] = doc_id
-        correct_dict[doc_id][u'source'] = source
-        correct_dict[doc_id][u'abstract'] = correct_abstract
-        correct_dict[doc_id][u'title'] = correct_title
+        correct_dict1[u'externalId'] = doc_id
+        correct_dict1[u'abstractText'] = correct_abstract
+        correct_dict1[u'title'] = correct_title
 
         bash_command = 'bash external_services/patent_server.sh {}'.format(doc_id)
         result = subprocess.check_output(bash_command, shell=True)
 
-        result_dict = json.loads(result)
+        result = json.loads(result)
 
-        self.assertEqual(correct_dict, result_dict)
+        self.assertEqual(correct_result, result)
 
     def test_return_more_than_one_article_json_with_abstract_and_title(self):
 
-        correct_dict = {}
+        correct_result = []
 
-        source_1 = u'Patent server'
+        correct_dict1 = {}
+        correct_result.append(correct_dict1)
+
         doc_id_1 = u'CN101371925B'
 
         correct_abstract_1 = (u'The invention relates to a sustained-release '
@@ -395,13 +397,13 @@ class PatentServerTests(unittest.TestCase):
                            'composite body as well as preparation method and use '
                            'thereof')
 
-        correct_dict[doc_id_1] = {}
-        correct_dict[doc_id_1][u'doc_id'] = doc_id_1
-        correct_dict[doc_id_1][u'source'] = source_1
-        correct_dict[doc_id_1][u'abstract'] = correct_abstract_1
-        correct_dict[doc_id_1][u'title'] = correct_title_1
+        correct_dict1[u'externalId'] = doc_id_1
+        correct_dict1[u'abstractText'] = correct_abstract_1
+        correct_dict1[u'title'] = correct_title_1
 
-        source_2 = u'Patent server'
+        correct_dict2 = {}
+        correct_result.append(correct_dict2)
+
         doc_id_2 = u'WO2010018435A1'
 
         correct_abstract_2 = (u'The invention relates to the O-glucosylated '
@@ -414,20 +416,17 @@ class PatentServerTests(unittest.TestCase):
 
         correct_title_2 = (u'Amide glycosides')
 
-        correct_dict[doc_id_2] = {}
-        correct_dict[doc_id_2][u'doc_id'] = doc_id_2
-        correct_dict[doc_id_2][u'source'] = source_2
-        correct_dict[doc_id_2][u'abstract'] = correct_abstract_2
-        correct_dict[doc_id_2][u'title'] = correct_title_2
+        correct_dict2[u'externalId'] = doc_id_2
+        correct_dict2[u'abstractText'] = correct_abstract_2
+        correct_dict2[u'title'] = correct_title_2
 
         bash_command = 'bash external_services/patent_server.sh {} {}'.format(
             doc_id_1, doc_id_2
         )
         result = subprocess.check_output(bash_command, shell=True)
+        result = json.loads(result)
 
-        result_dict = json.loads(result)
-
-        self.assertEqual(correct_dict, result_dict)
+        self.assertEqual(correct_result, result)
 
 
 if __name__ == '__main__':
