@@ -46,7 +46,7 @@ declare method=$(echo $POST_DATA | jq '.method')
 if [ $method = '"getState"' ]; then
     declare serverstatus="Running"
     declare statuscode="200"
-    declare maxdocuments="515"
+    declare maxdocuments="10000"
     # send status response
     declare response=$(echo '{"status": '$statuscode',  "success": true,  "key":"'$key'",  "data": {"state":"'$serverstatus'", "version": "1", "version_changes": "first version", "max_analyzable_documents":"'$maxdocuments'"}}')
     echo $response
