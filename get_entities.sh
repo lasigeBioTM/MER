@@ -45,7 +45,7 @@ get_matches_positions () {
 							  substr($0, RSTART, RLENGTH) "\t" \
 							  "'$data_source'" "\t" \
 							  "1"}' <<< " $matching_text ")
-		local match_hidden=$(awk -F $'\t' '{print $6}' <<< $result | sed 's/./@/1')  # to remove overlaps: tr '[:alnum:]' '@')
+		local match_hidden=$(awk -F $'\t' '{print $6}' <<< $result | sed 's/[:alnum:]/@/1')  # to remove overlaps: tr '[:alnum:]' '@')
 		new_matching_text=$(awk 'BEGIN {IGNORECASE = 1} {sub(/'$matches'/,"'$match_hidden'",$0)}1' <<< $matching_text)		
 		if [ ${#result} -ge 2 ]; then 
 			results=$results$'\n'$result	
