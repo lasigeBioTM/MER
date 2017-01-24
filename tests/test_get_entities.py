@@ -150,7 +150,7 @@ class SanityCheckTests(unittest.TestCase):
         bash_command = 'bash get_entities.sh 1 A " —ONO2;" ChEBI'
         result = subprocess.check_output(bash_command, shell=True)
 
-        correct_annotation = ('1\tA\t1\t6\t0.378665\t—ONO2\tChEBI\t1')
+        correct_annotation = ('1\tA\t1\t6\t0.378665\t—ONO2\tChEBI\t1\n')
 
         self.assertEqual(correct_annotation, result)
 
