@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #set -x #debug
-ts -S 3 > /dev/null 2>&1  # set ts to run 3 parallel jobs
+# ts -S 3 > /dev/null 2>&1  # set ts to run 3 parallel jobs
 
 declare POST_DATA=$2
 declare key=$1
@@ -9,14 +9,16 @@ declare key=$1
 declare cid=$(echo $POST_DATA | jq '.parameters.communication_id' | tr -d '"')
 
 timestamp() {
-  date +"%Y-%m-%d_%H-%M-%S"
+  date +"%Y-%m-%d_%H:%M:%S:%3N"
 }
 
-
+echo $(timestamp) "get docs from patent server" >> response_log.txt
 # get IDs of patent documents
 declare patentids=$(echo $POST_DATA | jq '.parameters.documents[] | select(.source == "PATENT SERVER") | .document_id' | tr -d '"')
+echo $(timestamp) "done"  >> response_log.txt
 # get docid sectionid text lines
-declare docs=$(./external_services/patent_server.sh $patentids 2>/dev/null | jq '.[] | .doc_id + (" T " + .title, " A " + .abstract)' | tr -d '"')
+#declare docs=$(./external_services/patent_server.sh $patentids 2>/dev/null | jq '.[] | .doc_id + (" T " + .title, " A " + .abstract)' | tr -d '"')
+declare docs=$(./external_services/patent_server.sh $patentids 2>/dev/null | jq '.[] | .externalId + (" T " + .title, " A " + .abstractText)' | tr -d '"')
 
 declare pubmedids=$(echo $POST_DATA | jq '.parameters.documents[] | select(.source == "PubMed") | .document_id' | tr -d '"')
         docs=$(echo "$docs" "$(./external_services/pubmed.sh $pubmedids 2>/dev/null | jq '.[] | .doc_id + (" T " + .title, " A " + .abstract)' | tr -d '"')")
@@ -58,7 +60,7 @@ while [ -n "$taskids" ]; do
 done
 
 # echo $(ts)
-echo -e $(timestamp) $results >> response_log.txt
+# echo -e $(timestamp) $results >> response_log.txt
 # save annotations
 declare responseurl=$(echo 'http://www.becalm.eu/api/saveAnnotations/TSV?apikey='$key'&communicationId='$cid)
 echo -e $(timestamp) $responseurl >> response_log.txt
