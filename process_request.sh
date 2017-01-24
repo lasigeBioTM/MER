@@ -62,4 +62,4 @@ echo -e $(timestamp) $results >> response_log.txt
 # save annotations
 declare responseurl=$(echo 'http://www.becalm.eu/api/saveAnnotations/TSV?apikey='$key'&communicationId='$cid)
 echo -e $(timestamp) $responseurl >> response_log.txt
-curl -X POST --data "$results" $responseurl --header "Content-Type:text/tab-separated-values" >> response_log.txt
+echo -e "$results" | curl -X POST -H "Content-Type:text/tab-separated-values" --data-binary @- $responseurl >> response_log.txt 2>&1
