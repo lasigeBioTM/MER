@@ -41,15 +41,27 @@ declare doc_source='pmc'
 
 declare output='{}'
 
-for document_id in "$@"; do
+declare number_ids=${#@}
 
-    declare xml_response
+# Construct request URL
+declare request_url="https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=$doc_source&retmode=xml&id="
+for document_id in "$@"; do
+  request_url=$request_url$document_id,
+done
+
+xml_response=$(curl -s "$request_url")
+
+for i in $(seq 1 "$number_ids"); do
+
+    # http://wiki.bash-hackers.org/scripting/posparams
+    document_id=$1
+    shift
+
     declare title
     declare abstract
 
-    xml_response=$(curl -s "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=$doc_source&retmode=xml&id=$document_id")
-    title=$(xmlstarlet sel -t -v //article-title <<< $xml_response)
-    abstract=$(xmlstarlet sel -t -v //abstract/p <<< $xml_response)
+    title=$(xmlstarlet sel -t -v //article[$i]//article-title <<< $xml_response)
+    abstract=$(xmlstarlet sel -t -v //article[$i]//abstract/p <<< $xml_response)
 
     # If there is no abstract
     if [[ -z $abstract ]]; then
