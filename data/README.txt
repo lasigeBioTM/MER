@@ -1,3 +1,12 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:7a4629346a4c2a0abfa709196c2fffb90ddd3f143356cf8a7bcd7809a3a0f44c
-size 444
+Databases in each file:
+
+proteins.txt -> Protein Ontology
+genes.txt -> NCBI Entrez Gene
+cells.txt -> Cellosaurus
+diseases.txt -> Human Disease Ontology
+subcellular_structures.txt -> Gene Ontology (cellular components)
+chemicals -> HMDB, ChEBI, ChEMBL
+
+Terms were extracted from database in a quick way, there's no assurance that the list of terms is completely right.
+
+All the other data files are present in this folder for testing purposes.
