@@ -36,6 +36,8 @@
 # -> 'Non-valid id' - ID does not contain any digit between 1 and 9
 # -> 'Non-existent id' - ID does not exist
 
+# set -x #debug
+
 declare non_valid_id_message='Non-valid id'
 declare non_existent_id_message='Non-existent id'
 
@@ -43,18 +45,28 @@ declare doc_source='pubmed'
 
 declare output='{}'
 
+declare number_ids=${#@}
+
+# Construct request URL
+declare request_url="https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=$doc_source&retmode=xml&id="
 for document_id in "$@"; do
+  request_url=$request_url$document_id,
+done
 
-  # If document ID is valid
-  if grep -q "[1-9]" <<< $document_id; then
-      declare xml_response
-      declare title
-      declare abstract
+xml_response=$(curl -s "$request_url")
 
-      xml_response=$(curl -s "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=$doc_source&retmode=xml&id=$document_id")
-      title=$(xmlstarlet sel -t -v //ArticleTitle <<< $xml_response)
-      abstract=$(xmlstarlet sel -t -v //AbstractText <<< $xml_response)
-  fi
+
+for i in $(seq 1 "$number_ids"); do
+
+  # http://wiki.bash-hackers.org/scripting/posparams
+  document_id=$1
+  shift
+
+  declare title
+  declare abstract
+
+  title=$(xmlstarlet sel -t -v "//PubmedArticle[$i]//ArticleTitle" <<< $xml_response)
+  abstract=$(xmlstarlet sel -t -v "//PubmedArticle[$i]//AbstractText" <<< $xml_response)
 
   # If document ID is not valid
   if ! grep -q "[1-9]" <<< $document_id; then
