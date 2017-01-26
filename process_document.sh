@@ -4,8 +4,17 @@ declare docid=$1
 declare section=$2
 declare text=$3
 
-SAVEIFS=$IFS; IFS=$(echo -en "");
+declare chemical_ip="192.168.1.82"
+declare protein_ip="192.168.1.83"
+declare ssh_key="/var/lib/nginx/.ssh/id_rsa"
+SAVEIFS=$IFS; IFS=$(echo -en "")
 
-declare results=$(./get_entities.sh $docid $section "$text" "CHEMICAL" 2>/dev/null)
+# use remote machines
+declare results=$(ssh -i $ssh_key centos@$chemical_ip 'cd ~/IBELight/; ./get_entities.sh '$docid $section '"'$text'"' 'CHEMICAL 2>/dev/null')
+results=$results$'\n'$(ssh -i $ssh_key centos@$protein_ip 'cd ~/IBELight/; ./get_entities.sh '$docid $section '"'$text'"' 'PROTEIN 2>/dev/null')
+
+# use local machine
+#declare results=$(./get_entities.sh $docid $section "$text" "CHEMICAL" 2>/dev/null)
+#results=$results$'\n'$(./get_entities.sh $docid $section "$text" "PROTEIN" 2>/dev/null)
 echo $results
 
