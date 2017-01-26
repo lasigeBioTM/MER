@@ -48,7 +48,7 @@ if [ $method = '"getState"' ]; then
     declare statuscode="200"
     declare maxdocuments="10000"
     # send status response
-    declare response=$(echo '{"status": '$statuscode',  "success": true,  "key":"'$key'",  "data": {"state":"'$serverstatus'", "version": "1", "version_changes": "first version", "max_analyzable_documents":"'$maxdocuments'"}}')
+    declare response=$(echo '{"status": '$statuscode',  "success": true,  "key":"'$key'",  "data": {"state":"'$serverstatus'", "version": "1.1", "version_changes": "Protein entity annotation", "max_analyzable_documents":"'$maxdocuments'"}}')
     echo $response
 
 elif [ $method = '"getAnnotations"' ]; then
