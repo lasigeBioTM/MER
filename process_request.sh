@@ -4,9 +4,9 @@
 # ts -S 3 > /dev/null 2>&1  # set ts to run 3 parallel jobs
 
 declare POST_DATA=$2
-declare key=$1
+export KEY=$1
 
-declare cid=$(echo $POST_DATA | jq '.parameters.communication_id' | tr -d '"')
+export CID=$(echo $POST_DATA | jq '.parameters.communication_id' | tr -d '"')
 
 timestamp() {
   date +"%Y-%m-%d_%H:%M:%S:%3N"
@@ -15,21 +15,21 @@ timestamp() {
 echo $(timestamp) "get docs from patent server" >> response_log.txt
 # get IDs of patent documents
 declare patentids=$(echo $POST_DATA | jq '.parameters.documents[] | select(.source == "PATENT SERVER") | .document_id' | tr -d '"')
-echo $(timestamp) "done"  >> response_log.txt
 # get docid sectionid text lines
 #declare docs=$(./external_services/patent_server.sh $patentids 2>/dev/null | jq '.[] | .doc_id + (" T " + .title, " A " + .abstract)' | tr -d '"')
 declare docs=$(./external_services/patent_server.sh $patentids 2>/dev/null | jq '.[] | .externalId + (" T " + .title, " A " + .abstractText)' | tr -d '"')
-
-declare pubmedids=$(echo $POST_DATA | jq '.parameters.documents[] | select(.source == "PubMed") | .document_id' | tr -d '"')
-        docs=$(echo "$docs" "$(./external_services/pubmed.sh $pubmedids 2>/dev/null | jq '.[] | .doc_id + (" T " + .title, " A " + .abstract)' | tr -d '"')")
-declare pmcids=$(echo $POST_DATA | jq '.parameters.documents[] | select(.source == "PMC") | .document_id' | tr -d '"')
+echo $(timestamp) "done"  >> response_log.txt
+#declare pubmedids=$(echo $POST_DATA | jq '.parameters.documents[] | select(.source == "PubMed") | .document_id' | tr -d '"')
+#        docs=$(echo "$docs" "$(./external_services/pubmed.sh $pubmedids 2>/dev/null | jq '.[] | .doc_id + (" T " + .title, " A " + .abstract)' | tr -d '"')")
+#declare pmcids=$(echo $POST_DATA | jq '.parameters.documents[] | select(.source == "PMC") | .document_id' | tr -d '"')
         #docs=$(echo "$docs" "$(./external_services/pmc.sh $pmcids 2>/dev/null | jq '.[] | .doc_id + (" T " + .title, " A " + .abstract)' | tr -d '"')")
 declare results=$(echo -e "DOCUMENT_ID\tSECTION\tINIT\tEND\tSCORE\tANNOTATED_TEXT\tTYPE\tDATABASE_ID\n")
-declare taskids=$(echo "")
 
+echo "" > /tmp/${CID}.tasks
+echo "" > /tmp/${CID}.completed
 SAVEIFS=$IFS;
 IFS=$'\n'
-
+echo $(timestamp) "starting jobs"
 # start jobs for each document abstract and title
 for i in $docs
 do
@@ -39,29 +39,12 @@ do
     #declare task_results=$(./process_document.sh  ${arr[@]:0:2} "$text")
     # use ts
     TASKID=$(ts ./process_document.sh  ${arr[@]:0:2} "$text")
-    taskids=$(echo "$taskids $TASKID")
+    #export TASKIDS=$TASKIDS\ $TASKID
+    echo $TASKID >> /tmp/${CID}.tasks
+    echo $(timestamp) "queued " $TASKID >> response_log.txt
+    ( ts -w $TASKID ; echo "$TASKID" >> /tmp/${CID}.completed ; ./send_response.sh $TASKID ) & 
 done
+
+echo "DONE" >> /tmp/${CID}.tasks
 IFS=$SAVEIFS
 
-# wait until every job associated with this request is finished
-while [ -n "$taskids" ]; do
-    new_taskids= # temporary list to store unfinished jobs 
-    for i in $taskids
-    do
-        # echo $(timestamp) $i $(ts -s $i) $taskids "/" $new_taskids >> response_log.txt 
-	if [ $(ts -s $i) != 'finished'  ]; then
-            declare new_taskids=$(echo "$new_taskids $i")
-        else    
-	    declare task_results=$(ts -c $i)
-	    results=$(echo -e "$results\n$task_results")
-        fi
-    done 
-    declare taskids=$(echo $new_taskids)
-done
-
-# echo $(ts)
-# echo -e $(timestamp) $results >> response_log.txt
-# save annotations
-declare responseurl=$(echo 'http://www.becalm.eu/api/saveAnnotations/TSV?apikey='$key'&communicationId='$cid)
-echo -e $(timestamp) $responseurl >> response_log.txt
-echo -e "$results" | curl -X POST -H "Content-Type:text/tab-separated-values" --data-binary @- $responseurl >> response_log.txt 2>&1
