@@ -18,14 +18,23 @@ class SanityCheckTests(unittest.TestCase):
 
     def test_not_match_mid_word(self):
         """https://github.com/LLCampos/IBELight/issues/10"""
-        bash_command = 'bash get_entities.sh 1 A "nicotinic acid amide, isonicotinic acid amide" ChEMBL'
-        result = subprocess.check_output(bash_command, shell=True)
+        bash_command_1 = 'bash get_entities.sh 1 A "nicotinic acid amide, isonicotinic acid amide" ChEMBL'
+        result_1 = subprocess.check_output(bash_command_1, shell=True)
 
-        correct_annotations = ('1\tA\t0\t14\t0.621077\tnicotinic acid\tChEMBL\t1\n'
-                               '1\tA\t22\t39\t0.647044\tisonicotinic acid\tChEMBL\t1\n'
-                               '1\tA\t0\t20\t0.666192\tnicotinic acid amide\tChEMBL\t1\n')
+        correct_annotations_2 = ('1\tA\t0\t14\t0.621077\tnicotinic acid\tChEMBL\t1\n'
+                                 '1\tA\t22\t39\t0.647044\tisonicotinic acid\tChEMBL\t1\n'
+                                 '1\tA\t0\t20\t0.666192\tnicotinic acid amide\tChEMBL\t1\n')
 
-        self.assertEqual(correct_annotations, result)
+        self.assertEqual(correct_annotations_2, result_1)
+
+        """https://github.com/LLCampos/IBELight/issues/28"""
+        bash_command_2 = 'bash get_entities.sh 1 T "methanol ethanol" ChEBI'
+        result_2 = subprocess.check_output(bash_command_2, shell=True)
+
+        correct_annotations_2 = ('1\tT\t0\t8\t0.519102\tmethanol\tChEBI\t1\n'
+                                 '1\tT\t9\t16\t0.486102\tethanol\tChEBI\t1\n')
+
+        self.assertEqual(correct_annotations_2, result_2)
 
     def test_return_character_offset(self):
         """Annotation offsets returned should be character offsets, not byte
