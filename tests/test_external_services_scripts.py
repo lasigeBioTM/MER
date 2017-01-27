@@ -241,6 +241,8 @@ class PMCTests(unittest.TestCase):
 
     def test_return_more_than_one_article_json_with_abstract_and_title(self):
 
+        self.maxDiff = None
+
         correct_dict = {}
         source = u'pmc'
 
