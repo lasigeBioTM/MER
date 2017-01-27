@@ -4,7 +4,8 @@ cd data
 
 # Delete old files
 
-rm "!(README.txt)"
+shopt -s extglob
+rm !(README.txt)
 
 # Download virgin data files from Google Drive
 
@@ -19,6 +20,11 @@ wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=0B5R2
 wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=0B5R2YTHDeD6scFNmZl9pMmktTVE' -O subcellular_structures.txt
 
 cd ..
+
+
+# Lowercase all terms from each data file in data/ folder
+
+python lowercase_all_terms.py
 
 # Remove duplicates from each data file
 
