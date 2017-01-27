@@ -3,8 +3,7 @@
 Before using the program, you'll have to run 
 
 ```
-bash download_all_data_files.sh
-bash process_all_vocabularies.sh
+bash get_data.sh
 ```
 
 To run the tests do:
