@@ -30,11 +30,11 @@ if [ $sorted_completed = $all_tasks ]; then
         # echo $(timestamp) "results:" $i $task_results >> response_log.txt
         results=$(echo -e "$results\n$task_results")
     done
-    echo -e $(timestamp) $results >> response_log.txt
+    echo -e $(timestamp) $(echo "$results" | wc -l ) $results >> response_log.txt
     # save annotations
     declare responseurl=$(echo 'http://www.becalm.eu/api/saveAnnotations/TSV?apikey='$KEY'&communicationId='$CID)
     echo $(timestamp) $responseurl >> response_log.txt
-    echo -e "$results" | curl -X POST -H "Content-Type:text/tab-separated-values" --data-binary @- $responseurl >> response_log.txt 2>&1
+    echo -e "$results" | curl -X POST -H "Content-Type:text/tab-separated-values; charset=UTF-8" --data-binary @- $responseurl >> response_log.txt 2>&1
     echo "" >> response_log.txt
 #else
 #    echo $(timestamp) "completed:" $sorted_completed  >> response_log.txt 
