@@ -36,7 +36,7 @@ get_matches_positions () {
 		matching_text=$new_matching_text
 		local result=$(awk 'BEGIN {IGNORECASE = 1} 
 			match($0,/'$matches'/){
-				if (substr($0, RSTART-1, 1) ~ "[^[:alnum:]]" && substr($0, RSTART+RLENGTH, 1) ~ "[^[:alnum:]]")
+				if (substr($0, RSTART-1, 1) ~ "[^[:alnum:]@]" && substr($0, RSTART+RLENGTH, 1) ~ "[^[:alnum:]@]")
 						print "'$document_id'" "\t" \
 							  "'$section'" "\t"  \
 							  RSTART-2 "\t" \
