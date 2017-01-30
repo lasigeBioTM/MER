@@ -40,7 +40,7 @@ class SanityCheckTests(unittest.TestCase):
         bash_command_3 = 'bash get_entities.sh 1 T "chlorotomoxetine tomoxetine" ChEBI'
         result_3 = subprocess.check_output(bash_command_3, shell=True)
 
-        correct_annotations_3 = ('1\tT\t18\t28\t0.565706\ttomoxetine\tChEBI\t1\n')
+        correct_annotations_3 = ('1\tT\t17\t27\t0.565706\ttomoxetine\tChEBI\t1\n')
 
         self.assertEqual(correct_annotations_3, result_3)
 
