@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#set -x #debug
+# set -x #debug
 
 declare document_id=$1
 declare section=$2
@@ -45,7 +45,10 @@ get_matches_positions () {
 							  substr($0, RSTART, RLENGTH) "\t" \
 							  "'$data_source'" "\t" \
 							  "1"}' <<< " $matching_text ")
-		local match_hidden=$(awk -F $'\t' '{print $6}' <<< $result | tr '[:alnum:]' '@')  # to have overlaps: sed 's/[:alnum:]/@/1'
+		local match_hidden=$(awk 'BEGIN {IGNORECASE = 1} 
+								match($0,/'$matches'/){print substr($0, RSTART, RLENGTH)}' <<< " $matching_text " | tr '[:alnum:]' '@')
+		
+		#$(awk -F $'\t' '' <<< $result | )  # to have overlaps: sed 's/[:alnum:]/@/1'
 		new_matching_text=$(awk 'BEGIN {IGNORECASE = 1} {sub(/'$matches'/,"'$match_hidden'",$0)}1' <<< $matching_text)		
 		if [ ${#result} -ge 2 ]; then 
 			results=$results$'\n'$result	
