@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #set -x #debug
-# ts -S 3 > /dev/null 2>&1  # set ts to run 3 parallel jobs
+ts -S 3 > /dev/null 2>&1  # set ts to run 3 parallel jobs
 
 declare POST_DATA=$2
 export KEY=$1
