@@ -7,7 +7,7 @@ declare POST_DATA=$2
 export KEY=$1
 
 export CID=$(echo $POST_DATA | jq '.parameters.communication_id' | tr -d '"')
-
+export fakerequest=$(echo $POST_DATA | jq '.custom_parameters.fake')
 timestamp() {
   date +"%Y-%m-%d_%H:%M:%S:%3N"
 }

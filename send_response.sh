@@ -1,5 +1,6 @@
 
-declare TASKID=$1
+declare fake=$1
+declare TASKID=$2
 
 timestamp() {
   date +"%Y-%m-%d_%H:%M:%S:%3N"
@@ -8,7 +9,7 @@ timestamp() {
 # check if all tasks have been added to the file
 declare status=$(tail -1 /tmp/${CID}.tasks)
 if [[ $status != "DONE" ]]; then
-    echo $(timestamp) $TASKID $status >> response_log.txt
+    #echo $(timestamp) $TASKID $status >> response_log.txt
     exit 0
 fi
 #echo $(timestamp) $TASKIDS $status >> response_log.txt
@@ -34,8 +35,12 @@ if [ $sorted_completed = $all_tasks ]; then
     # save annotations
     declare responseurl=$(echo 'http://www.becalm.eu/api/saveAnnotations/TSV?apikey='$KEY'&communicationId='$CID)
     echo $(timestamp) $responseurl >> response_log.txt
-    echo -e "$results" | curl -X POST -H "Content-Type:text/tab-separated-values; charset=UTF-8" --data-binary @- $responseurl >> response_log.txt 2>&1
-    echo "" >> response_log.txt
+    if [[ $fakerequest != "true" ]]; then
+        echo -e "$results" | curl -X POST -H "Content-Type:text/tab-separated-values; charset=UTF-8" --data-binary @- $responseurl >> response_log.txt 2>&1
+        echo "" >> response_log.txt
+    #else
+    #    echo "fake request!" >> response_log.txt
+    fi
 #else
 #    echo $(timestamp) "completed:" $sorted_completed  >> response_log.txt 
 #    echo $(timestamp) "tasks:" $(echo $TASKIDS | tr " " "\n")  >> response_log.txt
