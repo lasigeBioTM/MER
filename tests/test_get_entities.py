@@ -36,6 +36,14 @@ class SanityCheckTests(unittest.TestCase):
 
         self.assertEqual(correct_annotations_2, result_2)
 
+        """https://github.com/LLCampos/IBELight/issues/28#issuecomment-276020303"""
+        bash_command_3 = 'bash get_entities.sh 1 T "chlorotomoxetine tomoxetine" ChEBI'
+        result_3 = subprocess.check_output(bash_command_3, shell=True)
+
+        correct_annotations_3 = ('1\tT\t18\t28\t0.565706\ttomoxetine\tChEBI\t1\n')
+
+        self.assertEqual(correct_annotations_3, result_3)
+
     def test_return_character_offset(self):
         """Annotation offsets returned should be character offsets, not byte
         offsets."""
