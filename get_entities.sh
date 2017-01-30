@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#set -x #debug
+# set -x #debug
 
 declare document_id=$1
 declare section=$2
@@ -36,7 +36,7 @@ get_matches_positions () {
 		matching_text=$new_matching_text
 		local result=$(awk 'BEGIN {IGNORECASE = 1} 
 			match($0,/'$matches'/){
-				if (substr($0, RSTART-1, 1) ~ "[^[:alnum:]]" && substr($0, RSTART+RLENGTH, 1) ~ "[^[:alnum:]]")
+				if (substr($0, RSTART-1, 1) ~ "[^[:alnum:]@]" && substr($0, RSTART+RLENGTH, 1) ~ "[^[:alnum:]@]")
 						print "'$document_id'" "\t" \
 							  "'$section'" "\t"  \
 							  RSTART-2 "\t" \
@@ -45,7 +45,8 @@ get_matches_positions () {
 							  substr($0, RSTART, RLENGTH) "\t" \
 							  "'$data_source'" "\t" \
 							  "1"}' <<< " $matching_text ")
-		local match_hidden=$(awk -F $'\t' '{print $6}' <<< $result | sed 's/[:alnum:]/@/1')  # to remove overlaps: tr '[:alnum:]' '@')
+		local match_hidden=$(awk 'BEGIN {IGNORECASE = 1} 
+								match($0,/'$matches'/){print substr($0, RSTART, RLENGTH)}' <<< " $matching_text " | tr '[:alnum:]' '@')	
 		new_matching_text=$(awk 'BEGIN {IGNORECASE = 1} {sub(/'$matches'/,"'$match_hidden'",$0)}1' <<< $matching_text)		
 		if [ ${#result} -ge 2 ]; then 
 			results=$results$'\n'$result	
