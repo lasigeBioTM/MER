@@ -29,7 +29,7 @@ with open('data/UNKNOWN.txt', 'wb') as f:
 # Delete shared terms from the others data files
 for source in os.listdir('data/'):
 
-    if source in documents_to_ignore:
+    if source in documents_to_ignore or source == 'UNKNOWN.txt':
         continue
 
     with open('data/' + source) as f:
