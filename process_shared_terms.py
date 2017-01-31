@@ -5,12 +5,15 @@ import collections
 "UNKNOWN.txt" and delete them from the original files"""
 
 # Don't want to process files used for testing purposes
-documents_to_process = ['CELL_LINE_AND_CELL_TYPE.txt', 'CHEMICAL.txt', 'DISEASE.txt', 'GENE.txt', 'PROTEIN.txt', 'SUBCELLULAR_STRUCTURE.txt']
+documents_to_ignore = ['README.txt',
+                       'ChEBI.txt',
+                       'ChEMBL.txt',
+                       'alpha-amylase.txt']
 
 all_terms = []
 for source in os.listdir('data/'):
 
-    if source not in documents_to_process:
+    if source in documents_to_ignore:
         continue
 
     with open('data/' + source) as f:
@@ -26,7 +29,7 @@ with open('data/UNKNOWN.txt', 'wb') as f:
 # Delete shared terms from the others data files
 for source in os.listdir('data/'):
 
-    if source not in documents_to_process:
+    if source in documents_to_ignore:
         continue
 
     with open('data/' + source) as f:
