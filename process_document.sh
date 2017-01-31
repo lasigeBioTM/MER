@@ -15,7 +15,9 @@ declare text=$3
 declare results=
 for i in $TYPES 
 do
-    IFS=$(echo -en ""); results=$results$'\n'$(./get_entities.sh $docid $section "$text" "$i" 2>/dev/null)
+    #IFS=; type_results=$(./get_entities.sh $docid $section "$text" "$i" 2>/dev/null); results=$results$'\n'$type_results &
+    IFS=; ./get_entities.sh $docid $section "$text" "$i" 2>/dev/null &
 done
-echo $results
+wait
+#echo $results
 
