@@ -8,6 +8,8 @@ export KEY=$1
 
 export CID=$(echo $POST_DATA | jq '.parameters.communication_id' | tr -d '"')
 export fakerequest=$(echo $POST_DATA | jq '.custom_parameters.fake')
+export START=$(date +%s.%N);
+
 timestamp() {
   date +"%Y-%m-%d_%H:%M:%S:%3N"
 }
