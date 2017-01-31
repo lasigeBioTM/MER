@@ -7,6 +7,7 @@ diseases.txt -> Human Disease Ontology
 subcellular_structures.txt -> Gene Ontology (cellular components)
 chemicals -> HMDB, ChEBI, ChEMBL
 tissue_and_organ.txt -> tissue and organ subset of Uberon
+mirna.txt -> miRBase
 
 Terms were extracted from database in a quick way, there's no assurance that the list of terms is completely right.
 
