@@ -5,7 +5,7 @@ import collections
 "UNKNOWN.txt" and delete them from the original files"""
 
 # Don't want to process files used for testing purposes
-documents_to_process = ['cells.txt', 'CHEMICAL.txt', 'DISEASE.txt', 'GENE.txt', 'PROTEIN.txt', 'subcellular_structures.txt']
+documents_to_process = ['CELL_LINE_AND_CELL_TYPE.txt', 'CHEMICAL.txt', 'DISEASE.txt', 'GENE.txt', 'PROTEIN.txt', 'SUBCELLULAR_STRUCTURE.txt']
 
 all_terms = []
 for source in os.listdir('data/'):
