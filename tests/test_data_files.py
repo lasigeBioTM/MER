@@ -5,9 +5,14 @@ import unittest
 
 class DataFilesTests(unittest.TestCase):
 
-    non_testing_data_files = ['cells.txt', 'CHEMICAL.txt', 'DISEASE.txt',
-                              'GENE.txt', 'PROTEIN.txt', 'UNKNOWN.txt',
-                              'subcellular_structures.txt']
+    non_testing_data_files = ['CELL_LINE_AND_CELL_TYPE.txt',
+                              'CHEMICAL.txt',
+                              'DISEASE.txt',
+                              'TISSUE_AND_ORGAN.txt',
+                              'PROTEIN.txt',
+                              'SUBCELLULAR_STRUCTURE.txt',
+                              'MIRNA.txt',
+                              'UNKNOWN.txt']
 
     def test_no_shared_terms(self):
         """There should be no shared terms between the data files."""
