@@ -5,7 +5,7 @@ ts -S 3 > /dev/null 2>&1  # set ts to run 3 parallel jobs
 
 declare POST_DATA=$2
 export KEY=$1
-export TYPES="CHEMICAL PROTEIN DISEASE SUBCELLULAR_STRUCTURE CELL_LINE_AND_CELL_TYPE UNKOWN"
+export TYPES="CHEMICAL PROTEIN DISEASE SUBCELLULAR_STRUCTURE CELL_LINE_AND_CELL_TYPE MIRNA TISSUE_AND_ORGAN  UNKNOWN"
 export CID=$(echo $POST_DATA | jq '.parameters.communication_id' | tr -d '"')
 export fakerequest=$(echo $POST_DATA | jq '.custom_parameters.fake')
 export START=$(date +%s.%N);
