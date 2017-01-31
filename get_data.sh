@@ -18,6 +18,7 @@ wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=0B5R2
 # wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=0B5R2YTHDeD6sUzVydDNScXQ1MzA' -O GENE.txt
 wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=0B5R2YTHDeD6sVVh0a3E5WndXbHM' -O PROTEIN.txt
 wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=0B5R2YTHDeD6scFNmZl9pMmktTVE' -O subcellular_structures.txt
+wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=0B5R2YTHDeD6sTlBCN3ZkTVpSWXM' -O TISSUE_AND_ORGAN.txt
 
 cd ..
 
