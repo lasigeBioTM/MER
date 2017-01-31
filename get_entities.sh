@@ -43,7 +43,7 @@ get_matches_positions () {
 							  RSTART-2+RLENGTH "\t" \
 							  1-1/log(RLENGTH) "\t" \
 							  substr($0, RSTART, RLENGTH) "\t" \
-							  "'$data_source'" "\t" \
+							  "'${data_source//_/ }'" "\t" \
 							  "1"}' <<< " $matching_text ")
 		local match_hidden=$(awk 'BEGIN {IGNORECASE = 1} 
 								match($0,/'$matches'/){print substr($0, RSTART, RLENGTH)}' <<< " $matching_text " | tr '[:alnum:]' '@')	
