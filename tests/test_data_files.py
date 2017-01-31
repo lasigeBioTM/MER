@@ -11,6 +11,7 @@ class DataFilesTests(unittest.TestCase):
                               'TISSUE_AND_ORGAN.txt',
                               'PROTEIN.txt',
                               'SUBCELLULAR_STRUCTURE.txt',
+                              'MIRNA.txt',
                               'UNKNOWN.txt']
 
     def test_no_shared_terms(self):

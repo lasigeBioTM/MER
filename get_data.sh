@@ -19,6 +19,7 @@ wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=0B5R2
 wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=0B5R2YTHDeD6sVVh0a3E5WndXbHM' -O PROTEIN.txt
 wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=0B5R2YTHDeD6scFNmZl9pMmktTVE' -O SUBCELLULAR_STRUCTURE.txt
 wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=0B5R2YTHDeD6sTlBCN3ZkTVpSWXM' -O TISSUE_AND_ORGAN.txt
+wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=0B5R2YTHDeD6sZTNfODl0NkRTcDQ' -O MIRNA.txt
 
 cd ..
 
