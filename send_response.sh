@@ -38,11 +38,10 @@ if [ $sorted_completed = $all_tasks ]; then
     if [[ $fakerequest != "true" ]]; then
         echo -e "$results" | curl -X POST -H "Content-Type:text/tab-separated-values; charset=UTF-8" --data-binary @- $responseurl >> response_log.txt 2>&1
         echo "" >> response_log.txt
-    else
-        declare END=$(date +%s.%N);
-        echo $(timestamp) "time elapsed:" $(echo "$END - $START" | bc -l ) >> response_log.txt
-    #    echo "fake request!" >> response_log.txt
     fi
+    declare END=$(date +%s.%N);
+    echo $(timestamp) "time elapsed:" $(echo "$END - $START" | bc -l ) >> response_log.txt
+    #    echo "fake request!" >> response_log.txt
 #else
 #    echo $(timestamp) "completed:" $sorted_completed  >> response_log.txt 
 #    echo $(timestamp) "tasks:" $(echo $TASKIDS | tr " " "\n")  >> response_log.txt

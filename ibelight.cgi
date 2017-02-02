@@ -50,13 +50,13 @@ if [ $method = '"getState"' ]; then
     # send status response
     declare response=$(echo '{"status": '$statuscode',  "success": true,  "key":"'$key'",  "data": {"state":"'$serverstatus'", "version": "1.1", "version_changes": "Protein entity annotation", "max_analyzable_documents":"'$maxdocuments'"}}')
     echo $response
-    echo $response >> response_log.txt
+    echo $(timestamp) $response >> response_log.txt
 
 elif [ $method = '"getAnnotations"' ]; then
     # acknowledge request
     declare response=$(echo '{"status": 200, "success": true, "key":"'$key'"}')
     echo $response
-    echo $response >> response_log.txt
+    echo $(timestamp) $response >> response_log.txt
     # process request
     ./process_request.sh $key "$POST_DATA" >> response_log.txt 2>&1 &       
 fi
