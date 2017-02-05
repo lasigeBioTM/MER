@@ -9,11 +9,12 @@ timestamp() {
 # check if all tasks have been added to the file
 declare status=$(tail -1 /tmp/${CID}.tasks)
 if [[ $status != "DONE" ]]; then
-    #echo $(timestamp) $TASKID $status >> response_log.txt
+    echo $(timestamp) $TASKID $status >> response_log.txt
     exit 0
 fi
 #echo $(timestamp) $TASKIDS $status >> response_log.txt
 # ignore last line of tasks file because it should be DONE
+echo $(timestamp) "checking if all tasks have been completed" >> response_log.txt
 declare sorted_completed=$(cat "/tmp/${CID}.completed" | sort -g)
 declare all_tasks=$(head -n -1 "/tmp/${CID}.tasks" | sort -g)
 
@@ -35,9 +36,10 @@ if [ $sorted_completed = $all_tasks ]; then
     # save annotations
     declare responseurl=$(echo 'http://www.becalm.eu/api/saveAnnotations/TSV?apikey='$KEY'&communicationId='$CID)
     echo $(timestamp) $responseurl >> response_log.txt
-    if [[ $fakerequest != "true" ]]; then
+    if [[ $fakerequest != "true" && $(tail -1 /tmp/${CID}.tasks) != "SENT" ]]; then
         echo -e "$results" | curl -X POST -H "Content-Type:text/tab-separated-values; charset=UTF-8" --data-binary @- $responseurl >> response_log.txt 2>&1
         echo "" >> response_log.txt
+        echo "SENT" >> /tmp/${CID}.tasks
     fi
     declare END=$(date +%s.%N);
     echo $(timestamp) "time elapsed:" $(echo "$END - $START" | bc -l ) >> response_log.txt
