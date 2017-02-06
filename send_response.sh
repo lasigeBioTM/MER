@@ -37,9 +37,9 @@ if [ $sorted_completed = $all_tasks ]; then
     declare responseurl=$(echo 'http://www.becalm.eu/api/saveAnnotations/TSV?apikey='$KEY'&communicationId='$CID)
     echo $(timestamp) $responseurl >> response_log.txt
     if [[ $fakerequest != "true" && $(tail -1 /tmp/${CID}.tasks) != "SENT" ]]; then
+        echo "SENT" >> /tmp/${CID}.tasks
         echo -e "$results" | curl -X POST -H "Content-Type:text/tab-separated-values; charset=UTF-8" --data-binary @- $responseurl >> response_log.txt 2>&1
         echo "" >> response_log.txt
-        echo "SENT" >> /tmp/${CID}.tasks
     fi
     declare END=$(date +%s.%N);
     echo $(timestamp) "time elapsed:" $(echo "$END - $START" | bc -l ) >> response_log.txt
