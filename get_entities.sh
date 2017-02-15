@@ -33,6 +33,7 @@ get_matches_positions () {
 	local new_matching_text=$original_text
 	while [ "$new_matching_text" != "$matching_text" ];
 	do
+		matches=$(sed 's/\./\[^ \]/g' <<< $matches) # avoid mixing word1 and word2...
 		matching_text=$new_matching_text
 		local result=$(awk 'BEGIN {IGNORECASE = 1} 
 			match($0,/'$matches'/){
