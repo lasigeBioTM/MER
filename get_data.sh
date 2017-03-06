@@ -24,9 +24,9 @@ wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=0B5R2
 cd ..
 
 
-# Lowercase all terms from each data file in data/ folder
+# Lowercase and remove trailing white spaces of all terms from each data file in data/ folder
 
-python lowercase_all_terms.py
+python normalize_all_terms.py
 
 # Remove duplicates from each data file
 

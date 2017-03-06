@@ -21,7 +21,7 @@ class DataFilesTests(unittest.TestCase):
 
         for data_file in DataFilesTests.non_testing_data_files:
             with open('data/' + data_file) as f:
-                terms = f.readlines()
+                terms = map(lambda term: term.strip(), f.readlines())
             all_terms += terms
 
         no_duplicates_terms = list(set(all_terms))
