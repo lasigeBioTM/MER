@@ -15,7 +15,7 @@ Chimpazee
 Bonobo
 ```
 
-Ok, that's primates for today. We save this in a file called "primates.txt" and save it in the data/ folder of IBELight. Next, we do 
+Ok, that's enough primates for today. We save this in a file called "primates.txt" and save it in the data/ folder of IBELight. Next, we do 
 
 ```shell
 cd data
