@@ -27,7 +27,7 @@ declare piped_pair_text=$piped_pair_text1'|'$piped_pair_text2
 
 declare get_matches_positions_result=''
 get_matches_positions () {
-	local matches=$1	
+	local matches=$1
 	local results=''
 	local matching_text=' '
 	local new_matching_text=$original_text
@@ -35,27 +35,22 @@ get_matches_positions () {
 	do
 		matches=$(sed 's/\./\[^ \]/g' <<< $matches) # avoid mixing word1 and word2...
 		matching_text=$new_matching_text
-		local result=$(awk 'BEGIN {IGNORECASE = 1} 
+		local result=$(awk 'BEGIN {IGNORECASE = 1}
 			match($0,/'$matches'/){
 				if (substr($0, RSTART-1, 1) ~ "[^[:alnum:]@]" && substr($0, RSTART+RLENGTH, 1) ~ "[^[:alnum:]@]")
-						print "'$document_id'" "\t" \
-							  "'$section'" "\t"  \
-							  RSTART-2 "\t" \
+						print RSTART-2 "\t" \
 							  RSTART-2+RLENGTH "\t" \
-							  1-1/log(RLENGTH) "\t" \
-							  substr($0, RSTART, RLENGTH) "\t" \
-							  "'${data_source//_/ }'" "\t" \
-							  "1"}' <<< " $matching_text ")
-		local match_hidden=$(awk 'BEGIN {IGNORECASE = 1} 
-								match($0,/'$matches'/){print substr($0, RSTART, RLENGTH)}' <<< " $matching_text " | tr '[:alnum:]' '@')	
-		new_matching_text=$(awk 'BEGIN {IGNORECASE = 1} {sub(/'$matches'/,"'$match_hidden'",$0)}1' <<< $matching_text)		
-		if [ ${#result} -ge 2 ]; then 
-			results=$results$'\n'$result	
+							  substr($0, RSTART, RLENGTH)}' <<< " $matching_text ")
+		local match_hidden=$(awk 'BEGIN {IGNORECASE = 1}
+								match($0,/'$matches'/){print substr($0, RSTART, RLENGTH)}' <<< " $matching_text " | tr '[:alnum:]' '@')
+		new_matching_text=$(awk 'BEGIN {IGNORECASE = 1} {sub(/'$matches'/,"'$match_hidden'",$0)}1' <<< $matching_text)
+		if [ ${#result} -ge 2 ]; then
+			results=$results$'\n'$result
 		fi
 	done
 	get_matches_positions_result=$results;
 }
-	
+
 declare get_entities_source_word1_result=''
 get_entities_source_word1 () {
 	local labels=$1
@@ -121,7 +116,7 @@ get_entities_source () {
 
 	local result=$result1$'\n'$result2$'\n'$result3
 	result=$(sed '{/^$/d}' <<< $result) # remove empty lines
-	
+
 	echo $result
 	#echo "== END SOURCE =="
 	}
