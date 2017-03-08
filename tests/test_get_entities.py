@@ -171,6 +171,15 @@ class SanityCheckTests(unittest.TestCase):
 
         self.assertEqual(correct_annotation, result)
 
+    def test_do_not_match_term_non_existent_on_gazeeter(self):
+
+        bash_command = 'bash get_entities.sh "sera Ser-," ChEBI'
+        result = subprocess.check_output(bash_command, shell=True)
+
+        correct_annotation = ('1\t9\tSer-\n')
+
+        self.assertEqual(correct_annotation, result)
+
 
 if __name__ == '__main__':
     unittest.main()
