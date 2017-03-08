@@ -11,14 +11,14 @@ class SanityCheckTests(unittest.TestCase):
 
         https://github.com/LLCampos/IBELight/issues/7"""
 
-        bash_command = 'bash get_entities.sh 1 T "not a entity" ChEBI'
+        bash_command = 'bash get_entities.sh "not a entity" ChEBI'
         result = subprocess.check_output(bash_command, shell=True)
 
         self.assertEqual('', result)
 
     def test_not_match_mid_word(self):
         """https://github.com/LLCampos/IBELight/issues/10"""
-        bash_command_1 = 'bash get_entities.sh 1 A "nicotinic acid amide, isonicotinic acid amide" ChEMBL'
+        bash_command_1 = 'bash get_entities.sh "nicotinic acid amide, isonicotinic acid amide" ChEMBL'
         result_1 = subprocess.check_output(bash_command_1, shell=True)
 
         correct_annotations_2 = ('0\t14\tnicotinic acid\n'
@@ -28,7 +28,7 @@ class SanityCheckTests(unittest.TestCase):
         self.assertEqual(correct_annotations_2, result_1)
 
         """https://github.com/LLCampos/IBELight/issues/28"""
-        bash_command_2 = 'bash get_entities.sh 1 T "methanol ethanol" ChEBI'
+        bash_command_2 = 'bash get_entities.sh "methanol ethanol" ChEBI'
         result_2 = subprocess.check_output(bash_command_2, shell=True)
 
         correct_annotations_2 = ('0\t8\tmethanol\n'
@@ -37,7 +37,7 @@ class SanityCheckTests(unittest.TestCase):
         self.assertEqual(correct_annotations_2, result_2)
 
         """https://github.com/LLCampos/IBELight/issues/28#issuecomment-276020303"""
-        bash_command_3 = 'bash get_entities.sh 1 T "chlorotomoxetine tomoxetine" ChEBI'
+        bash_command_3 = 'bash get_entities.sh "chlorotomoxetine tomoxetine" ChEBI'
         result_3 = subprocess.check_output(bash_command_3, shell=True)
 
         correct_annotations_3 = ('17\t27\ttomoxetine\n')
@@ -49,7 +49,7 @@ class SanityCheckTests(unittest.TestCase):
         offsets."""
 
         # https://github.com/LLCampos/IBELight/issues/11
-        bash_command_1 = 'bash get_entities.sh 1 A "‘ oxygen" ChEBI'
+        bash_command_1 = 'bash get_entities.sh "‘ oxygen" ChEBI'
         result_1 = subprocess.check_output(bash_command_1, shell=True)
 
         correct_annotation_1 = '2\t8\toxygen\n'
@@ -58,7 +58,7 @@ class SanityCheckTests(unittest.TestCase):
 
         # https://github.com/LLCampos/IBELight/issues/14
 
-        bash_command_2 = 'bash get_entities.sh 1 T "µ testosterone" ChEBI'
+        bash_command_2 = 'bash get_entities.sh "µ testosterone" ChEBI'
         result_2 = subprocess.check_output(bash_command_2, shell=True)
 
         correct_annotation_2 = '2\t14\ttestosterone\n'
@@ -67,7 +67,7 @@ class SanityCheckTests(unittest.TestCase):
 
         # https://github.com/LLCampos/IBELight/issues/15
 
-        bash_command_3 = 'bash get_entities.sh 1 T " water" ChEBI'
+        bash_command_3 = 'bash get_entities.sh " water" ChEBI'
         result_3 = subprocess.check_output(bash_command_3, shell=True)
 
         correct_annotation_3 = '1\t6\twater\n'
@@ -79,7 +79,7 @@ class SanityCheckTests(unittest.TestCase):
 
         https://github.com/LLCampos/IBELight/issues/2"""
 
-        bash_command = 'bash get_entities.sh 1 T "I love testosterone." ChEBI'
+        bash_command = 'bash get_entities.sh "I love testosterone." ChEBI'
         result = subprocess.check_output(bash_command, shell=True)
 
         correct_annotation = '7\t19\ttestosterone\n'
@@ -89,7 +89,7 @@ class SanityCheckTests(unittest.TestCase):
     def test_terms_with_more_than_2_words_should_be_recognized(self):
         """https://github.com/LLCampos/IBELight/issues/3"""
 
-        bash_command = 'bash get_entities.sh 1 T "Cetyl trimethyl ammonium bromide" ChEBI'
+        bash_command = 'bash get_entities.sh "Cetyl trimethyl ammonium bromide" ChEBI'
         result = subprocess.check_output(bash_command, shell=True)
 
         correct_annotation = ('16\t24\tammonium\n'
@@ -101,7 +101,7 @@ class SanityCheckTests(unittest.TestCase):
     def test_word_position_indexes_consider_multi_whitespaces(self):
         """"https://github.com/LLCampos/IBELight/issues/12"""
 
-        bash_command = 'bash get_entities.sh 1 A "the  potassium" ChEBI'
+        bash_command = 'bash get_entities.sh "the  potassium" ChEBI'
         result = subprocess.check_output(bash_command, shell=True)
 
         correct_annotation = ('5\t14\tpotassium\n')
@@ -113,7 +113,7 @@ class SanityCheckTests(unittest.TestCase):
 
         https://github.com/LLCampos/IBELight/issues/13"""
 
-        bash_command = 'bash get_entities.sh 1 A "water, potassium, oxygen" ChEBI'
+        bash_command = 'bash get_entities.sh "water, potassium, oxygen" ChEBI'
         result = subprocess.check_output(bash_command, shell=True)
 
         correct_annotation = ('0\t5\twater\n'
@@ -125,7 +125,7 @@ class SanityCheckTests(unittest.TestCase):
     def test_annotate_words_between_parenthesis(self):
         """https://github.com/LLCampos/IBELight/issues/16"""
 
-        bash_command = 'bash get_entities.sh 1 T "(water)" ChEBI'
+        bash_command = 'bash get_entities.sh "(water)" ChEBI'
         result = subprocess.check_output(bash_command, shell=True)
 
         correct_annotation = ('1\t6\twater\n')
@@ -135,7 +135,7 @@ class SanityCheckTests(unittest.TestCase):
     def test_special_characters_are_retained_in_output(self):
         """https://github.com/LLCampos/IBELight/issues/17"""
 
-        bash_command = 'bash get_entities.sh 1 T "N-methyl-D-aspartate" ChEBI'
+        bash_command = 'bash get_entities.sh "N-methyl-D-aspartate" ChEBI'
         result = subprocess.check_output(bash_command, shell=True)
 
         correct_annotation = ('0\t20\tN-methyl-D-aspartate\n')
@@ -144,7 +144,7 @@ class SanityCheckTests(unittest.TestCase):
 
     def test_case_insensitivity(self):
 
-        bash_command = 'bash get_entities.sh 1 T "Water" ChEBI'
+        bash_command = 'bash get_entities.sh "Water" ChEBI'
         result = subprocess.check_output(bash_command, shell=True)
 
         correct_annotation = ('0\t5\tWater\n')
@@ -153,7 +153,7 @@ class SanityCheckTests(unittest.TestCase):
 
     def test_match_utf8_in_vocab_with_utf8_in_text(self):
 
-        bash_command = 'bash get_entities.sh 1 T "α-amilase α-amilase" alpha-amylase'
+        bash_command = 'bash get_entities.sh "α-amilase α-amilase" alpha-amylase'
         result = subprocess.check_output(bash_command, shell=True)
 
         correct_annotation = ('0\t9\tα-amilase\n'
@@ -164,7 +164,7 @@ class SanityCheckTests(unittest.TestCase):
     def test_no_double_annot_when_em_dash_in_term(self):
         # Tests fix of issue #24
 
-        bash_command = 'bash get_entities.sh 1 A " —ONO2;" ChEBI'
+        bash_command = 'bash get_entities.sh " —ONO2;" ChEBI'
         result = subprocess.check_output(bash_command, shell=True)
 
         correct_annotation = ('1\t6\t—ONO2\n')
