@@ -172,11 +172,22 @@ class SanityCheckTests(unittest.TestCase):
         self.assertEqual(correct_annotation, result)
 
     def test_do_not_match_term_non_existent_on_gazeeter(self):
+        # Tests fix of issue #32
 
         bash_command = 'bash get_entities.sh 1 T "sera Ser-," ChEBI'
         result = subprocess.check_output(bash_command, shell=True)
 
         correct_annotation = ('1\tT\t5\t9\t0.278652\tSer-\tChEBI\t1\n')
+
+        self.assertEqual(correct_annotation, result)
+
+    def test_period_in_term_should_not_be_wildcard(self):
+        # Tests fix of issue #33
+
+        bash_command = 'bash get_entities.sh 1 T DAP-3 test_data'
+        result = subprocess.check_output(bash_command, shell=True)
+
+        correct_annotation = ''
 
         self.assertEqual(correct_annotation, result)
 
