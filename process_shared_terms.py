@@ -8,7 +8,7 @@ import collections
 documents_to_ignore = ['README.txt',
                        'ChEBI.txt',
                        'ChEMBL.txt',
-                       'alpha-amylase.txt']
+                       'test_data.txt']
 
 all_terms = []
 for source in os.listdir('data/'):

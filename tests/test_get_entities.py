@@ -153,11 +153,11 @@ class SanityCheckTests(unittest.TestCase):
 
     def test_match_utf8_in_vocab_with_utf8_in_text(self):
 
-        bash_command = 'bash get_entities.sh 1 T "α-amilase α-amilase" alpha-amylase'
+        bash_command = 'bash get_entities.sh 1 T "α-amilase α-amilase" test_data'
         result = subprocess.check_output(bash_command, shell=True)
 
-        correct_annotation = ('1\tT\t0\t9\t0.54488\tα-amilase\talpha-amylase\t1\n'
-                              '1\tT\t10\t19\t0.54488\tα-amilase\talpha-amylase\t1\n')
+        correct_annotation = ('1\tT\t0\t9\t0.54488\tα-amilase\ttest data\t1\n'
+                              '1\tT\t10\t19\t0.54488\tα-amilase\ttest data\t1\n')
 
         self.assertEqual(correct_annotation, result)
 

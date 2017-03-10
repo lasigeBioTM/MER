@@ -10,7 +10,7 @@ rm !(README.txt)
 # Download virgin data files from Google Drive
 
 wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=0B5R2YTHDeD6sb0U2R0JCeEF3LVk' -O CELL_LINE_AND_CELL_TYPE.txt
-wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=0B5R2YTHDeD6sTGNVUmFnanVDQkU' -O alpha-amylase.txt
+wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=0B5R2YTHDeD6sTGNVUmFnanVDQkU' -O test_data.txt
 wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=0B5R2YTHDeD6sS1hKMXFpNXhfS0E' -O ChEBI.txt
 wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=0B5R2YTHDeD6sUG5WOXl2dzN4V00' -O ChEMBL.txt
 wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=0B5R2YTHDeD6sVVQ1UlJEYWxGZWc' -O CHEMICAL.txt
