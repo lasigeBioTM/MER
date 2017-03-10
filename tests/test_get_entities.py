@@ -180,6 +180,16 @@ class SanityCheckTests(unittest.TestCase):
 
         self.assertEqual(correct_annotation, result)
 
+    def test_period_in_term_should_not_be_wildcard(self):
+        # Tests fix of issue #33
+
+        bash_command = 'bash get_entities.sh DAP-3 test_data'
+        result = subprocess.check_output(bash_command, shell=True)
+
+        correct_annotation = ''
+
+        self.assertEqual(correct_annotation, result)
+
 
 if __name__ == '__main__':
     unittest.main()
