@@ -1,12 +1,12 @@
-# IBELight
+# MER (Minimal Named-Entity Recognizer)
 
-IBELight is a gazeeter-based Named-Entity Recognition system which annotates in the text terms present in an arbitrary gazeeter provided by the user. IBELight is better described in [link to proceedings paper]. 
+MER is a lexicon-based Named-Entity Recognition system which annotates in the text terms present in an arbitrary lexicon provided by the user. MER is better described in [link to proceedings paper]. 
 
-## Preparation of Gazeeters 
+## Preparation of Lexicons 
 
-Let's walk trough an example of adding a primates-related gazeeter to IBELight. 
+Let's walk trough an example of adding a primates-related lexicon to MER. 
 
-First, I have to create my gazeeter. 
+First, I have to create my lexicon. 
 
 ```txt
 Gorilla 
@@ -15,22 +15,22 @@ Chimpazee
 Bonobo
 ```
 
-Ok, that's enough primates for today. We save this in a file called "primates.txt" and save it in the data/ folder of IBELight. Next, we do 
+Ok, that's enough primates for today. We save this in a file called "primates.txt" and save it in the data/ folder of MER. Next, we do 
 
 ```shell
 cd data
 bash ../produce_data_files.sh primates.txt
 ```
 
-This will create all the necessary files to use IBELight with this gazeeter. 
+This will create all the necessary files to use MER with this lexicon. 
 
 ## Usage
 
 ```shell
-bash get_entities.sh [text] [gazeeter]
+bash get_entities.sh [text] [lexicon]
 ```
 
-Ok, let's try to find mentions of primates in a snipper of text (be sure to be back to the IBELight home folder):
+Ok, let's try to find mentions of primates in a snipper of text (be sure to be back to the MER home folder):
 
 ```shell
 bash get_entities.sh "The gorilla punched the human in the nose" primates
