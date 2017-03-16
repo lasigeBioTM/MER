@@ -1,4 +1,4 @@
-# IBELight
+# MER (Minimal Named-Entity Recognizer)
 
 Before using the program, you'll have to run 
 
