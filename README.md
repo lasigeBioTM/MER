@@ -2,6 +2,16 @@
 
 MER is a lexicon-based Named-Entity Recognition system which annotates in the text terms present in an arbitrary lexicon provided by the user. MER is better described in [link to proceedings paper]. 
 
+## Dependencies
+
+MER was developed and tested using the GNU awk (gawk). If you have another awk interpreter in your machine, there's no assurance that the program will work.
+
+To install GNU awk on Ubuntu:
+
+```
+sudo apt-get install gawk
+```
+
 ## Preparation of Lexicons 
 
 Let's walk trough an example of adding a primates-related lexicon to MER. 
