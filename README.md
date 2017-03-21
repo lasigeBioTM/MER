@@ -4,6 +4,14 @@ MER is a lexicon-based Named-Entity Recognition system which annotates in the te
 
 ## Dependencies
 
+### Operative System
+
+This was tested and works as expected on Ubuntu 16.04 and CentOS 6. 
+
+You can also run it on Windows using Cygwin or Git Bash, but there are some issues regarding UTF-8 characters. 
+
+### awk
+
 MER was developed and tested using the GNU awk (gawk). If you have another awk interpreter in your machine, there's no assurance that the program will work.
 
 To install GNU awk on Ubuntu:
