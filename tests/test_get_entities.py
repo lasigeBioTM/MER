@@ -191,6 +191,16 @@ class SanityCheckTests(unittest.TestCase):
 
         self.assertEqual(correct_annotation, result)
 
+    def test_non_consisten_behaviour_caused_by_hyphen(self):
+        # Tests fix of issue #35
+
+        bash_command = 'bash get_entities.sh 1 T "nicotinic acid-adenine nicotinic acid" ChEBI'
+        result = subprocess.check_output(bash_command, shell=True)
+
+        correct_annotation = '1\tT\t23\t37\t0.621077\tnicotinic acid\tChEBI\t1\n'
+
+        self.assertEqual(correct_annotation, result)
+
 
 if __name__ == '__main__':
     unittest.main()
