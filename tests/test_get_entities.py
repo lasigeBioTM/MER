@@ -171,7 +171,7 @@ class SanityCheckTests(unittest.TestCase):
 
         self.assertEqual(correct_annotation, result)
 
-    def test_do_not_match_term_non_existent_on_gazeeter(self):
+    def test_do_not_match_term_non_existent_on_lexicon(self):
         # Tests fix of issue #32
 
         bash_command = 'bash get_entities.sh 1 T "sera Ser-," ChEBI'
