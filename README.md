@@ -68,6 +68,6 @@ To check if the result is what was expected try:
 ./test.sh
 ```
 
-if something is wrong, please check if you are using UTF-8 encoding and that you have GNU awk and grep. 
+if something is wrong, please check if you are using UTF-8 encoding and that you have GNU awk and grep installed. 
 
 
