@@ -62,7 +62,7 @@ The first column corresponds to the start-index, the second to the end-index and
 
 ## Test
 
-To check if the result is what was expected:
+To check if the result is what was expected try:
 
 ```shell
 ./test.sh
