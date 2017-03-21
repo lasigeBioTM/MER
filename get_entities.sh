@@ -41,7 +41,7 @@ get_matches_positions () {
 		local result
 		result=$(awk 'BEGIN {IGNORECASE = 1}
 			match($0,/'"$matches"'/){
-				if (substr($0, RSTART-1, 1) ~ "[^[:alnum:]@]" && substr($0, RSTART+RLENGTH, 1) ~ "[^[:alnum:]@]")
+				if (substr($0, RSTART-1, 1) ~ "[^[:alnum:]@-]" && substr($0, RSTART+RLENGTH, 1) ~ "[^[:alnum:]@-]")
 						print RSTART-2 "\t" RSTART-2+RLENGTH "\t" substr($0, RSTART, RLENGTH)}' <<< " $matching_text ")
 
 		local match_hidden
