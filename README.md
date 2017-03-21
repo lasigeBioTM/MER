@@ -1,12 +1,10 @@
 # MER (Minimal Named-Entity Recognizer)
 
-MER is a lexicon-based Named-Entity Recognition system which annotates in the text terms present in an arbitrary lexicon provided by the user. MER is better described in [link to proceedings paper]. 
+MER is a Named-Entity Recognition tool which given any lexicon and any input text returns the list of 
+terms recognized in the text, including their exact location (annotations).
+MER is better described in [link to proceedings paper]. 
 
 ## Dependencies
-
-### Operative System
-
-This was tested and works as expected on Ubuntu 16.04 and CentOS 6. 
 
 ### awk
 
@@ -20,22 +18,21 @@ sudo apt-get install gawk
 
 ## Preparation of Lexicons 
 
-Let's walk trough an example of adding a primates-related lexicon to MER. 
+Let's walk trough an example of adding a sample lexicon to MER. 
 
-First, I have to create my lexicon. 
+First, we have to create the lexicon file. 
 
 ```txt
-Gorilla 
-Human
-Chimpazee 
-Bonobo
+α-maltose
+nicotinic acid
+nicotinic acid D-ribonucleotide
+nicotinic acid-adenine dinucleotide phosphate
 ```
 
-Ok, that's enough primates for today. We save this in a file called "primates.txt" and save it in the data/ folder of MER. Next, we do 
+We save this in a file called "lexicon.txt" and save it in the data/ folder of MER. Next, we do 
 
 ```shell
-cd data
-bash ../produce_data_files.sh primates.txt
+bash produce_data_files.sh lexicon.txt
 ```
 
 This will create all the necessary files to use MER with this lexicon. 
@@ -46,29 +43,20 @@ This will create all the necessary files to use MER with this lexicon.
 bash get_entities.sh [text] [lexicon]
 ```
 
-Ok, let's try to find mentions of primates in a snipper of text (be sure to be back to the MER home folder):
+Ok, let's try to find mentions of chemical compounds in a snippet of text:
 
 ```shell
-bash get_entities.sh "The gorilla punched the human in the nose" primates
+bash get_entities.sh 'α-maltose and nicotinic acid D-ribonucleotide was found, but not nicotinic acid' lexicon
 ```
-
-(ouch, poor human)
 
 The output will be a TSV looking like this:
 
 ```tsv
-4  11  gorilla
-24 29  human
+0       9       α-maltose
+14      28      nicotinic acid
+65      79      nicotinic acid
+14      45      nicotinic acid D-ribonucleotide
 ```
 
 The first column corresponds to the start-index, the second to the end-index and the third to the annotated term.
 
-## Tests
-
-To run the tests do:
-
-```shell
-python -m unittest discover
-```
-
-Tested with Python 2.7.12.
