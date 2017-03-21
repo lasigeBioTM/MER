@@ -8,15 +8,15 @@ MER is better described in [link to proceedings paper].
 
 ### awk
 
-MER was developed and tested using the GNU awk (gawk). If you have another awk interpreter in your machine, there's no assurance that the program will work.
+MER was developed and tested using the GNU awk (gawk) and grep. If you have another awk interpreter in your machine, there's no assurance that the program will work.
 
-To install GNU awk on Ubuntu:
+For example, to install GNU awk on Ubuntu:
 
 ```
 sudo apt-get install gawk
 ```
 
-## Preparation of Lexicons 
+## Pre-Processing of Lexicons 
 
 Let's walk trough an example of adding a sample lexicon to MER. 
 
@@ -59,4 +59,15 @@ The output will be a TSV looking like this:
 ```
 
 The first column corresponds to the start-index, the second to the end-index and the third to the annotated term.
+
+## Test
+
+To check if the result is what was expected:
+
+```shell
+./test.sh
+```
+
+if something is wrong, please check if you are using UTF-8 encoding and that you have GNU awk and grep. 
+
 
