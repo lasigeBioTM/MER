@@ -3,6 +3,8 @@
 
 # set -x #debug
 
+cd data
+
 filename=$(basename $1 .txt)
 
 egrep '[[:alpha:]]{3,}' $filename.txt >  $filename.aux1
