@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# set -x #debug test
+# set -x #debug
 
 declare original_text=$1
 declare data_source=$2
