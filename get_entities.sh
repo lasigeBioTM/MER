@@ -2,7 +2,7 @@
 
 # set -x #debug
 
-declare original_text=$1
+declare original_text=$(tr '\n\r' ' ' <<< $1)
 declare data_source=$2
 
 # Process text
