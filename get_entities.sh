@@ -1,6 +1,8 @@
 #!/bin/bash
 
 # set -x #debug
+OIFS=$IFS
+IFS=$(echo -en "");
 
 declare original_text=$(tr '\n\r' ' ' <<< $1)
 declare data_source=$2
@@ -123,8 +125,6 @@ get_entities_source () {
 	local source=$1
 	cd data/
 
-	IFS=$(echo -en "");
-
 	local result1
 	local result2
 	local result3
@@ -151,3 +151,4 @@ get_entities_source () {
 	}
 
 get_entities_source "$data_source"
+IFS=$OIFS
