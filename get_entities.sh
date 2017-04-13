@@ -13,7 +13,7 @@ if [[ -z $original_text || -z $data_source ]]; then
 fi
 
 # Pre-process the input text
-declare text=${1,,} # Make text lowercase so the system is case insensitive
+declare text=$(tr '[:upper:]' '[:lower:]' <<< "$original_text") # Make text lowercase so the system is case insensitive
 text=$(sed "s/[^[:alnum:][:space:]()]/./g" <<< "$text") # Replace special characters
 text=$(sed -e 's/[[:space:]()@]\+/ /g' <<< $text) # remove multiple whitespace
 text=$(sed -e 's/\.$//' -e 's/\. / /g' <<< $text) # remove full stops
