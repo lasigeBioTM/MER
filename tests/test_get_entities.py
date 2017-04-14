@@ -193,10 +193,10 @@ class SanityCheckTests(unittest.TestCase):
     def test_annotation_with_new_lines(self):
         # Tests fix of issue #37
 
-        bash_command = 'bash get_entities.sh "oxygen \n carbon" ChEBI'
+        bash_command = '''bash get_entities.sh "oxygen\ncarbon" ChEBI'''
         result = subprocess.check_output(bash_command, shell=True)
 
-        correct_annotation = '0\t6\toxygen\n9\t\15\tcarbon\n'
+        correct_annotation = '0\t6\toxygen\n7\t13\tcarbon\n'
 
         self.assertEqual(correct_annotation, result)
 
