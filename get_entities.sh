@@ -8,7 +8,7 @@ declare original_text=$(tr '\n\r' ' ' <<< $1)
 declare data_source=$2
 
 # Check the given parameters
-if [[ -z $original_text || -z $data_source ]]; then 
+if [[ -z $original_text || -z $data_source ]]; then
 	echo "Usage: get_entities.sh <text> <lexicon>"
 	echo "Check the examples in the test.sh file"
 	exit
@@ -22,7 +22,6 @@ text=$(sed -e 's/\.$//' -e 's/\. / /g' <<< $text) # remove full stops
 #text=$(tr ' ' '\n' <<< $text | grep -v -w -f stopwords.txt | tr '\n' ' ') # Remove stopwords
 # | egrep '[[:alpha:]]{3,}'  and words with less than 3 characters
 text=$(sed -e 's/^ *//' -e 's/ *$//' <<< $text) # Remove leading and trailing whitespace
-
 # Separates all the words in the text by pipes
 declare piped_text
 piped_text=$(sed -e 's/ \+/|/g' <<< $text)
@@ -45,8 +44,9 @@ get_matches_positions () {
 	local results=''
 	local matching_text=' '
 	local new_matching_text=$original_text
-	
+
 	# While there are changes in the new_matching_text 
+
 	while [ "$new_matching_text" != "$matching_text" ];
 	do
 		matches=$(sed 's/\./\[^ \]/g' <<< $matches) # avoid mixing word1 and word2...
@@ -57,7 +57,8 @@ get_matches_positions () {
 			match($0,/'"$matches"'/){
 				if (substr($0, RSTART-1, 1) ~ "[^[:alnum:]@-]" && substr($0, RSTART+RLENGTH, 1) ~ "[^[:alnum:]@-]")
 						print RSTART-2 "\t" RSTART-2+RLENGTH "\t" substr($0, RSTART, RLENGTH)}' <<< " $matching_text ")
-		# Masks the match in the matching text to avoid full overlapping matches  
+		# Masks the match in the matching text to avoid full overlapping matches
+
 		local match_hidden
 		match_hidden=$(awk 'BEGIN {IGNORECASE = 1}
 					   match($0,/'"$matches"'/){print substr($0, RSTART, RLENGTH)}' <<< " $matching_text " | tr '[:alnum:]' '@')
@@ -68,6 +69,7 @@ get_matches_positions () {
 	done
 	get_matches_positions_result=$results;
 }
+
 
 # Function that matches the one-word pattern (piped_text) in the one-word file of the lexicon (labels)  
 declare get_entities_source_word1_result=''
@@ -84,7 +86,7 @@ get_entities_source_word1 () {
 	fi
 }
 
-# Function that matches the two-word pattern (piped_pair_text) in the two-word file of the lexicon (labels)  
+# Function that matches the two-word pattern (piped_pair_text) in the two-word file of the lexicon (labels)
 declare get_entities_source_word2_result=''
 get_entities_source_word2 () {
 	local labels=$1
@@ -99,6 +101,7 @@ get_entities_source_word2 () {
 	fi
 }
 
+
 # Function that matches the two-word pattern (piped_pair_text) in the two-first-words (labels2) and more-words (labels) files of the lexicon   
 declare get_entities_source_words_result=''
 get_entities_source_words () {
@@ -106,7 +109,7 @@ get_entities_source_words () {
 	local labels=$2
 	get_entities_source_words_result=''
 	if [ ${#piped_pair_text} -ge 2 ]; then
-		# finds the two-first-word matches  
+		# finds the two-first-word matches
 		local matches
 		matches=$(egrep '^('"$piped_pair_text"')$' "$labels2" | egrep '[[:alpha:]]{5,}' | tr '\n' '|' | sed 's/|[[:space:]]*$//' )
         if [ ${#matches} -ge 2 ]; then
@@ -124,29 +127,21 @@ declare get_entities_source_words_result=''
 get_entities_source () {
 	local source=$1
 	cd data/
-
 	local result1
 	local result2
 	local result3
-
  	result1=$(get_entities_source_word1 "$source"_word1.txt && echo "$get_entities_source_word1_result" &)
-
 	result2=$(get_entities_source_word2 "$source"_word2.txt && echo "$get_entities_source_word2_result" &)
-
 	result3=$(get_entities_source_words "$source"_words2.txt "$source"_words.txt && echo $get_entities_source_words_result &)
-
 	wait
 	cd ..
-
 	# Check if all the results are empty. If yes, terminate function.
 	if [[ -z $result1 && -z $result2 && -z $result3 ]]; then
 		return
 	fi
-
 	# combine the results from the 3 types of matches
 	local result=$result1$'\n'$result2$'\n'$result3
 	result=$(sed '{/^$/d}' <<< $result) # remove empty lines
-
 	echo "$result"
 	}
 

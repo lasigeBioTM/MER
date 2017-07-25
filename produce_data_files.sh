@@ -1,5 +1,5 @@
 #!/bin/bash
-#SAVEIFS=$IFS; IFS=$(echo -en "");
+SAVEIFS=$IFS; IFS=$(echo -en "");
 
 # set -x #debug
 
