@@ -3,7 +3,9 @@ SAVEIFS=$IFS; IFS=$(echo -en "");
 
 # set -x #debug
 
-filename=$(basename "$1" .txt)
+cd data
+
+filename=$(basename $1 .txt)
 
 egrep '[[:alpha:]]{3,}' $filename.txt >  $filename.aux1
 egrep -v '[[:digit:]]{5,}' $filename.aux1 >  $filename.aux2

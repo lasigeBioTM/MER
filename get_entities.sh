@@ -19,21 +19,25 @@ declare text=$(tr '[:upper:]' '[:lower:]' <<< "$original_text") # Make text lowe
 text=$(sed "s/[^[:alnum:][:space:]()]/./g" <<< "$text") # Replace special characters
 text=$(sed -e 's/[[:space:]()@]\+/ /g' <<< $text) # remove multiple whitespace
 text=$(sed -e 's/\.$//' -e 's/\. / /g' <<< $text) # remove full stops
-text=$(tr ' ' '\n' <<< $text | grep -v -w -f stopwords.txt | tr '\n' ' ') # Remove stopwords
+#text=$(tr ' ' '\n' <<< $text | grep -v -w -f stopwords.txt | tr '\n' ' ') # Remove stopwords
 # | egrep '[[:alpha:]]{3,}'  and words with less than 3 characters
 text=$(sed -e 's/^ *//' -e 's/ *$//' <<< $text) # Remove leading and trailing whitespace
 # Separates all the words in the text by pipes
 declare piped_text
 piped_text=$(sed -e 's/ \+/|/g' <<< $text)
-# Creates all combinations of pairs of consecutive words in the text, staring at the first word
+
+# Creates all combinations of pairs of consecutive words in the text, staring at the first word 
 declare piped_pair_text1
 piped_pair_text1=$(sed -e 's/\([^ ]\+ \+[^ ]\+\) /\1|/g' <<< $text" XXX" | sed 's/|[^|]*$//')
+
 # Creates all combinations of pairs of consecutive words in the text, staring at the second word
 declare piped_pair_text2
 piped_pair_text2=$(sed -e 's/\([^ ]\+ \+[^ ]\+\) /\1|/g' <<< "XXX $text XXX"| sed 's/^[^|]*|//' | sed 's/|[^|]*$//')
+
 # Joins both previous combinations of pair of words
 declare piped_pair_text=$piped_pair_text1'|'$piped_pair_text2
-# Function that finds the start and end position of each given matched term
+
+# Function that finds the start and end position of each given matched term 
 declare get_matches_positions_result=''
 get_matches_positions () {
 	local matches=$1
@@ -41,7 +45,8 @@ get_matches_positions () {
 	local matching_text=' '
 	local new_matching_text=$original_text
 
-	# While there are changes in the new_matching_text
+	# While there are changes in the new_matching_text 
+
 	while [ "$new_matching_text" != "$matching_text" ];
 	do
 		matches=$(sed 's/\./\[^ \]/g' <<< $matches) # avoid mixing word1 and word2...
@@ -53,6 +58,7 @@ get_matches_positions () {
 				if (substr($0, RSTART-1, 1) ~ "[^[:alnum:]@-]" && substr($0, RSTART+RLENGTH, 1) ~ "[^[:alnum:]@-]")
 						print RSTART-2 "\t" RSTART-2+RLENGTH "\t" substr($0, RSTART, RLENGTH)}' <<< " $matching_text ")
 		# Masks the match in the matching text to avoid full overlapping matches
+
 		local match_hidden
 		match_hidden=$(awk 'BEGIN {IGNORECASE = 1}
 					   match($0,/'"$matches"'/){print substr($0, RSTART, RLENGTH)}' <<< " $matching_text " | tr '[:alnum:]' '@')
@@ -63,7 +69,9 @@ get_matches_positions () {
 	done
 	get_matches_positions_result=$results;
 }
-# Function that matches the one-word pattern (piped_text) in the one-word file of the lexicon (labels)
+
+
+# Function that matches the one-word pattern (piped_text) in the one-word file of the lexicon (labels)  
 declare get_entities_source_word1_result=''
 get_entities_source_word1 () {
 	local labels=$1
@@ -77,6 +85,7 @@ get_entities_source_word1 () {
 		fi
 	fi
 }
+
 # Function that matches the two-word pattern (piped_pair_text) in the two-word file of the lexicon (labels)
 declare get_entities_source_word2_result=''
 get_entities_source_word2 () {
@@ -91,7 +100,9 @@ get_entities_source_word2 () {
 		fi
 	fi
 }
-# Function that matches the two-word pattern (piped_pair_text) in the two-first-words (labels2) and more-words (labels) files of the lexicon
+
+
+# Function that matches the two-word pattern (piped_pair_text) in the two-first-words (labels2) and more-words (labels) files of the lexicon   
 declare get_entities_source_words_result=''
 get_entities_source_words () {
 	local labels2=$1
@@ -110,6 +121,7 @@ get_entities_source_words () {
 		fi
 	fi
 }
+
 # Function that launches one job for each of the 3 types of matches
 declare get_entities_source_words_result=''
 get_entities_source () {
@@ -132,5 +144,6 @@ get_entities_source () {
 	result=$(sed '{/^$/d}' <<< $result) # remove empty lines
 	echo "$result"
 	}
+
 get_entities_source "$data_source"
 IFS=$OIFS
