@@ -5,6 +5,8 @@ terms recognized in the text, including their exact location (annotations).
 
 More information about MER can be found in https://www.researchgate.net/publication/316545534_MER_a_Minimal_Named-Entity_Recognition_Tagger_and_Annotation_Server
 
+A demo is also available at: http://labs.fc.ul.pt/mer/
+
 ## Dependencies
 
 ### awk
