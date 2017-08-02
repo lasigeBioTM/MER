@@ -1,14 +1,15 @@
 #!/bin/bash
 SAVEIFS=$IFS; IFS=$(echo -en "");
 
+. base.config
 # set -x #debug
 
 cd data
 
 filename=$(basename $1 .txt)
 
-egrep '[[:alpha:]]{3,}' $filename.txt >  $filename.aux1
-egrep -v '[[:digit:]]{5,}' $filename.aux1 >  $filename.aux2
+egrep "[[:alpha:]]{$min_entity_size_alpha,}" $filename.txt >  $filename.aux1
+egrep -v "[[:digit:]]{$max_entity_size_digit,}" $filename.aux1 >  $filename.aux2
 
 sed -e 's/^ *//' -e 's/ *$//' $filename.aux2 > $filename.aux3 # remove leading and trailing whitespace
 sed -e 's/[[:space:]]\+/ /' $filename.aux3 >  $filename.aux4 # remove multiple whitespace
