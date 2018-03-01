@@ -86,7 +86,7 @@ and process it:
 (cd data; ../produce_data_files.sh doid-simple.owl)
 ```
 
-Now, download some abstracts from PubMed, for example [29489283 https://www.ncbi.nlm.nih.gov/pubmed/29489283] and [29489240 https://www.ncbi.nlm.nih.gov/pubmed/29489240].
+Now, download some abstracts from PubMed, for example [29489283](https://www.ncbi.nlm.nih.gov/pubmed/29489283) and [29489240](https://www.ncbi.nlm.nih.gov/pubmed/29489240).
 
 ```shell
 text=$(curl "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=29489283,29489240&retmode=text&rettype=xml" | xmllint --xpath '//AbstractText/text()' /dev/stdin)
