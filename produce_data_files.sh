@@ -27,9 +27,12 @@ SAVEIFS=$IFS; IFS=$(echo -en "");
 
 # set -x #debug
 
-cd data
+filename=${1%.*}
 
-filename=$(basename $1 .txt)
+if [[ $1 = *".owl" ]]; then
+    grep "</rdfs:label>" < doid-simple.owl | sed 's/^.*>\(.*\)<\/rdfs:label>/\1/' > $filename.txt
+    grep "</oboInOwl:hasExactSynonym>" < doid-simple.owl | sed 's/^.*>\(.*\)<\/oboInOwl:hasExactSynonym>/\1/' >> $filename.txt
+fi
 
 egrep '[[:alpha:]]{3,}' $filename.txt >  $filename.aux1
 egrep -v '[[:digit:]]{5,}' $filename.aux1 >  $filename.aux2
