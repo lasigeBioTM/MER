@@ -96,7 +96,7 @@ Check the diseases recognized:
 
 ```shell
 ./get_entities.sh "$text" doid-simple 
-```shell
+```
 
 The output should be something like this:
 
