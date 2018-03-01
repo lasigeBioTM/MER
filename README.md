@@ -129,7 +129,7 @@ http://purl.obolibrary.org/obo/DOID_2377	multiple sclerosis
 http://purl.obolibrary.org/obo/DOID_2773	contact dermatitis
 ```
 
-For example, you can now use these IDs to calculate their semantic similarity using [DiShIn|https://github.com/lasigeBioTM/DiShIn]
+For example, you can now use these IDs to calculate their semantic similarity using [[DiShIn https://github.com/lasigeBioTM/DiShIn]]
 
 ## Test
 
