@@ -69,6 +69,8 @@ get_matches_positions () {
 	local matching_text=' '
 	local new_matching_text=$original_text
 
+	matches=$(sed -e 's/ / +/g' <<< $matches) # to add matches with multiple whitespace
+
 	# While there are changes in the new_matching_text 
 
 	while [ "$new_matching_text" != "$matching_text" ];

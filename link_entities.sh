@@ -42,10 +42,15 @@ classes=$(tr '\n' ' ' < $ontology | sed -e 's/<owl:Class/\n<owl:Class/g' | grep 
 
 while read line
 do
-  label=$(sed -e 's/^[0-9 \t]*//' <<< $line) 
-  link=$(egrep ">$label<\/rdfs:label>" <<< $classes | sed 's/^.*rdf:about="\([^"]*\).*$/\1/')
+  declare label=$(sed -e 's/^[0-9 \t]*//' <<< $line) 
+
+  declare text=$(sed "s/[^[:alnum:][:space:]()]/./g" <<< "$label") # Replace special characters
+  text=$(sed -e 's/[[:space:]()@]\+/ /g' <<< $text) # remove multiple whitespace
+  text=$(sed -e 's/\.$//' -e 's/\. / /g' <<< $text) # remove full stops
+
+  link=$(grep -i ">$text<\/rdfs:label>" <<< $classes | sed 's/^.*rdf:about="\([^"]*\).*$/\1/')
   if [[ -z $link ]]; then
-      link=$(grep ">$label<\/oboInOwl:hasExactSynonym>" <<< $classes  | sed 's/^.*rdf:about="\([^"]*\).*$/\1/')
+      link=$(grep -i ">$text<\/oboInOwl:hasExactSynonym>" <<< $classes  | sed 's/^.*rdf:about="\([^"]*\).*$/\1/')
   fi
   echo -e "$link\t$label"
 done 

@@ -86,10 +86,10 @@ and process it:
 (cd data; ../produce_data_files.sh doid-simple.owl)
 ```
 
-Now, download some abstracts from PubMed, for example [29489283](https://www.ncbi.nlm.nih.gov/pubmed/29489283) and [29489240](https://www.ncbi.nlm.nih.gov/pubmed/29489240).
+Now, download some abstracts from PubMed, for example ([29490421](https://www.ncbi.nlm.nih.gov/pubmed/29490421) and [29490060](https://www.ncbi.nlm.nih.gov/pubmed/29490060))
 
 ```shell
-text=$(curl "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=29489283,29489240&retmode=text&rettype=xml" | xmllint --xpath '//AbstractText/text()' /dev/stdin)
+text=$(curl "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=29490421,29490060&retmode=text&rettype=xml" | xmllint --xpath '//AbstractText/text()' /dev/stdin)
 ```
 
 Check the diseases recognized: 
@@ -111,7 +111,7 @@ The output should be something like this:
 1137	1155	contact dermatitis
 ```
 
-To get the IDs of the terms recognized, we can execute:  
+To get the IDs of the terms recognized, you can execute:  
 
 ```shell
 ./get_entities.sh "$text" doid-simple | ./link_entities.sh data/doid-simple.owl
@@ -119,14 +119,40 @@ To get the IDs of the terms recognized, we can execute:
 
 The output should be something like this:
 ```txt
-http://purl.obolibrary.org/obo/DOID_1205	hypersensitivity
-http://purl.obolibrary.org/obo/DOID_9395	croup
 http://purl.obolibrary.org/obo/DOID_2841	asthma
+http://purl.obolibrary.org/obo/DOID_3083	COPD
+http://purl.obolibrary.org/obo/DOID_3083	COPD
 http://purl.obolibrary.org/obo/DOID_2841	asthma
-http://purl.obolibrary.org/obo/DOID_2723	dermatitis
-http://purl.obolibrary.org/obo/DOID_1205	hypersensitivity
-http://purl.obolibrary.org/obo/DOID_2377	multiple sclerosis
-http://purl.obolibrary.org/obo/DOID_2773	contact dermatitis
+http://purl.obolibrary.org/obo/DOID_6132	bronchitis
+http://purl.obolibrary.org/obo/DOID_2841	asthma
+http://purl.obolibrary.org/obo/DOID_4	disease
+http://purl.obolibrary.org/obo/DOID_8504	impetigo
+http://purl.obolibrary.org/obo/DOID_6543	acne
+http://purl.obolibrary.org/obo/DOID_2326	gastroenteritis
+http://purl.obolibrary.org/obo/DOID_6132	bronchitis
+http://purl.obolibrary.org/obo/DOID_10754	otitis media
+http://purl.obolibrary.org/obo/DOID_10754	otitis media
+http://purl.obolibrary.org/obo/DOID_3083	chronic obstructive pulmonary disease
+http://purl.obolibrary.org/obo/DOID_13148	urinary tract infection
+```
+Or if you want to remove duplicates:
+
+```shell
+./get_entities.sh "$text" doid-simple | ./link_entities.sh data/doid-simple.owl | sort | uniq
+```
+you will get the following output: 
+
+```txt
+http://purl.obolibrary.org/obo/DOID_10754	otitis media
+http://purl.obolibrary.org/obo/DOID_13148	urinary tract infection
+http://purl.obolibrary.org/obo/DOID_2326	gastroenteritis
+http://purl.obolibrary.org/obo/DOID_2841	asthma
+http://purl.obolibrary.org/obo/DOID_3083	chronic obstructive pulmonary disease
+http://purl.obolibrary.org/obo/DOID_3083	COPD
+http://purl.obolibrary.org/obo/DOID_4	disease
+http://purl.obolibrary.org/obo/DOID_6132	bronchitis
+http://purl.obolibrary.org/obo/DOID_6543	acne
+http://purl.obolibrary.org/obo/DOID_8504	impetigo
 ```
 
 For example, you can now use these IDs to calculate their semantic similarity using [DiShIn](https://github.com/lasigeBioTM/DiShIn)
