@@ -30,8 +30,8 @@ SAVEIFS=$IFS; IFS=$(echo -en "");
 filename=${1%.*}
 
 if [[ $1 = *".owl" ]]; then
-    grep "</rdfs:label>" < doid-simple.owl | sed 's/^.*>\(.*\)<\/rdfs:label>/\1/' > $filename.txt
-    grep "</oboInOwl:hasExactSynonym>" < doid-simple.owl | sed 's/^.*>\(.*\)<\/oboInOwl:hasExactSynonym>/\1/' >> $filename.txt
+    grep "</rdfs:label>" < $1 | sed 's/^.*>\(.*\)<\/rdfs:label>/\1/' > $filename.txt
+    grep "</oboInOwl:hasExactSynonym>" < $1 | sed 's/^.*>\(.*\)<\/oboInOwl:hasExactSynonym>/\1/' >> $filename.txt
 fi
 
 egrep '[[:alpha:]]{3,}' $filename.txt >  $filename.aux1
