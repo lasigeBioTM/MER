@@ -23,9 +23,9 @@
 # @authors F. Couto, L. Campos, and A. Lamurias                               #
 ###############################################################################
 
-
-. base.config
 # set -x #debug
+use_stopwords=1
+stopwords=stopwords.txt
 
 OIFS=$IFS
 IFS=$(echo -en "");

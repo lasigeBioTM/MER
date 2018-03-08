@@ -25,7 +25,8 @@
 
 SAVEIFS=$IFS; IFS=$(echo -en "");
 
-. base.config
+min_entity_size_alpha=3
+max_entity_size_digit=5
 # set -x #debug
 
 filename=${1%.*}
