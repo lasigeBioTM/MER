@@ -77,7 +77,7 @@ Now, lets recognize and map terms from an ontology in PubMed abstracts.
 For example, you can start by downloading the human disease ontology:
 
 ```shell 
-(cd data; wget https://raw.githubusercontent.com/DiseaseOntology/HumanDiseaseOntology/master/src/ontology/doid-simple.owl)
+(cd data; wget ://raw.githubusercontent.com/DiseaseOntology/HumanDiseaseOntology/master/src/ontology/deprecated/DO_Production_NON_Ontology_Files/doid-simple.owl)
 ```
 
 and process it:
