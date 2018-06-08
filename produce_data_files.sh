@@ -80,3 +80,5 @@ tail $filename'_words2.txt'
 echo '================'
 
 rm -f $filename.aux*
+
+
