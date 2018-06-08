@@ -77,13 +77,13 @@ Now, lets recognize and map terms from an ontology in PubMed abstracts.
 For example, you can start by downloading the human disease ontology:
 
 ```shell 
-(cd data; wget ://raw.githubusercontent.com/DiseaseOntology/HumanDiseaseOntology/master/src/ontology/deprecated/DO_Production_NON_Ontology_Files/doid-simple.owl)
+(cd data; wget https://raw.githubusercontent.com/DiseaseOntology/HumanDiseaseOntology/master/src/ontology/doid.owl)
 ```
 
 and process it:
 
 ```shell
-(cd data; ../produce_data_files.sh doid-simple.owl)
+(cd data; ../produce_data_files.sh doid.owl)
 ```
 
 Now, download some abstracts from PubMed, for example ([29490421](https://www.ncbi.nlm.nih.gov/pubmed/29490421) and [29490060](https://www.ncbi.nlm.nih.gov/pubmed/29490060))
@@ -95,7 +95,7 @@ text=$(curl "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed
 Check the diseases recognized: 
 
 ```shell
-./get_entities.sh "$text" doid-simple 
+./get_entities.sh "$text" doid
 ```
 
 The output should be something like this:
