@@ -101,58 +101,40 @@ Check the diseases recognized:
 The output should be something like this:
 
 ```txt
-218	234	hypersensitivity
-540	545	croup
-558	564	asthma
-1118	1124	asthma
-1145	1155	dermatitis
-1166	1182	hypersensitivity
-1013	1031	multiple sclerosis
-1137	1155	contact dermatitis
+348     354     asthma                                  http://purl.obolibrary.org/obo/DOID_2841
+359     363     COPD                                    http://purl.obolibrary.org/obo/DOID_3083
+496     500     COPD                                    http://purl.obolibrary.org/obo/DOID_3083
+504     510     asthma                                  http://purl.obolibrary.org/obo/DOID_2841
+1066    1076    bronchitis                              http://purl.obolibrary.org/obo/DOID_6132
+1095    1101    asthma                                  http://purl.obolibrary.org/obo/DOID_2841
+1135    1142    disease                                 http://purl.obolibrary.org/obo/DOID_4
+1306    1314    impetigo                                http://purl.obolibrary.org/obo/DOID_8504
+1316    1320    acne                                    http://purl.obolibrary.org/obo/DOID_6543
+1322    1337    gastroenteritis                         http://purl.obolibrary.org/obo/DOID_2326
+2015    2025    bronchitis                              http://purl.obolibrary.org/obo/DOID_6132
+1173    1185    otitis media                            http://purl.obolibrary.org/obo/DOID_10754
+2156    2168    otitis media                            http://purl.obolibrary.org/obo/DOID_10754
+1105    1142    chronic obstructive pulmonary disease   http://purl.obolibrary.org/obo/DOID_3083
+1281    1304    urinary tract infection                 http://purl.obolibrary.org/obo/DOID_13148
 ```
 
-To get the IDs of the terms recognized, you can execute:  
-
+If you want just a list of terms:
 ```shell
-./get_entities.sh "$text" doid-simple | ./link_entities.sh data/doid-simple.owl
-```
-
-The output should be something like this:
-```txt
-http://purl.obolibrary.org/obo/DOID_2841	asthma
-http://purl.obolibrary.org/obo/DOID_3083	COPD
-http://purl.obolibrary.org/obo/DOID_3083	COPD
-http://purl.obolibrary.org/obo/DOID_2841	asthma
-http://purl.obolibrary.org/obo/DOID_6132	bronchitis
-http://purl.obolibrary.org/obo/DOID_2841	asthma
-http://purl.obolibrary.org/obo/DOID_4	disease
-http://purl.obolibrary.org/obo/DOID_8504	impetigo
-http://purl.obolibrary.org/obo/DOID_6543	acne
-http://purl.obolibrary.org/obo/DOID_2326	gastroenteritis
-http://purl.obolibrary.org/obo/DOID_6132	bronchitis
-http://purl.obolibrary.org/obo/DOID_10754	otitis media
-http://purl.obolibrary.org/obo/DOID_10754	otitis media
-http://purl.obolibrary.org/obo/DOID_3083	chronic obstructive pulmonary disease
-http://purl.obolibrary.org/obo/DOID_13148	urinary tract infection
-```
-Or if you want to remove duplicates:
-
-```shell
-./get_entities.sh "$text" doid-simple | ./link_entities.sh data/doid-simple.owl | sort | uniq
+./get_entities.sh "$text" doid-simple | cut -f 3,4 | sort | uniq
 ```
 you will get the following output: 
 
 ```txt
-http://purl.obolibrary.org/obo/DOID_10754	otitis media
-http://purl.obolibrary.org/obo/DOID_13148	urinary tract infection
-http://purl.obolibrary.org/obo/DOID_2326	gastroenteritis
-http://purl.obolibrary.org/obo/DOID_2841	asthma
-http://purl.obolibrary.org/obo/DOID_3083	chronic obstructive pulmonary disease
-http://purl.obolibrary.org/obo/DOID_3083	COPD
-http://purl.obolibrary.org/obo/DOID_4	disease
-http://purl.obolibrary.org/obo/DOID_6132	bronchitis
-http://purl.obolibrary.org/obo/DOID_6543	acne
-http://purl.obolibrary.org/obo/DOID_8504	impetigo
+acne                                    http://purl.obolibrary.org/obo/DOID_6543
+asthma                                  http://purl.obolibrary.org/obo/DOID_2841
+bronchitis                              http://purl.obolibrary.org/obo/DOID_6132
+chronic obstructive pulmonary disease   http://purl.obolibrary.org/obo/DOID_3083
+COPD                                    http://purl.obolibrary.org/obo/DOID_3083
+disease                                 http://purl.obolibrary.org/obo/DOID_4
+gastroenteritis                         http://purl.obolibrary.org/obo/DOID_2326
+impetigo                                http://purl.obolibrary.org/obo/DOID_8504
+otitis media                            http://purl.obolibrary.org/obo/DOID_10754
+urinary tract infection                 http://purl.obolibrary.org/obo/DOID_13148
 ```
 
 For example, you can now use these IDs to calculate their semantic similarity using [DiShIn](https://github.com/lasigeBioTM/DiShIn)

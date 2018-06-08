@@ -164,7 +164,7 @@ get_entities_source () {
 	result2=$(get_entities_source_word2 "$source"_word2.txt && echo "$get_entities_source_word2_result" &)
 	result3=$(get_entities_source_words "$source"_words2.txt "$source"_words.txt && echo $get_entities_source_words_result &)
 	wait
-	cd ..
+
 	# Check if all the results are empty. If yes, terminate function.
 	if [[ -z $result1 && -z $result2 && -z $result3 ]]; then
 		return
@@ -172,7 +172,23 @@ get_entities_source () {
 	# combine the results from the 3 types of matches
 	local result=$result1$'\n'$result2$'\n'$result3
 	result=$(sed '{/^$/d}' <<< $result) # remove empty lines
-	echo "$result"
+	if [ -e "$source"_links.tsv ]; then
+	    while read line
+	    do
+		declare label=$(sed -e 's/^[0-9 \t]*//' <<< $line) 
+		
+		declare text=$(sed "s/[^[:alnum:][:space:]()]/./g" <<< "$label") # Replace special characters
+		text=$(sed -e 's/[[:space:]()@]\+/ /g' <<< $text) # remove multiple whitespace
+		text=$(sed -e 's/\.$//' -e 's/\. / /g' <<< $text) # remove full stops
+		text=$(tr '[:upper:]' '[:lower:]' <<< "$text") # Make text lowercase so the system is case insensitive
+		
+		link=$(grep -m 1 "^$text" "$source"_links.tsv | cut -f2)
+		echo -e "$line\t$link"
+	    done <<< $result
+	else 
+	    echo "$result"
+	fi
+	cd ..
 	}
 
 get_entities_source "$data_source"

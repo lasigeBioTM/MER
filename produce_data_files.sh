@@ -32,8 +32,25 @@ max_entity_size_digit=5
 filename=${1%.*}
 
 if [[ $1 = *".owl" ]]; then
-    grep "</rdfs:label>" < $1 | sed 's/^.*>\(.*\)<\/rdfs:label>/\1/' > $filename.txt
-    grep "</oboInOwl:hasExactSynonym>" < $1 | sed 's/^.*>\(.*\)<\/oboInOwl:hasExactSynonym>/\1/' >> $filename.txt
+
+    classes=$(tr '\n' ' ' < $1 | sed -e 's/<owl:Class/\n<owl:Class/g' | grep '<owl:Class')
+
+    cat <<< $classes | while read class
+    do
+	uri=$(egrep -o 'rdf:about="[^"]*' <<< $class | sed 's/^rdf:about="//')
+	if [[ ! -z $uri ]]; then 
+	    for tag in "rdfs:label" "oboInOwl:hasExactSynonym"; do 
+		labels=$(egrep -o ">[^<]*</$tag>" <<< $class | sed "s/<\/$tag>//" | sed 's/>//' | tr '[:upper:]' '[:lower:]' )
+		cat <<< $labels | while read label  
+		do if [[ ! -z $label ]]; then
+		       echo -e "$label\t$uri";
+		   fi
+		done
+	    done
+	fi
+    done | sort -k1,1 -t$'\t' | uniq > $filename\_links.tsv
+
+    cut -f1 $filename\_links.tsv > $filename.txt 
 fi
 
 egrep "[[:alpha:]]{$min_entity_size_alpha,}" $filename.txt >  $filename.aux1
