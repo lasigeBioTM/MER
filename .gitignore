@@ -1,4 +1,4 @@
-data/*_words*.txt
-data/*_words*.owl
+data/*_word*.txt
+data/*_word*.owl
 *.pyc
 *~
