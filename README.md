@@ -146,7 +146,7 @@ The output should be something like this:
 
 If you want just a list of terms:
 ```shell
-./get_entities.sh "$text" doid-simple | cut -f 3,4 | sort | uniq
+./get_entities.sh "$text" doid | cut -f 3,4 | sort | uniq
 ```
 you will get the following output: 
 
@@ -164,6 +164,66 @@ urinary tract infection                 http://purl.obolibrary.org/obo/DOID_1314
 ```
 
 For example, you can now use these IDs to calculate their semantic similarity using [DiShIn](https://github.com/lasigeBioTM/DiShIn)
+
+## Other Ontologies 
+
+### ChEBI (Chemical Entities of Biological Interest)
+```shell 
+(cd data; wget ftp://ftp.ebi.ac.uk/pub/databases/chebi/ontology/chebi_lite.owl)
+(cd data; ../produce_data_files.sh chebi_lite.owl)
+```
+
+```shell
+./get_entities.sh 'α-maltose and nicotinic acid was found, but not nicotinic acid D-ribonucleotide' chebi_lite
+```
+
+you will get the following output: 
+
+```txt
+24	28	acid	http://purl.obolibrary.org/obo/CHEBI_37527
+58	62	acid	http://purl.obolibrary.org/obo/CHEBI_37527
+14	28	nicotinic acid	http://purl.obolibrary.org/obo/CHEBI_15940
+48	62	nicotinic acid	http://purl.obolibrary.org/obo/CHEBI_15940
+48	79	nicotinic acid D-ribonucleotide	http://purl.obolibrary.org/obo/CHEBI_15763
+```
+
+## HP (Human Phenotype Ontology)
+
+```shell
+(cd data; wget http://purl.obolibrary.org/obo/hp.owl)
+(cd data; ../produce_data_files.sh chebi_lite.owl)
+```
+Now executing MER for the same abstracts downloaded in the steps above when using the Disease Ontology but now using Human Phenotype Ontology:
+
+```shell
+./get_entities.sh "$text" hp
+```
+
+you will get the following output: 
+
+```txt
+348	354	asthma	http://purl.obolibrary.org/obo/HP_0002099
+359	363	COPD	http://purl.obolibrary.org/obo/HP_0006510
+496	500	COPD	http://purl.obolibrary.org/obo/HP_0006510
+504	510	asthma	http://purl.obolibrary.org/obo/HP_0002099
+1059	1064	cough	http://purl.obolibrary.org/obo/HP_0012735
+1066	1076	bronchitis	http://purl.obolibrary.org/obo/HP_0012387
+1095	1101	asthma	http://purl.obolibrary.org/obo/HP_0002099
+1105	1112	chronic	http://purl.obolibrary.org/obo/HP_0011010
+1316	1320	acne	http://purl.obolibrary.org/obo/HP_0001061
+1527	1532	acute	http://purl.obolibrary.org/obo/HP_0011009
+1918	1923	acute	http://purl.obolibrary.org/obo/HP_0011009
+1924	1929	cough	http://purl.obolibrary.org/obo/HP_0012735
+2015	2025	bronchitis	http://purl.obolibrary.org/obo/HP_0012387
+2150	2155	acute	http://purl.obolibrary.org/obo/HP_0011009
+1173	1185	otitis media	http://purl.obolibrary.org/obo/HP_0000388
+2156	2168	otitis media	http://purl.obolibrary.org/obo/HP_0000388
+1105	1142	chronic obstructive pulmonary disease	http://purl.obolibrary.org/obo/HP_0006510
+1193	1220	respiratory tract infection	http://purl.obolibrary.org/obo/HP_0011947
+1228	1255	respiratory tract infection	http://purl.obolibrary.org/obo/HP_0011947
+1281	1304	urinary tract infection	http://purl.obolibrary.org/obo/HP_0000010
+```
+
 
 ## Test
 
