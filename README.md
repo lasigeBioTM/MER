@@ -96,11 +96,13 @@ The output will be a TSV looking like this:
 48	79	nicotinic acid D-ribonucleotide	http://purl.obolibrary.org/obo/CHEBI_15763
 ```
 
-## Ontology and PubMed
+## Ontologies and PubMed
 
 Now, lets recognize and map terms from an ontology in PubMed abstracts.
 
-For example, you can start by downloading the human disease ontology:
+### DOID (Human Disease Ontology):
+
+For example, you can start by downloading the Human Disease Ontology:
 
 ```shell 
 (cd data; wget https://raw.githubusercontent.com/DiseaseOntology/HumanDiseaseOntology/master/src/ontology/doid.owl)
@@ -165,8 +167,6 @@ urinary tract infection                 http://purl.obolibrary.org/obo/DOID_1314
 
 For example, you can now use these IDs to calculate their semantic similarity using [DiShIn](https://github.com/lasigeBioTM/DiShIn)
 
-## Other Ontologies 
-
 ### ChEBI (Chemical Entities of Biological Interest)
 ```shell 
 (cd data; wget ftp://ftp.ebi.ac.uk/pub/databases/chebi/ontology/chebi_lite.owl)
@@ -187,7 +187,7 @@ you will get the following output:
 48	79	nicotinic acid D-ribonucleotide	http://purl.obolibrary.org/obo/CHEBI_15763
 ```
 
-## HP (Human Phenotype Ontology)
+### HP (Human Phenotype Ontology)
 
 ```shell
 (cd data; wget http://purl.obolibrary.org/obo/hp.owl)
@@ -223,7 +223,6 @@ you will get the following output:
 1228	1255	respiratory tract infection	http://purl.obolibrary.org/obo/HP_0011947
 1281	1304	urinary tract infection	http://purl.obolibrary.org/obo/HP_0000010
 ```
-
 
 ## Test
 
