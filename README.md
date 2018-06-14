@@ -36,7 +36,7 @@ nicotinic acid D-ribonucleotide
 nicotinic acid-adenine dinucleotide phosphate
 ```
 
-Assuming that the file is called "lexicon.txt", you process it as follows:
+Assuming that the file is called __lexicon.txt__, you process it as follows:
 
 ```shell
 (cd data; ../produce_data_files.sh lexicon.txt)
@@ -56,19 +56,45 @@ The script receives as input a text and a lexicon:
 So, let's try to find mentions in a snippet of text:
 
 ```shell
-./get_entities.sh 'α-maltose and nicotinic acid D-ribonucleotide was found, but not nicotinic acid' lexicon
+./get_entities.sh 'α-maltose and nicotinic acid was found, but not nicotinic acid D-ribonucleotide' lexicon
 ```
 
 The output will be a TSV looking like this:
 
 ```tsv
 0       9       α-maltose
-14      28      nicotinic acid
-65      79      nicotinic acid
-14      45      nicotinic acid D-ribonucleotide
+14	28	nicotinic acid
+48	62	nicotinic acid
+48	79	nicotinic acid D-ribonucleotide
 ```
 
 The first column corresponds to the start-index, the second to the end-index and the third to the annotated term.
+
+## Linking Entities
+
+If you create a links file named __lexicon_links.tsv__ in the _data_ folder associating each label with an URI:
+
+```txt
+α-maltose	http://purl.obolibrary.org/obo/CHEBI_18167
+nicotinic acid	http://purl.obolibrary.org/obo/CHEBI_15940
+nicotinic acid d-ribonucleotide	http://purl.obolibrary.org/obo/CHEBI_15763
+nicotinic acid-adenine dinucleotide phosphate	http://purl.obolibrary.org/obo/CHEBI_76072
+```
+
+Then the mentions in a snippet of text will be associated to the respective identifier:
+
+```shell
+./get_entities.sh 'α-maltose and nicotinic acid was found, but not nicotinic acid D-ribonucleotide' lexicon
+```
+
+The output will be a TSV looking like this:
+
+```tsv
+0	9	α-maltose	http://purl.obolibrary.org/obo/CHEBI_18167
+14	28	nicotinic acid	http://purl.obolibrary.org/obo/CHEBI_15940
+48	62	nicotinic acid	http://purl.obolibrary.org/obo/CHEBI_15940
+48	79	nicotinic acid D-ribonucleotide	http://purl.obolibrary.org/obo/CHEBI_15763
+```
 
 ## Ontology and PubMed
 

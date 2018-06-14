@@ -180,9 +180,9 @@ get_entities_source () {
 		declare text=$(sed "s/[^[:alnum:][:space:]()]/./g" <<< "$label") # Replace special characters
 		text=$(sed -e 's/[[:space:]()@]\+/ /g' <<< $text) # remove multiple whitespace
 		text=$(sed -e 's/\.$//' -e 's/\. / /g' <<< $text) # remove full stops
-		text=$(tr '[:upper:]' '[:lower:]' <<< "$text") # Make text lowercase so the system is case insensitive
-		
-		link=$(grep -m 1 "^$text" "$source"_links.tsv | cut -f2)
+		text=$(tr '[:upper:]' '[:lower:]' <<< $text) # Make text lowercase so the system is case insensitive
+		text=$(sed -e 's/^ *//' -e 's/ *$//' <<< $text) # Remove leading and trailing whitespace
+		link=$(egrep -m 1 "^$text"$'\t' "$source"_links.tsv | cut -f2)
 		echo -e "$line\t$link"
 	    done <<< $result
 	else 
