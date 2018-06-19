@@ -75,10 +75,10 @@ The first column corresponds to the start-index, the second to the end-index and
 If you create a links file named __lexicon_links.tsv__ in the _data_ folder associating each label with an URI:
 
 ```txt
-α-maltose	http://purl.obolibrary.org/obo/CHEBI_18167
-nicotinic acid	http://purl.obolibrary.org/obo/CHEBI_15940
-nicotinic acid d-ribonucleotide	http://purl.obolibrary.org/obo/CHEBI_15763
-nicotinic acid-adenine dinucleotide phosphate	http://purl.obolibrary.org/obo/CHEBI_76072
+α-maltose                                       http://purl.obolibrary.org/obo/CHEBI_18167
+nicotinic acid                                  http://purl.obolibrary.org/obo/CHEBI_15940
+nicotinic acid d-ribonucleotide                 http://purl.obolibrary.org/obo/CHEBI_15763
+nicotinic acid-adenine dinucleotide phosphate   http://purl.obolibrary.org/obo/CHEBI_76072
 ```
 
 Then the mentions in a snippet of text will be associated to the respective identifier:
@@ -90,10 +90,10 @@ Then the mentions in a snippet of text will be associated to the respective iden
 The output will be a TSV looking like this:
 
 ```tsv
-0	9	α-maltose	http://purl.obolibrary.org/obo/CHEBI_18167
-14	28	nicotinic acid	http://purl.obolibrary.org/obo/CHEBI_15940
-48	62	nicotinic acid	http://purl.obolibrary.org/obo/CHEBI_15940
-48	79	nicotinic acid D-ribonucleotide	http://purl.obolibrary.org/obo/CHEBI_15763
+0       9       α-maltose                       http://purl.obolibrary.org/obo/CHEBI_18167
+14      28      nicotinic acid                  http://purl.obolibrary.org/obo/CHEBI_15940
+48      62      nicotinic acid                  http://purl.obolibrary.org/obo/CHEBI_15940
+48      79      nicotinic acid D-ribonucleotide http://purl.obolibrary.org/obo/CHEBI_15763
 ```
 
 ## Ontologies and PubMed
@@ -180,10 +180,10 @@ For example, you can now use these IDs to calculate their semantic similarity us
 you will get the following output: 
 
 ```txt
-24	28	acid	http://purl.obolibrary.org/obo/CHEBI_37527
-58	62	acid	http://purl.obolibrary.org/obo/CHEBI_37527
-14	28	nicotinic acid	http://purl.obolibrary.org/obo/CHEBI_15940
-48	62	nicotinic acid	http://purl.obolibrary.org/obo/CHEBI_15940
+24	28	acid				http://purl.obolibrary.org/obo/CHEBI_37527
+58	62	acid				http://purl.obolibrary.org/obo/CHEBI_37527
+14	28	nicotinic acid			http://purl.obolibrary.org/obo/CHEBI_15940
+48	62	nicotinic acid			http://purl.obolibrary.org/obo/CHEBI_15940
 48	79	nicotinic acid D-ribonucleotide	http://purl.obolibrary.org/obo/CHEBI_15763
 ```
 
@@ -202,26 +202,26 @@ Now executing MER for the same abstracts downloaded in the steps above when usin
 you will get the following output: 
 
 ```txt
-348	354	asthma	http://purl.obolibrary.org/obo/HP_0002099
-359	363	COPD	http://purl.obolibrary.org/obo/HP_0006510
-496	500	COPD	http://purl.obolibrary.org/obo/HP_0006510
-504	510	asthma	http://purl.obolibrary.org/obo/HP_0002099
-1059	1064	cough	http://purl.obolibrary.org/obo/HP_0012735
-1066	1076	bronchitis	http://purl.obolibrary.org/obo/HP_0012387
-1095	1101	asthma	http://purl.obolibrary.org/obo/HP_0002099
-1105	1112	chronic	http://purl.obolibrary.org/obo/HP_0011010
-1316	1320	acne	http://purl.obolibrary.org/obo/HP_0001061
-1527	1532	acute	http://purl.obolibrary.org/obo/HP_0011009
-1918	1923	acute	http://purl.obolibrary.org/obo/HP_0011009
-1924	1929	cough	http://purl.obolibrary.org/obo/HP_0012735
-2015	2025	bronchitis	http://purl.obolibrary.org/obo/HP_0012387
-2150	2155	acute	http://purl.obolibrary.org/obo/HP_0011009
-1173	1185	otitis media	http://purl.obolibrary.org/obo/HP_0000388
-2156	2168	otitis media	http://purl.obolibrary.org/obo/HP_0000388
-1105	1142	chronic obstructive pulmonary disease	http://purl.obolibrary.org/obo/HP_0006510
-1193	1220	respiratory tract infection	http://purl.obolibrary.org/obo/HP_0011947
-1228	1255	respiratory tract infection	http://purl.obolibrary.org/obo/HP_0011947
-1281	1304	urinary tract infection	http://purl.obolibrary.org/obo/HP_0000010
+348     354     asthma                                  http://purl.obolibrary.org/obo/HP_0002099
+359     363     COPD                                    http://purl.obolibrary.org/obo/HP_0006510
+496     500     COPD                                    http://purl.obolibrary.org/obo/HP_0006510
+504     510     asthma                                  http://purl.obolibrary.org/obo/HP_0002099
+1059    1064    cough                                   http://purl.obolibrary.org/obo/HP_0012735
+1066    1076    bronchitis                              http://purl.obolibrary.org/obo/HP_0012387
+1095    1101    asthma                                  http://purl.obolibrary.org/obo/HP_0002099
+1105    1112    chronic                                 http://purl.obolibrary.org/obo/HP_0011010
+1316    1320    acne                                    http://purl.obolibrary.org/obo/HP_0001061
+1527    1532    acute                                   http://purl.obolibrary.org/obo/HP_0011009
+1918    1923    acute                                   http://purl.obolibrary.org/obo/HP_0011009
+1924    1929    cough                                   http://purl.obolibrary.org/obo/HP_0012735
+2015    2025    bronchitis                              http://purl.obolibrary.org/obo/HP_0012387
+2150    2155    acute                                   http://purl.obolibrary.org/obo/HP_0011009
+1173    1185    otitis media                            http://purl.obolibrary.org/obo/HP_0000388
+2156    2168    otitis media                            http://purl.obolibrary.org/obo/HP_0000388
+1105    1142    chronic obstructive pulmonary disease   http://purl.obolibrary.org/obo/HP_0006510
+1193    1220    respiratory tract infection             http://purl.obolibrary.org/obo/HP_0011947
+1228    1255    respiratory tract infection             http://purl.obolibrary.org/obo/HP_0011947
+1281    1304    urinary tract infection                 http://purl.obolibrary.org/obo/HP_0000010
 ```
 
 ## Test
