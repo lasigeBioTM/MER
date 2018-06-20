@@ -37,7 +37,7 @@ if [[ $1 = *".owl" ]]; then
 
     cat <<< $classes | while read class
     do
-	uri=$(egrep -o 'Class *rdf:about="[^"]*' <<< $class | sed 's/^rdf:about="//')
+	uri=$(egrep -o 'Class *rdf:about="[^"]*' <<< $class | sed 's/^Class *rdf:about="//')
 	if [[ ! -z $uri ]]; then 
 	    for tag in "rdfs:label" "oboInOwl:hasExactSynonym" "oboInOwl:hasRelatedSynonym"; do 
 		labels=$(egrep -o ">[^<]*</$tag>" <<< $class | sed "s/<\/$tag>//" | sed 's/>//' | tr '[:upper:]' '[:lower:]' )
