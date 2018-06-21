@@ -33,7 +33,7 @@ filename=${1%.*}
 
 if [[ $1 = *".owl" ]]; then
 
-    classes=$(tr '\n' ' ' < $1 | sed -e 's/<owl:Class/\n<owl:Class/g' | grep '<owl:Class')
+    classes=$(tr '\n' ' ' < $1 | sed -e 's/<owl:Class rdf:about/\n<owl:Class rdf:about/g' | grep '<owl:Class rdf:about')
 
     cat <<< $classes | while read class
     do
