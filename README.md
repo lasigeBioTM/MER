@@ -191,7 +191,7 @@ you will get the following output:
 
 ```shell
 (cd data; wget http://purl.obolibrary.org/obo/hp.owl)
-(cd data; ../produce_data_files.sh chebi_lite.owl)
+(cd data; ../produce_data_files.sh hp.owl)
 ```
 Now executing MER for the same abstracts downloaded in the steps above when using the Disease Ontology but now using Human Phenotype Ontology:
 
