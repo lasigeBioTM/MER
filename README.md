@@ -5,7 +5,12 @@ terms recognized in the text, including their exact location (annotations).
 
 Given an ontology (owl file) MER is also able to link the entities to their classes.
 
-More information about MER can be found in https://www.researchgate.net/publication/316545534_MER_a_Minimal_Named-Entity_Recognition_Tagger_and_Annotation_Server
+More information about MER can be found in:
+- MER: a Shell Script and Annotation Server for Minimal Named Entity Recognition and Linking, 2018
+[http://doi.org/10.13140/RG.2.2.29900.46727]
+- MER: a Minimal Named-Entity Recognition Tagger and Annotation Server, 2017
+[https://www.researchgate.net/publication/316545534_MER_a_Minimal_Named-Entity_Recognition_Tagger_and_Annotation_Server]
+
 
 A demo is also available at: http://labs.fc.ul.pt/mer/
 
