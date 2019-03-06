@@ -77,7 +77,7 @@ The first column corresponds to the start-index, the second to the end-index and
 
 ## Linking Entities
 
-If you create a links file named __lexicon_links.tsv__ in the _data_ folder associating each label with an URI:
+If you create a links file named __lexicon_links.tsv__ in the _data_ folder associating each label (in lower case) with an URI:
 
 ```txt
 α-maltose                                       http://purl.obolibrary.org/obo/CHEBI_18167
