@@ -14,6 +14,9 @@ More information about MER can be found in:
 
 A demo is also available at: http://labs.fc.ul.pt/mer/
 
+** **NEW** ** Python interface: https://github.com/lasigeBioTM/merpy/
+
+
 ## Dependencies
 
 ### awk
