@@ -176,8 +176,8 @@ get_entities_source () {
 	if [ -e "$source"_links.tsv ]; then
 	    while read line
 	    do
-		declare label=$(sed -e 's/^[0-9 \t]*//' <<< $line) 
-		
+		#declare label=$(sed -e 's/^[0-9 \t]*//' <<< $line) 
+		declare label=$(cut -d$'\t' -f3- <<< $line)
 		declare text=$(sed "s/[^[:alnum:][:space:]()]/./g" <<< "$label") # Replace special characters
 		text=$(sed -e 's/[[:space:]()@]\+/ /g' <<< $text) # remove multiple whitespace
 		text=$(sed -e 's/\.$//' -e 's/\. / /g' <<< $text) # remove full stops
