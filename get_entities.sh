@@ -25,6 +25,7 @@
 
 # set -x #debug
 use_stopwords=1
+min_firstword=5 #min number of alpha chars in first word
 stopwords=stopwords.txt
 
 OIFS=$IFS
@@ -141,7 +142,7 @@ get_entities_source_words () {
 	if [ ${#piped_pair_text} -ge 2 ]; then
 		# finds the two-first-word matches
 		local matches
-		matches=$(egrep '^('"$piped_pair_text"')$' "$labels2" | egrep '[[:alpha:]]{5,}' | tr '\n' '|' | sed 's/|[[:space:]]*$//' )
+		matches=$(egrep '^('"$piped_pair_text"')$' "$labels2" | egrep '[[:alpha:]]{'$min_firstword',}' | tr '\n' '|' | sed 's/|[[:space:]]*$//' )
         if [ ${#matches} -ge 2 ]; then
             # finds the more-words matches based on the previous matches
 			local fullmatches
