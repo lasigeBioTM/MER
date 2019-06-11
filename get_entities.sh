@@ -25,8 +25,8 @@
 
 # set -x #debug
 use_stopwords=1
-remove_fullstops=1
-min_firstword=5 #min number of alpha chars in first word
+remove_fullstops=0
+min_firstword=3 #min number of alpha chars in first word
 stopwords=stopwords.txt
 
 OIFS=$IFS
