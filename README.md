@@ -14,7 +14,9 @@ More information about MER can be found in:
 
 A demo is also available at: http://labs.fc.ul.pt/mer/
 
-** **NEW** ** Python interface: https://github.com/lasigeBioTM/merpy/
+** **NEW** **
+- Python interface: https://github.com/lasigeBioTM/merpy/
+- get_similarities.sh finds the most similar term also recognized (see https://github.com/lasigeBioTM/MER#Similarity)
 
 
 ## Dependencies
@@ -241,5 +243,27 @@ To check if the result is what was expected try:
 ```
 
 if something is wrong, please check if you are using UTF-8 encoding and that you have GNU awk and grep installed. 
+
+## Similarity
+
+First install DiShIn: https://github.com/lasigeBioTM/DiShIn 
+
+Before executing the _get_similarity_ script you need to select the following parameters:
+- Measure: Resnik, Lin or JC
+- Type: MICA or DiShIn
+- Path to DiShIn installation folder
+- Database: DiShIn db file with the ontology, e.g. chebi.db, go.db, hp.db, doid.db, radlex.db, or wordnet.db  
+
+Then, just execute the _get_similarity_ script using the output of the _get_entities_ script
+```shell
+./get_entities.sh "α-maltose and nicotinic acid was found, but not nicotinic acid D-ribonucleotide" lexicon | ./get_similarity.sh Lin DiShIn ../DiShIn chebi.db
+```
+
+```txt
+0       9       α-maltose       http://purl.obolibrary.org/obo/CHEBI_18167      CHEBI_15940     0.0268150423345
+14      28      nicotinic acid  http://purl.obolibrary.org/obo/CHEBI_15940      CHEBI_15763     0.0694767383119
+48      62      nicotinic acid  http://purl.obolibrary.org/obo/CHEBI_15940      CHEBI_15763     0.0694767383119
+48      79      nicotinic acid D-ribonucleotide http://purl.obolibrary.org/obo/CHEBI_15763      CHEBI_15940     0.0694767383119
+```
 
 
