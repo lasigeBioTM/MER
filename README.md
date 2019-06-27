@@ -1,4 +1,4 @@
-[![Github All Releases](https://img.shields.io/github/downloads/atom/atom/total.svg)]()
+[![GitHub stars](https://img.shields.io/github/stars/lasigeBioTM/MER.svg)](https://github.com/lasigeBioTM/MER/stargazers)
 
 # MER (Minimal Named-Entity Recognizer)
 
