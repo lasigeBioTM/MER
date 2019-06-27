@@ -1,3 +1,5 @@
+[![Github All Releases](https://img.shields.io/github/downloads/atom/atom/total.svg)]()
+
 # MER (Minimal Named-Entity Recognizer)
 
 MER is a Named-Entity Recognition tool which given any lexicon and any input text returns the list of 
