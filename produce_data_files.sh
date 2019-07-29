@@ -31,28 +31,36 @@ max_entity_size_digit=5
 
 filename=${1%.*}
 
-if [[ $1 = *".owl" ]]; then
+if [[ $1 = *".owl" ]] || [[ $1 == 'radlex.rdf' ]]; then
 
-    classes=$(tr '\n' ' ' < $1 | sed -e 's/<owl:Class rdf:about/\n<owl:Class rdf:about/g' | grep '<owl:Class rdf:about')
-
-    cat <<< $classes | while read class
-    do
-	uri=$(egrep -o 'Class *rdf:about="[^"]*' <<< $class | sed 's/^Class *rdf:about="//')
-	if [[ ! -z $uri ]]; then 
-	    for tag in "rdfs:label" "oboInOwl:hasExactSynonym" "oboInOwl:hasRelatedSynonym"; do 
-		labels=$(egrep -o ">[^<]*</$tag>" <<< $class | sed "s/<\/$tag>//" | sed 's/>//' | tr '[:upper:]' '[:lower:]' )
-		cat <<< $labels | while read label  
-		do if [[ ! -z $label ]]; then
-		       echo -e "$label\t$uri";
-		   fi
-		done
-	    done
-	fi
-    done | sort -k1,1 -t$'\t' | uniq > $filename\_links.tsv
-
+    if [[ $1 = *".owl" ]]; then
+	labels=$(grep -F -e 'owl:Class rdf:about' -e 'rdfs:label' -e 'oboInOwl:hasExactSynonym' -e 'oboInOwl:hasRelatedSynonym'  $1  | \
+		     tr '\n' ' ' | \
+		     sed -e 's/<owl:Class/\n<owl:Class/g'  | \
+		     grep '^<owl:Class' | \
+		     sed 's/rdf:about="\([^"]*\)"/>\1</' | \
+		     awk -F'[<>]' '{for(i=NF-2;i>4;i=i-4)printf "%s\t%s \n",$i,$3;}')
+    else #radlex.rdf
+	labels=$(grep -F -e 'rdf:about' -e 'Preferred_name xml:lang="en"'  $1  | \
+		     tr '\n' ' ' | \
+		     sed -e 's/rdf:about/\n<rdf:about/g'  | \
+		     grep '^<rdf:about' | \
+		     sed 's/rdf:about="\([^"]*\)"/>\1</' | \
+		     awk -F'[<>]' '{for(i=NF-3;i>4;i=i-4)printf "%s\t%s \n",$i,$3;}')
+    fi
+    
+    echo "$labels" | sed -r 's/([^\t]+)/\L\1/' | sort -k1,1 -t$'\t' | uniq > $filename\_links.tsv
+    
     cut -f1 $filename\_links.tsv > $filename.txt 
-fi
 
+elif [[ $1 == 'wordnet-hyponym.rdf' ]]; then
+    grep -F '<rdf:Description rdf:about' $1 | \
+	sed 's/^.*synset-//' | \
+	sed 's/-[^-]*-[0-9]*".*$//' | \
+	tr '_' ' '  | \
+	tr '[:upper:]' '[:lower:]' > $filename.txt 
+fi
+    
 egrep "[[:alpha:]]{$min_entity_size_alpha,}" $filename.txt >  $filename.aux1
 egrep -v "[[:digit:]]{$max_entity_size_digit,}" $filename.aux1 >  $filename.aux2
 
