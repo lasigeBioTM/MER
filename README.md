@@ -397,7 +397,7 @@ The output now includes for each match the most similar term and its similarity:
 ##  Processed Lexicons
 ```shell
 cd data
-wget http://labs.rd.ciencias.ulisboa.pt/mer/data/lexicons201707.tgz
+wget http://labs.rd.ciencias.ulisboa.pt/mer/data/lexicons201907.tgz
 tar -xzf data2017.tgz
 cd ..
 ```
