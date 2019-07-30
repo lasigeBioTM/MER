@@ -115,7 +115,7 @@ The output will be a TSV looking like this:
 ```
 
 ## PubMed
-Download an abstract from PubMed, for example ([31319702](https://www.ncbi.nlm.nih.gov/pubmed/31319702):
+Download an abstract from PubMed, for example [31319702](https://www.ncbi.nlm.nih.gov/pubmed/31319702):
 
 ```shell
 text=$(curl -s "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=31319702&retmode=text&rettype=xml" | xmllint --xpath '//AbstractText/text()' /dev/stdin)
@@ -147,7 +147,7 @@ Process it:
 (cd data; ../produce_data_files.sh go.owl)
 ```
 
-Now, download an abstract from PubMed, for example ([31351426](https://www.ncbi.nlm.nih.gov/pubmed/31351426):
+Now, download an abstract from PubMed, for example [31351426](https://www.ncbi.nlm.nih.gov/pubmed/31351426):
 ```shell
 text=$(curl -s "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=31351426&retmode=text&rettype=xml" | xmllint --xpath '//AbstractText/text()' /dev/stdin)
 ```
@@ -192,7 +192,7 @@ Process it:
 (cd data; ../produce_data_files.sh chebi_lite.owl)
 ```
 
-Download an abstract from PubMed, for example ([31319702](https://www.ncbi.nlm.nih.gov/pubmed/31319702):
+Download an abstract from PubMed, for example [31319702](https://www.ncbi.nlm.nih.gov/pubmed/31319702):
 ```shell
 text=$(curl -s "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=31319702&retmode=text&rettype=xml" | xmllint --xpath '//AbstractText/text()' /dev/stdin)
 ```
@@ -244,7 +244,7 @@ Process it:
 (cd data; ../produce_data_files.sh hp.owl)
 ```
 
-Download an abstract from PubMed, for example ([29490421](https://www.ncbi.nlm.nih.gov/pubmed/29490421):
+Download an abstract from PubMed, for example [29490421](https://www.ncbi.nlm.nih.gov/pubmed/29490421):
 ```shell
 text=$(curl -s "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=29490421&retmode=text&rettype=xml" | xmllint --xpath '//AbstractText/text()' /dev/stdin)
 ```
@@ -275,7 +275,7 @@ Process it:
 (cd data; ../produce_data_files.sh doid.owl)
 ```
 
-Download an abstract from PubMed, for example ([29490421](https://www.ncbi.nlm.nih.gov/pubmed/29490421):
+Download an abstract from PubMed, for example [29490421](https://www.ncbi.nlm.nih.gov/pubmed/29490421):
 ```shell
 text=$(curl -s "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=29490421&retmode=text&rettype=xml" | xmllint --xpath '//AbstractText/text()' /dev/stdin)
 ```
@@ -299,10 +299,10 @@ Download the RDF/XML version from http://bioportal.bioontology.org/ontologies/RA
 
 Process it:
 ```shell
-(cd data; ../produce_data_files.sh radlex.owl)
+(cd data; ../produce_data_files.sh radlex.rdf)
 ```
 
-Download an abstract from PubMed, for example ([29490421](https://www.ncbi.nlm.nih.gov/pubmed/29490421):
+Download an abstract from PubMed, for example [29490421](https://www.ncbi.nlm.nih.gov/pubmed/29490421):
 ```shell
 text=$(curl -s "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=29490421&retmode=text&rettype=xml" | xmllint --xpath '//AbstractText/text()' /dev/stdin)
 ```
@@ -333,7 +333,7 @@ Process it:
 (cd data; ../produce_data_files.sh wordnet-hyponym.rdf)
 ```
 
-Download an abstract from PubMed, for example ([29490421](https://www.ncbi.nlm.nih.gov/pubmed/29490421):
+Download an abstract from PubMed, for example [29490421](https://www.ncbi.nlm.nih.gov/pubmed/29490421):
 ```shell
 text=$(curl -s "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=29490421&retmode=text&rettype=xml" | xmllint --xpath '//AbstractText/text()' /dev/stdin)
 ```
