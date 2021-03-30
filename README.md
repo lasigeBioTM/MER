@@ -139,7 +139,7 @@ The output should be something like this:
 
 Download the ontology:
 ```shell 
-(cd data; wget http://purl.obolibrary.org/obo/go.owl)
+(cd data; curl -L -O http://purl.obolibrary.org/obo/go.owl)
 ```
 
 Process it:
@@ -184,7 +184,7 @@ The output should be something like this:
 
 Download the ontology:
 ```shell 
-(cd data; wget ftp://ftp.ebi.ac.uk/pub/databases/chebi/ontology/chebi_lite.owl)
+(cd data; curl -L -O ftp://ftp.ebi.ac.uk/pub/databases/chebi/ontology/chebi_lite.owl)
 ```
 
 Process it:
@@ -236,7 +236,7 @@ The output should be something like this:
 
 Download the ontology:
 ```shell 
-(cd data; wget http://purl.obolibrary.org/obo/hp.owl)
+(cd data; curl -L -O http://purl.obolibrary.org/obo/hp.owl)
 ```
 
 Process it:
@@ -267,7 +267,7 @@ The output should be something like this:
 
 Download the ontology:
 ```shell 
-(cd data; wget http://purl.obolibrary.org/obo/doid.owl)
+(cd data; curl -L -O http://purl.obolibrary.org/obo/doid.owl)
 ```
 
 Process it:
@@ -325,7 +325,7 @@ The output should be something like this:
 
 Download the ontology:
 ```shell 
-(cd data; wget http://www.w3.org/2006/03/wn/wn20/rdf/wordnet-hyponym.rdf)
+(cd data; curl -L -O http://www.w3.org/2006/03/wn/wn20/rdf/wordnet-hyponym.rdf)
 ```
 
 Process it:
@@ -397,7 +397,7 @@ The output now includes for each match the most similar term and its similarity:
 ##  Processed Lexicons
 ```shell
 cd data
-wget http://labs.rd.ciencias.ulisboa.pt/mer/data/lexicons202005.tgz
+curl -L -O http://labs.rd.ciencias.ulisboa.pt/mer/data/lexicons202005.tgz
 tar -xzf lexicons202005.tgz
 cd ..
 ```
@@ -406,7 +406,7 @@ cd ..
 
 ```shell
 cd data
-wget http://labs.rd.ciencias.ulisboa.pt/mer/data/becalm2017.tgz
+curl -L -O http://labs.rd.ciencias.ulisboa.pt/mer/data/becalm2017.tgz
 tar -xzf data2017.tgz
 tar -tzf data2017.tgz | xargs -l ../produce_data_files.sh
 cd ..
