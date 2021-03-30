@@ -411,28 +411,31 @@ Recognize the entities in the abstract:
 
 The output should be something like this:
 ```txt
-4       11      article 
-50      53      dry     
-54      60      powder  
-91      95      data    
-192     196     well    
-288     291     may     
-292     301     influence       
-306     314     efficacy        
-319     325     safety  
-329     336     inhaler 
-337     344     therapy 
-348     354     asthma  
-381     384     use     
-423     432     potential       
-448     456     efficacy        
-460     467     inhaler 
-468     475     therapy 
-485     491     doctor  
-504     510     asthma  
-511     518     patient 
-556     562     choice  
-563     572     algorithm       
+4       11      article
+50      53      dry
+54      60      powder
+91      95      data
+105     115     literature
+192     196     well
+288     291     may
+292     301     influence
+306     314     efficacy
+319     325     safety
+329     336     inhaler
+337     344     therapy
+348     354     asthma
+381     384     use
+396     404     addition
+423     432     potential
+448     456     efficacy
+460     467     inhaler
+468     475     therapy
+485     491     doctor
+504     510     asthma
+511     518     patient
+519     530     perspective
+556     562     choice
+563     572     algorithm
 587     594     patient
 ```
 
