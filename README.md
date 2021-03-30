@@ -10,6 +10,7 @@ Given an ontology (owl file) MER is also able to link the entities to their clas
 A demo is also available at: http://labs.fc.ul.pt/mer/
 
 ** **NEW** **
+- Package lexicons202103.tgz is available
 - Multilingual lexicons using DeCS
 - Python interface: https://github.com/lasigeBioTM/merpy/
 - get_similarities.sh finds the most similar term also recognized (see https://github.com/lasigeBioTM/MER#Similarity)
@@ -463,7 +464,7 @@ The output now includes for each match the most similar term and its similarity:
 ```shell
 cd data
 curl -L -O http://labs.rd.ciencias.ulisboa.pt/mer/data/lexicons202103.tgz
-tar -xzf lexicons202003.tgz
+tar -xzf lexicons202103.tgz
 cd ..
 ```
 
