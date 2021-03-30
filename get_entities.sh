@@ -25,7 +25,6 @@
 
 # set -x #debug
 use_stopwords=1
-remove_fullstops=0
 min_firstword=3 #min number of alpha chars in first word
 stopwords=stopwords.txt
 
@@ -42,13 +41,13 @@ if [[ -z $original_text || -z $data_source ]]; then
 	exit
 fi
 
+
 # Pre-process the input text
 declare text=$(tr '[:upper:]' '[:lower:]' <<< "$original_text") # Make text lowercase so the system is case insensitive
+text=$(sed "s/[:,.;-\(\)]/ /g" <<< "$text") # Replace word delimiters by a space 
 text=$(sed "s/[^[:alnum:][:space:]()]/./g" <<< "$text") # Replace special characters
 text=$(sed -e 's/[[:space:]()@]\+/ /g' <<< $text) # remove multiple whitespace
-if [ $remove_fullstops -eq 1 ]; then
-    text=$(sed -e 's/\.$//' -e 's/\. / /g' <<< $text) # remove full stops
-fi
+# text=$(sed -e 's/\.$//' -e 's/\. / /g' <<< $text) # remove special characters at the end of word
 if [ $use_stopwords -eq 1 ]; then
     text=$(tr ' ' '\n' <<< $text | grep -v -w -f $stopwords | tr '\n' ' ') # Remove stopwords
 fi

@@ -10,6 +10,7 @@ Given an ontology (owl file) MER is also able to link the entities to their clas
 A demo is also available at: http://labs.fc.ul.pt/mer/
 
 ** **NEW** **
+- Multilingual lexicons using DeCS
 - Python interface: https://github.com/lasigeBioTM/merpy/
 - get_similarities.sh finds the most similar term also recognized (see https://github.com/lasigeBioTM/MER#Similarity)
 
@@ -72,10 +73,10 @@ So, let's try to find mentions in a snippet of text:
 The output will be a TSV looking like this:
 
 ```tsv
-0       9       α-maltose
-14	28	nicotinic acid
-48	62	nicotinic acid
-48	79	nicotinic acid D-ribonucleotide
+0         9       α-maltose
+14        28        nicotinic acid
+48        62        nicotinic acid
+48        79        nicotinic acid D-ribonucleotide
 ```
 
 The first column corresponds to the start-index, the second to the end-index and the third to the annotated term.
@@ -159,32 +160,34 @@ Recognize the entities in the abstract:
 
 The output should be something like this:
 ```txt
-185            198            fertilization  http://purl.obolibrary.org/obo/GO_0009566 
-289            298            signaling      http://purl.obolibrary.org/obo/GO_0023052 
-1162           1171           signaling      http://purl.obolibrary.org/obo/GO_0023052 
-1285           1294           signaling      http://purl.obolibrary.org/obo/GO_0023052 
-1552           1561           signaling      http://purl.obolibrary.org/obo/GO_0023052 
-1867           1876           signaling      http://purl.obolibrary.org/obo/GO_0023052 
-1989           2001           pathogenesis   http://purl.obolibrary.org/obo/GO_0009405 
-289            306            signaling pathway             http://purl.obolibrary.org/obo/GO_0007165 
-1162           1179           signaling pathway             http://purl.obolibrary.org/obo/GO_0007165 
-1285           1302           signaling pathway             http://purl.obolibrary.org/obo/GO_0007165 
-1303           1318           gene expression               http://purl.obolibrary.org/obo/GO_0010467 
-1552           1569           signaling pathway             http://purl.obolibrary.org/obo/GO_0007165 
-1661           1682           inflammatory response         http://purl.obolibrary.org/obo/GO_0006954 
-1867           1884           signaling pathway             http://purl.obolibrary.org/obo/GO_0007165 
-284            306            PPAR signaling pathway        http://purl.obolibrary.org/obo/GO_0035357 
-1157           1179           PPAR signaling pathway        http://purl.obolibrary.org/obo/GO_0035357 
-1280           1302           PPAR signaling pathway        http://purl.obolibrary.org/obo/GO_0035357 
-1547           1569           PPAR signaling pathway        http://purl.obolibrary.org/obo/GO_0035357 
-1862           1884           PPAR signaling pathway        http://purl.obolibrary.org/obo/GO_0035357 
+185       198       fertilization          http://purl.obolibrary.org/obo/GO_0009566 
+289       298       signaling              http://purl.obolibrary.org/obo/GO_0023052 
+1162      1171      signaling              http://purl.obolibrary.org/obo/GO_0023052 
+1285      1294      signaling              http://purl.obolibrary.org/obo/GO_0023052 
+1552      1561      signaling              http://purl.obolibrary.org/obo/GO_0023052 
+1649      1659      metabolism             http://purl.obolibrary.org/obo/GO_0008152 
+1867      1876      signaling              http://purl.obolibrary.org/obo/GO_0023052 
+1989      2001      pathogenesis           http://purl.obolibrary.org/obo/GO_0009405 
+289       306       signaling pathway      http://purl.obolibrary.org/obo/GO_0007165 
+1162      1179      signaling pathway      http://purl.obolibrary.org/obo/GO_0007165 
+1285      1302      signaling pathway      http://purl.obolibrary.org/obo/GO_0007165 
+1303      1318      gene expression        http://purl.obolibrary.org/obo/GO_0010467 
+1552      1569      signaling pathway      http://purl.obolibrary.org/obo/GO_0007165 
+1641      1659      glucose metabolism     http://purl.obolibrary.org/obo/GO_0006006 
+1661      1682      inflammatory response  http://purl.obolibrary.org/obo/GO_0006954 
+1867      1884      signaling pathway      http://purl.obolibrary.org/obo/GO_0007165 
+284       306       PPAR signaling pathway http://purl.obolibrary.org/obo/GO_0035357 
+1157      1179      PPAR signaling pathway http://purl.obolibrary.org/obo/GO_0035357 
+1280      1302      PPAR signaling pathway http://purl.obolibrary.org/obo/GO_0035357 
+1547      1569      PPAR signaling pathway http://purl.obolibrary.org/obo/GO_0035357 
+1862      1884      PPAR signaling pathway http://purl.obolibrary.org/obo/GO_0035357 
 ```
 
 ### Chemical Entities of Biological Interest (ChEBI) 
 
 Download the ontology:
 ```shell 
-(cd data; curl -L -O ftp://ftp.ebi.ac.uk/pub/databases/chebi/ontology/chebi_lite.owl)
+(cd data; curl -L -O  http://purl.obolibrary.org/obo/chebi/chebi_lite.owl)
 ```
 
 Process it:
@@ -211,25 +214,29 @@ The output should be something like this:
 342       347       ester     http://purl.obolibrary.org/obo/CHEBI_35701 
 397       402       ester     http://purl.obolibrary.org/obo/CHEBI_35701 
 475       480       ester     http://purl.obolibrary.org/obo/CHEBI_35701 
-1051      1055      atom      http://purl.obolibrary.org/obo/CHEBI_33250 
-1075      1080      ester     http://purl.obolibrary.org/obo/CHEBI_35701 
-1128      1132      acid      http://purl.obolibrary.org/obo/CHEBI_37527 
-1206      1211      ester     http://purl.obolibrary.org/obo/CHEBI_35701 
-1261      1265      acid      http://purl.obolibrary.org/obo/CHEBI_37527 
-1348      1354      methyl    http://purl.obolibrary.org/obo/CHEBI_29309 
-1544      1550      methyl    http://purl.obolibrary.org/obo/CHEBI_29309 
-1621      1627      proton    http://purl.obolibrary.org/obo/CHEBI_24636 
-1715      1719      acid      http://purl.obolibrary.org/obo/CHEBI_37527 
-1799      1803      acid      http://purl.obolibrary.org/obo/CHEBI_37527 
-1937      1941      acid      http://purl.obolibrary.org/obo/CHEBI_37527 
-1994      1998      acid      http://purl.obolibrary.org/obo/CHEBI_37527 
-2094      2097      ion       http://purl.obolibrary.org/obo/CHEBI_24870 
-2190      2193      ion       http://purl.obolibrary.org/obo/CHEBI_24870 
-1065      1080      isopropyl ester     http://purl.obolibrary.org/obo/CHEBI_35725 
-1707      1719      benzoic acid        http://purl.obolibrary.org/obo/CHEBI_30746 
-1789      1803      nicotinic acid      http://purl.obolibrary.org/obo/CHEBI_15940 
-1929      1941      benzoic acid        http://purl.obolibrary.org/obo/CHEBI_30746 
-1984      1998      nicotinic acid      http://purl.obolibrary.org/obo/CHEBI_15940
+939       943       atom      http://purl.obolibrary.org/obo/CHEBI_33250 
+963       968       ester     http://purl.obolibrary.org/obo/CHEBI_35701 
+1016      1020      acid      http://purl.obolibrary.org/obo/CHEBI_37527 
+1033      1040      propene   http://purl.obolibrary.org/obo/CHEBI_16052 
+1094      1099      ester     http://purl.obolibrary.org/obo/CHEBI_35701 
+1149      1153      acid      http://purl.obolibrary.org/obo/CHEBI_37527 
+1172      1179      radical   http://purl.obolibrary.org/obo/CHEBI_26519 
+1231      1237      methyl    http://purl.obolibrary.org/obo/CHEBI_29309 
+1413      1419      methyl    http://purl.obolibrary.org/obo/CHEBI_29309 
+1490      1496      proton    http://purl.obolibrary.org/obo/CHEBI_24636 
+1544      1548      acid      http://purl.obolibrary.org/obo/CHEBI_37527 
+1588      1592      acid      http://purl.obolibrary.org/obo/CHEBI_37527 
+1642      1647      group     http://purl.obolibrary.org/obo/CHEBI_24433 
+1705      1709      acid      http://purl.obolibrary.org/obo/CHEBI_37527 
+1741      1745      acid      http://purl.obolibrary.org/obo/CHEBI_37527 
+1841      1844      ion       http://purl.obolibrary.org/obo/CHEBI_24870 
+1937      1940      ion       http://purl.obolibrary.org/obo/CHEBI_24870 
+953       968       isopropyl ester     http://purl.obolibrary.org/obo/CHEBI_35725 
+1536      1548      benzoic acid        http://purl.obolibrary.org/obo/CHEBI_30746 
+1578      1592      nicotinic acid      http://purl.obolibrary.org/obo/CHEBI_15940 
+1633      1647      carbonyl group      http://purl.obolibrary.org/obo/CHEBI_23019 
+1697      1709      benzoic acid        http://purl.obolibrary.org/obo/CHEBI_30746 
+1731      1745      nicotinic acid      http://purl.obolibrary.org/obo/CHEBI_15940 
 ```
 
 ### Human Phenotype (HP) Example
@@ -295,7 +302,12 @@ The output should be something like this:
 
 ### Radiology Lexicon (RadLex) Example
 
-Download the RDF/XML version from http://bioportal.bioontology.org/ontologies/RADLEX and save it as radlex.rdf
+Find the link to the RDF/XML version from http://bioportal.bioontology.org/ontologies/RADLEX
+
+Download it as radlex.rdf:
+```shell
+(cd data; curl -L -o radlex.rdf https://data.bioontology.org/ontologies/RADLEX/download?apikey=...&download_format=rdf)
+```
 
 Process it:
 ```shell
@@ -314,10 +326,63 @@ Recognize the entities in the abstract:
 
 The output should be something like this:
 ```txt
+337       344       therapy   http://radlex.org/RID/RID8 
 348       354       asthma    http://radlex.org/RID/RID5327 
+359       363       COPD      http://radlex.org/RID/RID5317 
+468       475       therapy   http://radlex.org/RID/RID8 
+496       500       COPD      http://radlex.org/RID/RID5317 
 504       510       asthma    http://radlex.org/RID/RID5327 
 511       518       patient   http://radlex.org/RID/RID49815 
 587       594       patient   http://radlex.org/RID/RID49815 
+```
+
+
+### DeCS Multilingual Example
+
+Request the XML files of DeCS in Portuguese, Spanish and English from https://decs.bvsalud.org/
+
+Process it:
+```shell
+(cd data; ../produce_data_files.sh bireme_decs_eng2020.xml)
+(cd data; ../produce_data_files.sh bireme_decs_spa2020.xml)
+(cd data; ../produce_data_files.sh bireme_decs_por2020.xml)
+```
+
+Download a multilingual corpus, e.g. from https://sites.google.com/view/felipe-soares/datasets
+```shell
+text_eng='This situation also contributes to respiratory aspiration and aspiration pneumonia, which is evidenced by a persistent cough with sputum or by other signs such as fever, tachypnea, or focal consolidation confirmed by radiographic imaging'
+text_spa='Esa situación también contribuye para la aspiración respiratoria y para la neumonía espirativa, que puede ser evidenciada por tos persistente con expectoración o por otras señales como fiebre, taquipnea, consolidación focal, siendo confirmada por la imagen radiográfica'
+text_por='Essa situação também contribui para a aspiração respiratória e para a pneumonia aspirativa, que pode ser evidenciada por tosse persistente com expectoração ou por outros sinais como: febre, taquipneia, consolidação focal, sendo confirmada pela imagem radiográfica'
+```
+
+Recognize the entities in the abstract: 
+```shell
+./get_entities.sh "$text_eng" bireme_decs_eng2020
+./get_entities.sh "$text_spa" bireme_decs_spa2020
+./get_entities.sh "$text_por" bireme_decs_por2020
+```
+
+The output should be something like this:
+```txt
+73        82        pneumonia               https://decs.bvsalud.org/ths/?filter=ths_regid&q=D011014 
+119       124       cough                   https://decs.bvsalud.org/ths/?filter=ths_regid&q=D003371 
+130       136       sputum                  https://decs.bvsalud.org/ths/?filter=ths_regid&q=D013183 
+163       168       fever                   https://decs.bvsalud.org/ths/?filter=ths_regid&q=D005334 
+170       179       tachypnea               https://decs.bvsalud.org/ths/?filter=ths_regid&q=D059246 
+35        57        respiratory aspiration  https://decs.bvsalud.org/ths/?filter=ths_regid&q=D053120
+
+75        83        neumonía                https://decs.bvsalud.org/ths/?filter=ths_regid&q=D011014 
+126       129       tos                     https://decs.bvsalud.org/ths/?filter=ths_regid&q=D003371 
+185       191       fiebre                  https://decs.bvsalud.org/ths/?filter=ths_regid&q=D005334 
+193       202       taquipnea               https://decs.bvsalud.org/ths/?filter=ths_regid&q=D059246 
+41        64        aspiración respiratoria https://decs.bvsalud.org/ths/?filter=ths_regid&q=D053120 
+
+70        79        pneumonia               https://decs.bvsalud.org/ths/?filter=ths_regid&q=D011014 
+121       126       tosse                   https://decs.bvsalud.org/ths/?filter=ths_regid&q=D003371 
+183       188       febre                   https://decs.bvsalud.org/ths/?filter=ths_regid&q=D005334 
+190       200       taquipneia              https://decs.bvsalud.org/ths/?filter=ths_regid&q=D059246 
+38        60        aspiração respiratória  https://decs.bvsalud.org/ths/?filter=ths_regid&q=D053120 
+70        90        pneumonia aspirativa    https://decs.bvsalud.org/ths/?filter=ths_regid&q=D011015
 ```
 
 
@@ -397,8 +462,8 @@ The output now includes for each match the most similar term and its similarity:
 ##  Processed Lexicons
 ```shell
 cd data
-curl -L -O http://labs.rd.ciencias.ulisboa.pt/mer/data/lexicons202005.tgz
-tar -xzf lexicons202005.tgz
+curl -L -O http://labs.rd.ciencias.ulisboa.pt/mer/data/lexicons202103.tgz
+tar -xzf lexicons202003.tgz
 cd ..
 ```
 
