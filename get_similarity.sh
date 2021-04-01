@@ -62,15 +62,15 @@ if [ -z "$4" ]
 fi
 
 input=$(cat -)
-merlinks=$(echo -E "$input" | awk -F"\t" '{ print $4 }' | sed 's/^.*\///');
+merlinks=$(echo -E "$input" | awk -F"\t" '{ print $4 }' | sed -E 's/^.*[/=]//');
 
 while read -r match; do
     maxsim=0
     t2=""
-    t1=$(echo -E "$match" | awk -F"\t" '{ print $4 }' | sed 's/^.*\///')
+    t1=$(echo -E "$match" | awk -F"\t" '{ print $4 }' | sed -E 's/^.*[/=]//')
     while read -r term2; do
 	if [ "$t1" != "$term2" ]; then
-	    sim=$(python $dishin/dishin.py $dishin/$dishin_db $t1 $term2 | grep "^$measure" | grep "$type" | awk -F"\t" '{ print $4 }' )
+	    sim=$(python3 $dishin/dishin.py $dishin/$dishin_db $t1 $term2 | grep "^$measure" | grep "$type" | awk -F"\t" '{ print $4 }' )
 	    cmp=$(echo $sim'>'$maxsim | bc)
 	    if [ $cmp -eq 1 ]; then
 		maxsim=$sim

@@ -462,6 +462,19 @@ The output now includes for each match the most similar term and its similarity:
 48   62   nicotinic acid                     http://purl.obolibrary.org/obo/CHEBI_15940   CHEBI_15763    0.0690850358636
 48   79   nicotinic acid D-ribonucleotide    http://purl.obolibrary.org/obo/CHEBI_15763   CHEBI_15940    0.0690850358636
 ```
+A multilingual example:
+```shell
+./get_entities.sh "tontura, pneumonia e tosse" bireme_decs_por2020 | ./get_similarity.sh Lin DiShIn ../DiShIn mesh.db
+```
+
+The output:
+```txt
+0         7         tontura   https://decs.bvsalud.org/ths/?filter=ths_regid&q=D004244    D003371   0.27413605244527106
+9         18        pneumonia https://decs.bvsalud.org/ths/?filter=ths_regid&q=D011014    D003371   0.429433074088733
+21        26        tosse     https://decs.bvsalud.org/ths/?filter=ths_regid&q=D003371    D011014   0.429433074088733
+```
+
+
 
 ##  Processed Lexicons
 ```shell
