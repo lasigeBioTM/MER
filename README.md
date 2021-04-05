@@ -365,25 +365,27 @@ Recognize the entities in the abstract:
 
 The output should be something like this:
 ```txt
-73        82        pneumonia               https://decs.bvsalud.org/ths/?filter=ths_regid&q=D011014 
-119       124       cough                   https://decs.bvsalud.org/ths/?filter=ths_regid&q=D003371 
-130       136       sputum                  https://decs.bvsalud.org/ths/?filter=ths_regid&q=D013183 
-163       168       fever                   https://decs.bvsalud.org/ths/?filter=ths_regid&q=D005334 
-170       179       tachypnea               https://decs.bvsalud.org/ths/?filter=ths_regid&q=D059246 
-35        57        respiratory aspiration  https://decs.bvsalud.org/ths/?filter=ths_regid&q=D053120
+73        82        pneumonia                     https://decs.bvsalud.org/ths/?filter=ths_regid&q=D011014
+119       124       cough                         https://decs.bvsalud.org/ths/?filter=ths_regid&q=D003371
+130       136       sputum                        https://decs.bvsalud.org/ths/?filter=ths_regid&q=D013183
+163       168       fever                         https://decs.bvsalud.org/ths/?filter=ths_regid&q=D005334
+170       179       tachypnea                     https://decs.bvsalud.org/ths/?filter=ths_regid&q=D059246
+35        57        respiratory aspiration        https://decs.bvsalud.org/ths/?filter=ths_regid&q=D053120
+62        82        aspiration pneumonia          https://decs.bvsalud.org/ths/?filter=ths_regid&q=D011015
 
-75        83        neumonía                https://decs.bvsalud.org/ths/?filter=ths_regid&q=D011014 
-126       129       tos                     https://decs.bvsalud.org/ths/?filter=ths_regid&q=D003371 
-185       191       fiebre                  https://decs.bvsalud.org/ths/?filter=ths_regid&q=D005334 
-193       202       taquipnea               https://decs.bvsalud.org/ths/?filter=ths_regid&q=D059246 
-41        64        aspiración respiratoria https://decs.bvsalud.org/ths/?filter=ths_regid&q=D053120 
+75        83        neumonía                      https://decs.bvsalud.org/ths/?filter=ths_regid&q=D011014
+126       129       tos                           https://decs.bvsalud.org/ths/?filter=ths_regid&q=D003371
+185       191       fiebre                        https://decs.bvsalud.org/ths/?filter=ths_regid&q=D005334
+193       202       taquipnea                     https://decs.bvsalud.org/ths/?filter=ths_regid&q=D059246
+41        64        aspiración respiratoria       https://decs.bvsalud.org/ths/?filter=ths_regid&q=D053120
 
-70        79        pneumonia               https://decs.bvsalud.org/ths/?filter=ths_regid&q=D011014 
-121       126       tosse                   https://decs.bvsalud.org/ths/?filter=ths_regid&q=D003371 
-183       188       febre                   https://decs.bvsalud.org/ths/?filter=ths_regid&q=D005334 
-190       200       taquipneia              https://decs.bvsalud.org/ths/?filter=ths_regid&q=D059246 
-38        60        aspiração respiratória  https://decs.bvsalud.org/ths/?filter=ths_regid&q=D053120 
-70        90        pneumonia aspirativa    https://decs.bvsalud.org/ths/?filter=ths_regid&q=D011015
+70        79        pneumonia                     https://decs.bvsalud.org/ths/?filter=ths_regid&q=D011014
+121       126       tosse                         https://decs.bvsalud.org/ths/?filter=ths_regid&q=D003371
+170       176       sinais                        https://decs.bvsalud.org/ths/?filter=ths_regid&q=D012816
+183       188       febre                         https://decs.bvsalud.org/ths/?filter=ths_regid&q=D005334
+190       200       taquipneia                    https://decs.bvsalud.org/ths/?filter=ths_regid&q=D059246
+38        60        aspiração respiratória        https://decs.bvsalud.org/ths/?filter=ths_regid&q=D053120
+70        90        pneumonia aspirativa          https://decs.bvsalud.org/ths/?filter=ths_regid&q=D011015
 ```
 
 
@@ -464,16 +466,19 @@ The output now includes for each match the most similar term and its similarity:
 ```
 A multilingual example:
 ```shell
-./get_entities.sh "tontura, pneumonia e tosse" bireme_decs_por2020 | ./get_similarity.sh Lin DiShIn ../DiShIn mesh.db
+./get_entities.sh "desmaio, tontura, pneumonia e tosse" bireme_decs_por2020 | ./get_similarity.sh Lin DiShIn ../DiShIn mesh.db
 ```
 
 The output:
 ```txt
-0         7         tontura   https://decs.bvsalud.org/ths/?filter=ths_regid&q=D004244    D003371   0.27413605244527106
-9         18        pneumonia https://decs.bvsalud.org/ths/?filter=ths_regid&q=D011014    D003371   0.429433074088733
-21        26        tosse     https://decs.bvsalud.org/ths/?filter=ths_regid&q=D003371    D011014   0.429433074088733
+0         7         desmaio   https://decs.bvsalud.org/ths/?filter=ths_regid&q=D013575    D004244   0.34311804633118076
+9         16        tontura   https://decs.bvsalud.org/ths/?filter=ths_regid&q=D004244    D013575   0.34311804633118076
+18        27        pneumonia https://decs.bvsalud.org/ths/?filter=ths_regid&q=D011014    D003371   0.429433074088733
+30        35        tosse     https://decs.bvsalud.org/ths/?filter=ths_regid&q=D003371    D011014   0.429433074088733
 ```
 
+As expected, fainting (desmaio) is closer to dizziness (tontura),
+and pneumonia is closer to cough (tosse).
 
 
 ##  Processed Lexicons
