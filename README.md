@@ -441,46 +441,6 @@ The output should be something like this:
 587     594     patient
 ```
 
-## Similarity
-
-First install DiShIn: https://github.com/lasigeBioTM/DiShIn 
-
-Before executing the _get_similarity_ script you need to select the following parameters:
-- Measure: Resnik, Lin or JC
-- Type: MICA or DiShIn
-- Path: DiShIn installation folder
-- Database: DiShIn db file with the ontology, e.g. chebi.db, go.db, hp.db, doid.db, radlex.db, or wordnet.db  
-
-Then, just execute the _get_similarity_ script using the output of the _get_entities_ script
-```shell
-./get_entities.sh "α-maltose and nicotinic acid was found, but not nicotinic acid D-ribonucleotide" lexicon | ./get_similarity.sh Lin DiShIn ../DiShIn chebi.db
-```
-
-The output now includes for each match the most similar term and its similarity:
-
-```txt
-0    9    α-maltose                          http://purl.obolibrary.org/obo/CHEBI_18167   CHEBI_15940    0.025986492828
-14   28   nicotinic acid                     http://purl.obolibrary.org/obo/CHEBI_15940   CHEBI_15763    0.0690850358636
-48   62   nicotinic acid                     http://purl.obolibrary.org/obo/CHEBI_15940   CHEBI_15763    0.0690850358636
-48   79   nicotinic acid D-ribonucleotide    http://purl.obolibrary.org/obo/CHEBI_15763   CHEBI_15940    0.0690850358636
-```
-A multilingual example:
-```shell
-./get_entities.sh "desmaio, tontura, pneumonia e tosse" bireme_decs_por2020 | ./get_similarity.sh Lin DiShIn ../DiShIn mesh.db
-```
-
-The output:
-```txt
-0         7         desmaio   https://decs.bvsalud.org/ths/?filter=ths_regid&q=D013575    D004244   0.34311804633118076
-9         16        tontura   https://decs.bvsalud.org/ths/?filter=ths_regid&q=D004244    D013575   0.34311804633118076
-18        27        pneumonia https://decs.bvsalud.org/ths/?filter=ths_regid&q=D011014    D003371   0.429433074088733
-30        35        tosse     https://decs.bvsalud.org/ths/?filter=ths_regid&q=D003371    D011014   0.429433074088733
-```
-
-As expected, fainting (desmaio) is closer to dizziness (tontura),
-and pneumonia is closer to cough (tosse).
-
-
 ##  Processed Lexicons
 ```shell
 cd data
@@ -501,4 +461,61 @@ cd ..
 ./get_entities.sh 'histoglobin' protein
 ./get_entities.sh 'ame-miR-2b' mirna
 ```
+
+## Similarity
+
+First install DiShIn: https://github.com/lasigeBioTM/DiShIn
+Or a minimalist version:  
+```shell
+curl -O http://labs.rd.ciencias.ulisboa.pt/dishin/dishin.py
+curl -O http://labs.rd.ciencias.ulisboa.pt/dishin/ssm.py
+```
+
+Before executing the _get_similarity_ script you need to select the following parameters:
+- Measure: Resnik, Lin or JC
+- Type: MICA or DiShIn
+- Path: DiShIn installation folder
+- Database: DiShIn db file with the ontology, e.g. chebi.db, go.db, hp.db, doid.db, radlex.db, or wordnet.db  
+
+For example, download the database for ChEBI:
+```shell
+curl -O http://labs.rd.ciencias.ulisboa.pt/dishin/chebi202104.db.gz
+gunzip -N chebi202104.db.gz
+```
+
+Then, just execute the _get_similarity_ script using the output of the _get_entities_ script
+```shell
+./get_entities.sh "α-maltose and nicotinic acid was found, but not nicotinic acid D-ribonucleotide" lexicon | ./get_similarity.sh Lin DiShIn . chebi.db
+```
+
+The output now includes for each match the most similar term and its similarity:
+
+```txt
+0       9       α-maltose                       http://purl.obolibrary.org/obo/CHEBI_18167      CHEBI_15763     0.02834388514184269
+14      28      nicotinic acid                  http://purl.obolibrary.org/obo/CHEBI_15940      CHEBI_15763     0.07402224403263755
+48      62      nicotinic acid                  http://purl.obolibrary.org/obo/CHEBI_15940      CHEBI_15763     0.07402224403263755
+48      79      nicotinic acid D-ribonucleotide http://purl.obolibrary.org/obo/CHEBI_15763      CHEBI_15940     0.07402224403263755
+```
+
+A multilingual example:
+```shell
+curl -O http://labs.rd.ciencias.ulisboa.pt/dishin/mesh202104.db.gz
+gunzip -N mesh202104.db.gz
+curl -L -O http://labs.rd.ciencias.ulisboa.pt/mer/data/lexicons202103.tgz
+(cd data; tar -xzf ../lexicons202103.tgz --wildcards bireme_decs_por2020*)
+./get_entities.sh "desmaio, tontura, pneumonia e tosse" bireme_decs_por2020 | ./get_similarity.sh Lin DiShIn . mesh.db
+```
+
+The output:
+```txt
+0         7         desmaio   https://decs.bvsalud.org/ths/?filter=ths_regid&q=D013575    D004244   0.34311804633118076
+9         16        tontura   https://decs.bvsalud.org/ths/?filter=ths_regid&q=D004244    D013575   0.34311804633118076
+18        27        pneumonia https://decs.bvsalud.org/ths/?filter=ths_regid&q=D011014    D003371   0.429433074088733
+30        35        tosse     https://decs.bvsalud.org/ths/?filter=ths_regid&q=D003371    D011014   0.429433074088733
+```
+
+As expected, fainting (desmaio) is closer to dizziness (tontura),
+and pneumonia is closer to cough (tosse).
+
+
 
