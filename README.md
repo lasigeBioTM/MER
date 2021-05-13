@@ -10,6 +10,7 @@ Given an ontology (owl file) MER is also able to link the entities to their clas
 A demo is also available at: http://labs.fc.ul.pt/mer/
 
 ** **NEW** **
+- Docker image available: https://hub.docker.com/r/fjmc/mer-image
 - Package lexicons202103.tgz is available
 - Multilingual lexicons using DeCS
 - Python interface: https://github.com/lasigeBioTM/merpy/
