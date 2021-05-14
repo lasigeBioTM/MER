@@ -25,3 +25,6 @@ RUN curl -O http://labs.rd.ciencias.ulisboa.pt/dishin/radlex202104.db.gz
 RUN gunzip -N radlex202104.db.gz
 RUN curl -O http://labs.rd.ciencias.ulisboa.pt/dishin/wordnet202104.db.gz
 RUN gunzip -N wordnet202104.db.gz
+
+RUN apt-get autoremove
+RUN apt-get clean 
