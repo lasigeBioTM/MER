@@ -1,3 +1,4 @@
+
 WORKDIR /MER/data
 RUN curl -O http://labs.rd.ciencias.ulisboa.pt/mer/data/lexicons202103.tgz
 RUN tar -xzf lexicons202103.tgz

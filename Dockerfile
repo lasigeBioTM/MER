@@ -41,4 +41,4 @@ WORKDIR /MER
 COPY . .
 
 RUN apt-get autoremove
-RUN apt-get clean 
+RUN apt-get clean
