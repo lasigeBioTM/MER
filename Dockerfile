@@ -15,43 +15,7 @@ ENV LC_ALL=en_US.UTF-8
 ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US.UTF-8
 
-RUN curl -O -L https://github.com/lasigeBioTM/MER/archive/master.zip
-RUN ls -l master.zip
-RUN unzip master.zip
-RUN mv MER-master MER
 WORKDIR /MER
-
-WORKDIR /MER/data
-RUN curl -O http://labs.rd.ciencias.ulisboa.pt/mer/data/lexicons202103.tgz
-RUN tar -xzf lexicons202103.tgz
-WORKDIR /MER
-
-# BEGIN get_similarity.sh requirements 
-
-RUN apt-get install -y \
-    sqlite3 \
-    python
-
-RUN curl -O http://labs.rd.ciencias.ulisboa.pt/dishin/dishin.py
-RUN curl -O http://labs.rd.ciencias.ulisboa.pt/dishin/ssm.py
-RUN curl -O http://labs.rd.ciencias.ulisboa.pt/dishin/annotations.py
-
-RUN curl -O http://labs.rd.ciencias.ulisboa.pt/dishin/chebi202104.db.gz
-RUN gunzip -N chebi202104.db.gz 
-RUN curl -O http://labs.rd.ciencias.ulisboa.pt/dishin/go202104.db.gz
-RUN gunzip -N go202104.db.gz
-RUN curl -O http://labs.rd.ciencias.ulisboa.pt/dishin/hp202104.db.gz
-RUN gunzip -N hp202104.db.gz
-RUN curl -O http://labs.rd.ciencias.ulisboa.pt/dishin/doid202104.db.gz
-RUN gunzip -N doid202104.db.gz
-RUN curl -O http://labs.rd.ciencias.ulisboa.pt/dishin/mesh202104.db.gz
-RUN gunzip -N mesh202104.db.gz
-RUN curl -O http://labs.rd.ciencias.ulisboa.pt/dishin/radlex202104.db.gz
-RUN gunzip -N radlex202104.db.gz
-RUN curl -O http://labs.rd.ciencias.ulisboa.pt/dishin/wordnet202104.db.gz
-RUN gunzip -N wordnet202104.db.gz
-
-## END get_similarity.sh requirements 
 
 RUN apt-get autoremove
 RUN apt-get clean 
