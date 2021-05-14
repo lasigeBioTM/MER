@@ -12,8 +12,15 @@
 #### To test it:
 ## docker run -it --rm --name mer-container fjmc/mer-image:lexicons202103 /bin/bash -c './get_entities.sh "α-maltose and nicotinic acid was found, but not nicotinic acid D-ribonucleotide" lexicon | ./get_similarity.sh Lin DiShIn . chebi.db'
 
-
 FROM ubuntu:18.04
+LABEL maintainer="fcouto@di.fc.ul.pt"
+
+# Labels
+LABEL org.label-schema.description="MER (Minimal Named-Entity Recognizer)"
+LABEL org.label-schema.url="http://labs.rd.ciencias.ulisboa.pt/mer/"
+LABEL org.label-schema.vcs-url="https://github.com/lasigeBioTM/MER"
+LABEL org.label-schema.docker.cmd="docker run -it --rm --name mer-container fjmc/mer-image ./test.sh"
+
 
 RUN apt-get update 
 RUN apt-get install -y \
