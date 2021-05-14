@@ -21,11 +21,17 @@ COPY . .
 RUN apt-get autoremove
 RUN apt-get clean 
 
-## To build:
-## docker build -t mer-image .
-## To execute:
-#### docker run -it --rm --name mer-container mer-image
-## Testing:
-####  .test.sh
-####  ./get_entities.sh "α-maltose and nicotinic acid was found, but not nicotinic acid D-ribonucleotide" lexicon | ./get_similarity.sh Lin DiShIn . chebi.db
+#### To build:
+## docker build github.com/lasigeBioTM/MER -t fjmc/mer-image
+#### To test it:
+## docker run -it --rm --name mer-container fjmc/mer-image ./test.sh
+
+#### To build with lexicons:
+## curl -O -L https://github.com/lasigeBioTM/MER/archive/master.zip
+## unzip master.zip
+## cd MER-master 
+## cat Dockerfile-LexiconsSimilarity >> Dockerfile
+## docker build . -t fjmc/mer-image:lexicons202103
+#### To test it:
+## docker run -it --rm --name mer-container fjmc/mer-image:lexicons202103 /bin/bash -c './get_entities.sh "α-maltose and nicotinic acid was found, but not nicotinic acid D-ribonucleotide" lexicon | ./get_similarity.sh Lin DiShIn . chebi.db'
 
