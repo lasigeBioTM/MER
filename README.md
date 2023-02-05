@@ -10,8 +10,9 @@ Given an ontology (owl file) MER is also able to link the entities to their clas
 A demo is also available at: http://labs.fc.ul.pt/mer/
 
 ** **NEW** **
+- Package lexicons202301.tgz is available
+- New examples added, namely the ontologies: OSCI, CL, ENVO, and ECTO  
 - Docker image available: https://hub.docker.com/r/fjmc/mer-image
-- Package lexicons202103.tgz is available
 - Multilingual lexicons using DeCS
 - Python interface: https://github.com/lasigeBioTM/merpy/
 - get_similarities.sh finds the most similar term also recognized (see https://github.com/lasigeBioTM/MER#Similarity)
@@ -302,6 +303,184 @@ The output should be something like this:
 504       510       asthma    http://purl.obolibrary.org/obo/DOID_2841
 ```
 
+
+### Ontology for Stem Cell Investigations (OSCI) Example 
+
+Download the ontology:
+```shell 
+(cd data; curl -L -O https://raw.githubusercontent.com/stemcellontologyresource/OSCI/master/src/ontology/osci.owl)
+```
+
+Process it:
+```shell
+(cd data; ../produce_data_files.sh osci.owl)
+```
+
+Download an abstract from PubMed, for example [30053745](https://www.ncbi.nlm.nih.gov/pubmed/30053745):
+```shell
+text=$(curl -s "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=30053745&retmode=text&rettype=xml" | xmllint --xpath '//AbstractText/text()' /dev/stdin)
+```
+
+Recognize the entities in the abstract: 
+```shell
+./get_entities.sh "$text" osci
+```
+
+The output should be something like this:
+```txt
+325     329     cell             http://purl.obolibrary.org/obo/CL_0000000 
+447     452     human            http://purl.obolibrary.org/obo/NCBITaxon_9606 
+475     480     human            http://purl.obolibrary.org/obo/NCBITaxon_9606 
+531     536     human            http://purl.obolibrary.org/obo/NCBITaxon_9606 
+545     556     pluripotent      http://purl.obolibrary.org/obo/PATO_0001403 
+606     610     cell             http://purl.obolibrary.org/obo/CL_0000000 
+691     702     pluripotent      http://purl.obolibrary.org/obo/PATO_0001403 
+743     748     human            http://purl.obolibrary.org/obo/NCBITaxon_9606 
+749     755     neuron           http://purl.obolibrary.org/obo/CL_0000540 
+798     804     neuron           http://purl.obolibrary.org/obo/CL_0000540 
+925     929     cell             http://purl.obolibrary.org/obo/CL_0000000 
+980     984     cell             http://purl.obolibrary.org/obo/CL_0000000 
+601     610     Stem cell        http://purl.obolibrary.org/obo/CL_0000034 
+920     929     stem cell        http://purl.obolibrary.org/obo/CL_0000034 
+975     984     stem cell        http://purl.obolibrary.org/obo/CL_0000034 
+913     929     Neural stem cell http://purl.obolibrary.org/obo/CL_0000047 
+```
+
+### Cell Ontology (CL) Example 
+
+Download the ontology:
+```shell 
+(cd data; curl -L -O http://purl.obolibrary.org/obo/cl.owl)
+```
+
+Process it:
+```shell
+(cd data; ../produce_data_files.sh cl.owl)
+```
+
+Download an abstract from PubMed, for example [30053745](https://www.ncbi.nlm.nih.gov/pubmed/30053745):
+```shell
+text=$(curl -s "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=30053745&retmode=text&rettype=xml" | xmllint --xpath '//AbstractText/text()' /dev/stdin)
+```
+
+Recognize the entities in the abstract: 
+```shell
+./get_entities.sh "$text" cl
+```
+
+The output should be something like this:
+```txt
+263     268     gyrus            http://purl.obolibrary.org/obo/UBERON_0000200 
+276     287     hippocampus      http://purl.obolibrary.org/obo/UBERON_0001954 
+325     329     cell             http://purl.obolibrary.org/obo/CARO_0000013 
+447     452     human            http://purl.obolibrary.org/obo/NCBITaxon_9606 
+475     480     human            http://purl.obolibrary.org/obo/NCBITaxon_9606 
+531     536     human            http://purl.obolibrary.org/obo/NCBITaxon_9606 
+606     610     cell             http://purl.obolibrary.org/obo/CARO_0000013 
+743     748     human            http://purl.obolibrary.org/obo/NCBITaxon_9606 
+749     755     neuron           http://purl.obolibrary.org/obo/CL_0000540 
+798     804     neuron           http://purl.obolibrary.org/obo/CL_0000540 
+925     929     cell             http://purl.obolibrary.org/obo/CARO_0000013 
+980     984     cell             http://purl.obolibrary.org/obo/CARO_0000013 
+1041    1046    great            http://purl.obolibrary.org/obo/PATO_0000586 
+255	268	dentate gyrus	 http://purl.obolibrary.org/obo/UBERON_0001885 
+315	329	ependymal cell	 http://purl.obolibrary.org/obo/CL_0000065 
+601	610	Stem cell	 http://purl.obolibrary.org/obo/CL_0000034 
+920	929	stem cell	 http://purl.obolibrary.org/obo/CL_0000034 
+975	984	stem cell	 http://purl.obolibrary.org/obo/CL_0000034 
+913	929	Neural stem cell http://purl.obolibrary.org/obo/CL_0000047 
+```
+
+### Environmental conditions, treatments and exposures ontology (ECTO) Example 
+
+Download the ontology:
+```shell 
+(cd data; curl -L -O http://purl.obolibrary.org/obo/ecto.owl)
+```
+
+Process it:
+```shell
+(cd data; ../produce_data_files.sh ecto.owl)
+```
+
+Download an abstract from PubMed, for example [34303912](https://www.ncbi.nlm.nih.gov/pubmed/34303912):
+```shell
+text=$(curl -s "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=34303912&retmode=text&rettype=xml" | xmllint --xpath '//AbstractText/text()' /dev/stdin)
+```
+
+Recognize the entities in the abstract: 
+```shell
+./get_entities.sh "$text" ecto
+```
+
+The output should be something like this:
+```txt
+0	5	Water		http://purl.obolibrary.org/obo/CHEBI_15377 
+19	25	liquid		http://purl.obolibrary.org/obo/PATO_0001735 
+30	35	human		http://purl.obolibrary.org/obo/NCBITaxon_9606 
+120	131	degradation	http://purl.obolibrary.org/obo/GO_0009056 
+139	150	environment	http://purl.obolibrary.org/obo/ENVO_01000254 
+177	182	water		http://purl.obolibrary.org/obo/CHEBI_15377 
+200	206	planet		http://purl.obolibrary.org/obo/ENVO_01000800 
+237	242	water		http://purl.obolibrary.org/obo/CHEBI_15377 
+243	252	pollution	http://purl.obolibrary.org/obo/ENVO_02500036 
+339	350	environment	http://purl.obolibrary.org/obo/ENVO_01000254 
+397	404	process		http://purl.obolibrary.org/obo/BFO_0000015 
+449	462	concentration	http://purl.obolibrary.org/obo/PATO_0000033 
+542	553	agriculture	http://purl.obolibrary.org/obo/ENVO_01001246 
+585	591	energy		http://purl.obolibrary.org/obo/ENVO_2000015 
+661	665	role		http://purl.obolibrary.org/obo/BFO_0000023 
+764	771	quality		http://purl.obolibrary.org/obo/BFO_0000019 
+811	821	technology	http://purl.obolibrary.org/obo/NCIT_C17187 
+1101    1110    behaviour       http://purl.obolibrary.org/obo/GO_0007610 
+1167    1177    technology      http://purl.obolibrary.org/obo/NCIT_C17187 
+1192    1198    energy          http://purl.obolibrary.org/obo/ENVO_2000015 
+1412    1422    technology      http://purl.obolibrary.org/obo/NCIT_C17187 
+237     252     water pollution http://purl.obolibrary.org/obo/ENVO_02500039
+```
+
+### Environment Ontology (ENVO) Example 
+
+Download the ontology:
+```shell 
+(cd data; curl -L -O http://purl.obolibrary.org/obo/envo.owl)
+```
+
+Process it:
+```shell
+(cd data; ../produce_data_files.sh envo.owl)
+```
+
+Download an abstract from PubMed, for example [34303912](https://www.ncbi.nlm.nih.gov/pubmed/34303912):
+```shell
+text=$(curl -s "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=34303912&retmode=text&rettype=xml" | xmllint --xpath '//AbstractText/text()' /dev/stdin)
+```
+
+Recognize the entities in the abstract: 
+```shell
+./get_entities.sh "$text" envo
+```
+
+The output should be something like this:
+```txt
+0	5	Water		http://purl.obolibrary.org/obo/CHEBI_15377 
+30	35	human		http://purl.obolibrary.org/obo/NCBITaxon_9606 
+139	150	environment	http://purl.obolibrary.org/obo/ENVO_01000254 
+177	182	water		http://purl.obolibrary.org/obo/CHEBI_15377 
+200	206	planet		http://purl.obolibrary.org/obo/ENVO_01000800 
+237	242	water		http://purl.obolibrary.org/obo/CHEBI_15377 
+243	252	pollution	http://purl.obolibrary.org/obo/ENVO_02500036 
+339	350	environment	http://purl.obolibrary.org/obo/ENVO_01000254 
+397	404	process		http://purl.obolibrary.org/obo/BFO_0000015 
+449	462	concentration	http://purl.obolibrary.org/obo/PATO_0000033 
+542	553	agriculture	http://purl.obolibrary.org/obo/ENVO_01001246 
+585	591	energy		http://purl.obolibrary.org/obo/ENVO_2000015 
+661	665	role		http://purl.obolibrary.org/obo/BFO_0000023 
+764	771	quality		http://purl.obolibrary.org/obo/BFO_0000019 
+1192	1198	energy		http://purl.obolibrary.org/obo/ENVO_2000015 
+237	252	water pollution	http://purl.obolibrary.org/obo/ENVO_02500039 
+```
+
 ### Radiology Lexicon (RadLex) Example
 
 Find the link to the RDF/XML version from http://bioportal.bioontology.org/ontologies/RADLEX
@@ -445,8 +624,8 @@ The output should be something like this:
 ##  Processed Lexicons
 ```shell
 cd data
-curl -L -O http://labs.rd.ciencias.ulisboa.pt/mer/data/lexicons202103.tgz
-tar -xzf lexicons202103.tgz
+curl -L -O http://labs.rd.ciencias.ulisboa.pt/mer/data/lexicons202302.tgz
+tar -xzf lexicons202302.tgz
 cd ..
 ```
 
