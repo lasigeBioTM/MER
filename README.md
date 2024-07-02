@@ -675,8 +675,8 @@ Before executing the _get_similarity_ script you need to select the following pa
 
 For example, download the database for ChEBI:
 ```shell
-curl -L -O https://labs.rd.ciencias.ulisboa.pt/dishin/chebi202302.db.gz
-gunzip -N chebi202302.db.gz
+curl -L -O https://labs.rd.ciencias.ulisboa.pt/dishin/chebi202407.db.gz
+gunzip -N chebi202407.db.gz
 ```
 
 Then, just execute the _get_similarity_ script using the output of the _get_entities_ script
@@ -695,8 +695,8 @@ The output now includes for each match the most similar term and its similarity:
 
 A multilingual example:
 ```shell
-curl -L -O https://labs.rd.ciencias.ulisboa.pt/dishin/mesh202302.db.gz
-gunzip -N mesh202302.db.gz
+curl -L -O https://labs.rd.ciencias.ulisboa.pt/dishin/mesh202407.db.gz
+gunzip -N mesh202407.db.gz
 curl -L -O https://labs.rd.ciencias.ulisboa.pt/mer/data/lexicons202407.tgz
 (cd data; tar -xzf ../lexicons202407.tgz --wildcards bireme_decs_por2024*)
 ./get_entities.sh "febre, tontura, pneumonia e tosse" bireme_decs_por2024 | ./get_similarity.sh Lin DiShIn . mesh.db
