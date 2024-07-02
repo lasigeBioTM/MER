@@ -60,14 +60,21 @@ elif [[ $FILE =~ \.(owl|rdf|xml)$ ]]; then
                  grep '^<owl:Class' | \
                  sed -E 's/rdf:about="([^"]*)"/>\1</' | \
                  awk -F'[<>]' '{for(i=NF-2; i>4; i-=4) printf "%s\t%s\n", $i, $3}')
-    
-    # Process .rdf files
+	
+    #   Process radlex RDF/XML file 
     elif [[ $FILE == *.rdf ]]; then
-        labels=$(grep -B 1 -F -e '<Literal xml:lang="en">' "$FILE" | \
-                 tr '\n' ' ' | \
-                 sed -E 's/<AbbreviatedIRI>:/\n<AbbreviatedIRI>/g' | \
-                 grep -v -E '<Literal xml:lang="en">RID[0-9]+<' | \
-                 awk -F'[<>]' '{printf "%s\thttp://radlex.org/RID/%s\n", $7, $3}')
+	labels=$(grep -F -e 'rdf:about' -e 'Preferred_name xml:lang="en"'  $1  | \
+		     tr '\n' ' ' | \
+		     sed -e 's/rdf:about/\n<rdf:about/g'  | \
+		     grep '^<rdf:about' | \
+		     sed 's/rdf:about="\([^"]*\)"/>\1</' | \
+		     awk -F'[<>]' '{for(i=NF-3;i>4;i=i-4)printf "%s\t%s \n",$i,$3;}')
+	# Process radlex OWL file 
+	#        labels=$(grep -B 1 -F -e '<Literal xml:lang="en">' "$FILE" | \
+	    #                 tr '\n' ' ' | \
+	    #                 sed -E 's/<AbbreviatedIRI>:/\n<AbbreviatedIRI>/g' | \
+	    #                 grep -v -E '<Literal xml:lang="en">RID[0-9]+<' | \
+	    #                 awk -F'[<>]' '{printf "%s\thttp://radlex.org/RID/%s\n", $7, $3}')
 
     # Process .xml files
     elif [[ $FILE == *.xml ]]; then
@@ -102,7 +109,7 @@ elif [[ $FILE =~ \.(owl|rdf|xml)$ ]]; then
 	      )
     fi
     
-    set -x 
+    
     echo "$labels" | sed -r 's/([^\t]+)/\L\1/' | sort -k1,1 -t$'\t' | uniq > "$filename"_links.tsv
     
     # Extract first column for further processing
