@@ -496,6 +496,7 @@ The output should be something like this:
 1192  1198  energy                    http://purl.obolibrary.org/obo/ENVO_2000015
 ```
 
+<!--
 ### Radiology Lexicon (RadLex) Example
 
 Find the link to the RDF/XML version from http://bioportal.bioontology.org/ontologies/RADLEX
@@ -531,7 +532,7 @@ The output should be something like this:
 511   518   patient                   http://radlex.org/RID/RID49815
 587   594   patient                   http://radlex.org/RID/RID49815
 ```
-
+-->
 
 ### DeCS Multilingual Example
 
