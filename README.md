@@ -7,6 +7,8 @@ It can also link recognized entities to their respective classes when provided w
 
 A demo is available at: [MER Demo](https://labs.rd.ciencias.ulisboa.pt/mer/)
 
+[Pyhton Interface](https://github.com/lasigeBioTM/merpy)
+
 ## New Stuff
 
 ### 2024
