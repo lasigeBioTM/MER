@@ -187,6 +187,7 @@ get_entities_source () {
     # Combine the results from the 3 types of matches
     local result=$result1$'\n'$result2$'\n'$result3
     result=$(sed '{/^$/d}' <<< "$result" | sort -n -k1,1 ) # Remove empty lines
+    result=$(echo "$result" | grep -v "^[-]*1[[:space:]]*[-]*1[[:space:]]*$")
 
     if [ -e "$source"_links.tsv ]; then
         while read -r line; do
