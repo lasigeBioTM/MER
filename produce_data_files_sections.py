@@ -2,7 +2,7 @@ import os
 from owlready2 import get_ontology
 
 def read_classes_into_array(file_path):
-    """ Reads the classes file line by line, strips newline characters and class names,
+    """Reads the classes file line by line, strips newline characters and class names,
     and returns the IRIs as a list of strings
     
     :param file_path: path to file
@@ -17,7 +17,7 @@ def read_classes_into_array(file_path):
 
 
 def strip_label(label):
-    """ Cleans up labels by removing specific unwanted characters
+    """Cleans up labels by removing specific unwanted characters
     
     :param label: label string 
     :return: clean label string
@@ -27,14 +27,15 @@ def strip_label(label):
 
 
 
-def start_process_owl_file(ontology, lines, labels_file,links_file):
-    """ Takes a list of classes and iterates over the ontology, extracting labels, synonyms and IRIs
+def start_process_owl_file(ontology, lines, labels_file,links_file, synonyms_file):
+    """Takes a list of classes and iterates over the ontology, extracting labels, synonyms and IRIs
     for each matching class (also handles every subclass)
     
     :param ontology: ontology (.owl) file
     :param lines: list of strings (class names)
-    :param labels_file: path to labels file we'll create
-    :param links_file: path to links ([LABEL] [IRI]) file (.txt) we'll create
+    :param labels_file: path to labels file
+    :param links_file: path to links ([LABEL] [IRI]) file (.txt)
+    :param synonyms_file: path to file where label and respective synonyms will be stored
     :return: output labels and links to respective files
     """
 
@@ -45,30 +46,36 @@ def start_process_owl_file(ontology, lines, labels_file,links_file):
         if cls.iri in lines:
             # Write class label and IRI to the output files
             labels_file.write(f"{strip_label(cls.label)}\n")
-            links_file.write(f"{strip_label(cls.label)}|{strip_label(cls.iri)} \n")
+            synonyms_file.write(f"{strip_label(cls.label)}\n")
+            links_file.write(f"{strip_label(cls.label)}|{strip_label(cls.iri)}\n")
             ids_to_process.append(cls.iri)
 
             # Process and write synonyms
             for synonyms in cls.hasExactSynonym:
                 labels_file.write(f"{synonyms}\n")
-                links_file.write(f"{synonyms}|{cls.iri} \n")
+                synonyms_file.write(f"{synonyms}\n")
+                links_file.write(f"{synonyms}|{cls.iri}\n")
             for synonyms in cls.hasRelatedSynonym:
                 labels_file.write(f"{synonyms}\n")
-                links_file.write(f"{synonyms}|{cls.iri} \n")
+                synonyms_file.write(f"{synonyms}\n")
+                links_file.write(f"{synonyms}|{cls.iri}\n")
+        
+            synonyms_file.write("-\n")
 
     # Recursively process subclasses of identified classes        
     if len(ids_to_process) > 0:
-        process_owl_file(ontology, ids_to_process, labels_file,links_file)
+        process_owl_file(ontology, ids_to_process, labels_file,links_file, synonyms_file)
 
 
 
-def process_owl_file(ontology, lines, labels_file,links_file):
-    """ Recursively processes subclasses of the classes identified in 'start_process_owl_file'
+def process_owl_file(ontology, lines, labels_file,links_file, synonyms_file):
+    """Recursively processes subclasses of the classes identified in 'start_process_owl_file'
     
     :param ontology: ontology (.owl) file
     :param lines: list of strings (class names)
     :param labels_file: path to labels file
     :param links_file: path to links ([LABEL] [IRI]) file
+    :param synonyms_file: path to file where label and respective synonyms will be stored
     :return: output labels and links to respective files
     """
 
@@ -83,21 +90,26 @@ def process_owl_file(ontology, lines, labels_file,links_file):
                     continue
                 # Write subclass label and IRI to the output files
                 labels_file.write(f"{strip_label(sub_cls.label)}\n")
-                links_file.write(f"{strip_label(sub_cls.label)}|{strip_label(sub_cls.iri)} \n")
+                synonyms_file.write(f"{strip_label(sub_cls.label)}\n")
+                links_file.write(f"{strip_label(sub_cls.label)}|{strip_label(sub_cls.iri)}\n")
                 ids_to_process.append(sub_cls.iri)
 
                 # Process and write synonyms
                 for synonyms in sub_cls.hasExactSynonym:
                     labels_file.write(f"{synonyms}\n")
-                    links_file.write(f"{synonyms}|{sub_cls.iri} \n")
+                    
+                    links_file.write(f"{synonyms}|{sub_cls.iri}\n")
                 for synonyms in sub_cls.hasRelatedSynonym:
                     labels_file.write(f"{synonyms}\n")
-                    links_file.write(f"{synonyms}|{sub_cls.iri} \n")
+                    synonyms_file.write(f"{synonyms}\n")
+                    links_file.write(f"{synonyms}|{sub_cls.iri}\n")
+                
+                synonyms_file.write("-\n")
 
 
 
 def split_labels_into_files(input_file):
-    """ Divides the labels found into different files according to the number of words and uniqueness
+    """Divides the labels found into different files according to the number of words and uniqueness
     
     :param input_file: labels file (.txt)
     :return: 4 files with different length labels
@@ -137,7 +149,7 @@ def split_labels_into_files(input_file):
 
 
 def lowercase_links_file(links_file):
-    """ Lowercases every label for matching with get_entities.sh
+    """Lowercases every label for matching with get_entities.sh
     
     :param links_file: labels and IDs file (.txt)
     :return: lowercase labels and IDs file (.tsv)
@@ -175,6 +187,7 @@ if not os.path.exists("./data"):
    print("/data/ directory created")
 file_labels_path = f"./data/{filename}.txt" # To be created
 file_links_path = f"./data/{filename}_templinks.txt" # To be created
+file_synonyms_path = f"./data/{filename}_synonyms.txt" # To be created
 
 # Load the ontology
 ontology = get_ontology(ontology_path).load()
@@ -183,10 +196,11 @@ print(f"Ontology loaded")
 # Open output files for writing
 labels_file = open(file_labels_path, 'w')
 links_file = open(file_links_path, 'w')
+synonyms_file = open(file_synonyms_path, 'w')
 print(f"Files created")
 
 # Process the ontology file
-start_process_owl_file(ontology, lines, labels_file,links_file)
+start_process_owl_file(ontology, lines, labels_file, links_file, synonyms_file)
 print(f"Processing done")
 
 # Split the labels file into the required files
@@ -195,7 +209,7 @@ print(f"Label splitting done")
 
 # Lowercase all labels in links file and removes temporary file
 lowercase_links_file(file_links_path)
-#os.system(f'rm -f {file_links_path}')
+os.system(f'rm -f {file_links_path}')
 print("Final links file obtained")
 
 labels_file.close()
