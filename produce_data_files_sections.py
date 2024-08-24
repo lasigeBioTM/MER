@@ -108,11 +108,38 @@ def process_owl_file(ontology, lines, labels_file,links_file, synonyms_file):
 
 
 
-def split_labels_into_files(input_file):
+def remove_duplicates(file):
+    """Takes a text file and produces a new file without duplicates
+
+    :param file: path to original file
+    :return: final file path; outputs unique entries to final file
+    """
+    labels_name = file.replace('_templabels.txt','')
+    new_file = f'{labels_name}.txt'
+    lines_seen = set() # holds lines already seen
+    with open(file, 'r') as input_file:
+        lines = input_file.readlines()
+
+        with open(new_file, 'a') as output_file:
+            for line in lines:
+                if line not in lines_seen: # not a duplicate
+                    lines_seen.add(line)
+                    output_file.write(line)
+
+    output_file.close()
+    os.system(f'rm -f {file}')
+
+    print("Duplicates removed")
+    return new_file
+
+    
+    
+
+def split_labels_into_files(labels):
     """Divides the labels found into different files according to the number of words and uniqueness
     
-    :param input_file: labels file (.txt)
-    :return: 4 files with different length labels
+    :param input_file: path to labels file (.txt)
+    :return: outputs 4 files with different length labels
     """
 
     # Open the output files
@@ -123,8 +150,10 @@ def split_labels_into_files(input_file):
 
         two_word_seen = set()
 
+        labels_file = remove_duplicates(labels)
+
         # Process each label from the input file
-        with open(input_file, 'r') as file:
+        with open(labels_file, 'r') as file:
             for line in file:
                 words = line.strip().split()
 
@@ -152,7 +181,7 @@ def lowercase_links_file(links_file):
     """Lowercases every label for matching with get_entities.sh
     
     :param links_file: labels and IDs file (.txt)
-    :return: lowercase labels and IDs file (.tsv)
+    :return: outputs lowercase labels and IDs file (.tsv)
     """
 
     links_name = links_file.replace('_templinks.txt','')
@@ -172,7 +201,7 @@ print(f"Starting")
      
 
 # Read specific classes file into array
-classes_path = "./class_names_microorganisms.txt" # Classes file you wish to use
+classes_path = "./class_names_plants.txt" # Classes file you wish to use
 lines = read_classes_into_array(classes_path)    
 print(f"Lines read")
 
@@ -185,7 +214,7 @@ if not os.path.exists("./data"):
    # Create a new directory because it does not exist
    os.makedirs("./data")
    print("/data/ directory created")
-file_labels_path = f"./data/{filename}.txt" # To be created
+file_labels_path = f"./data/{filename}_templabels.txt" # To be created
 file_links_path = f"./data/{filename}_templinks.txt" # To be created
 file_synonyms_path = f"./data/{filename}_synonyms.txt" # To be created
 
