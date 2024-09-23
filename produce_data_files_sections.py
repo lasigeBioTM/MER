@@ -1,4 +1,6 @@
 import os
+import re
+import time
 from owlready2 import get_ontology
 
 def read_classes_into_array(file_path):
@@ -11,7 +13,8 @@ def read_classes_into_array(file_path):
 
     lines = []
     with open(file_path, 'r') as file:
-        lines = [line.strip().split(" ")[1] for line in file.readlines()]  # Strip newline characters and names
+        lines = [line.strip().split("|")[1] for line in file.readlines()]  # Strip newline characters and names
+
     return lines
 
 
@@ -27,23 +30,24 @@ def strip_label(label):
 
 
 
-def start_process_owl_file(ontology, lines, labels_file,links_file, synonyms_file):
+def start_process_owl_file(ontology, lines, labels_file, links_file, synonyms_file):
     """Takes a list of classes and iterates over the ontology, extracting labels, synonyms and IRIs
     for each matching class (also handles every subclass)
     
     :param ontology: ontology (.owl) file
-    :param lines: list of strings (class names)
-    :param labels_file: path to labels file
+    :param lines: list of strings (class IRIs)
+    :param labels_file: path to labels file (.txt)
     :param links_file: path to links ([LABEL] [IRI]) file (.txt)
-    :param synonyms_file: path to file where label and respective synonyms will be stored
-    :return: output labels and links to respective files
+    :param synonyms_file: path to file where label and respective synonyms will be stored (.txt)
+    :return: None; outputs labels and links to respective files
     """
 
     ids_to_process = []
-     
+
     # Iterate over all classes in the ontology
     for cls in ontology.classes():
         if cls.iri in lines:
+
             # Write class label and IRI to the output files
             labels_file.write(f"{strip_label(cls.label)}\n")
             synonyms_file.write(f"{strip_label(cls.label)}\n")
@@ -61,6 +65,7 @@ def start_process_owl_file(ontology, lines, labels_file,links_file, synonyms_fil
                 links_file.write(f"{synonyms}|{cls.iri}\n")
         
             synonyms_file.write("-\n")
+        
 
     # Recursively process subclasses of identified classes        
     if len(ids_to_process) > 0:
@@ -68,17 +73,18 @@ def start_process_owl_file(ontology, lines, labels_file,links_file, synonyms_fil
 
 
 
-def process_owl_file(ontology, lines, labels_file,links_file, synonyms_file):
+def process_owl_file(ontology, lines, labels_file, links_file, synonyms_file):
     """Recursively processes subclasses of the classes identified in 'start_process_owl_file'
     
     :param ontology: ontology (.owl) file
-    :param lines: list of strings (class names)
-    :param labels_file: path to labels file
-    :param links_file: path to links ([LABEL] [IRI]) file
-    :param synonyms_file: path to file where label and respective synonyms will be stored
-    :return: output labels and links to respective files
+    :param lines: list of strings (class IRIs)
+    :param labels_file: path to labels file (.txt)
+    :param links_file: path to links ([LABEL] [IRI]) file (.txt)
+    :param synonyms_file: path to file where label and respective synonyms will be stored (.txt)
+    :return: None; outputs labels and links to respective files
     """
-
+    
+    no_mappings = set()
     ids_to_process = []
     for id in lines:
         # Search for the class by IRI
@@ -88,6 +94,17 @@ def process_owl_file(ontology, lines, labels_file,links_file, synonyms_file):
             for sub_cls in sub_ontology:
                 if sub_cls.iri == id :
                     continue
+                
+                # Check if the class has certain mappings (e.g., hasAlternativeId)
+                has_mappings = False
+                if hasattr(sub_cls, "oboInOwl_hasAlternativeId"):
+                    has_mappings = True
+                    continue
+
+                # If no mappings were found, add to no_mappings
+                if not has_mappings:
+                    no_mappings.add(cls)
+
                 # Write subclass label and IRI to the output files
                 labels_file.write(f"{strip_label(sub_cls.label)}\n")
                 synonyms_file.write(f"{strip_label(sub_cls.label)}\n")
@@ -97,7 +114,7 @@ def process_owl_file(ontology, lines, labels_file,links_file, synonyms_file):
                 # Process and write synonyms
                 for synonyms in sub_cls.hasExactSynonym:
                     labels_file.write(f"{synonyms}\n")
-                    
+                    synonyms_file.write(f"{synonyms}\n")
                     links_file.write(f"{synonyms}|{sub_cls.iri}\n")
                 for synonyms in sub_cls.hasRelatedSynonym:
                     labels_file.write(f"{synonyms}\n")
@@ -105,41 +122,224 @@ def process_owl_file(ontology, lines, labels_file,links_file, synonyms_file):
                     links_file.write(f"{synonyms}|{sub_cls.iri}\n")
                 
                 synonyms_file.write("-\n")
+    
+
+    print(f'number of classes with no mappings: {len(no_mappings)}') #------------------------------------- LOG: INFO
+    print(f'class IDs: {no_mappings}') #------------------------------------------------------------------- LOG: INFO
 
 
 
-def remove_duplicates(file):
-    """Takes a text file and produces a new file without duplicates
+def edit_file(original_file, new_file):
+    """Takes a text file and produces a new file without duplicates and unwanted characters or lines, and added relevant entries
 
     :param file: path to original file
-    :return: final file path; outputs unique entries to final file
+    :return: None; outputs unique edited entries and added ones to final file
     """
-    labels_name = file.replace('_templabels.txt','')
-    new_file = f'{labels_name}.txt'
-    lines_seen = set() # holds lines already seen
-    with open(file, 'r') as input_file:
+
+    lines_seen = set() # Holds lines already seen
+
+    with open(original_file, 'r') as input_file:
         lines = input_file.readlines()
 
         with open(new_file, 'a') as output_file:
             for line in lines:
-                if line not in lines_seen: # not a duplicate
-                    lines_seen.add(line)
-                    output_file.write(line)
 
+                # Remove unwanted characters
+                line = re.sub("^'",'', line)
+                line = re.sub("'$",'', line)
+                line = re.sub(r'\["','', line)
+                line = re.sub(r'"\]','', line)
+
+                # Unique non-empty lines, separators in synonyms file and lines without invalid names
+                if line not in lines_seen  or line == '' or line == '-\n' or re.search(r'\(nom\. inval\.\)$', line):
+
+                    # Include common names without the "common" prefix
+                    if re.search('^common', line):
+                        no_prefix = line.replace('common ','')
+                        lines_seen.add(line)
+                        lines_seen.add(no_prefix)
+                        output_file.write(f'{line}')
+                        output_file.write(f'{no_prefix}')
+
+                    # Include group names without the "group" suffix
+                    if re.search('group$', line):
+                        no_suffix = line.replace(' group','')
+                        lines_seen.add(line)
+                        lines_seen.add(no_suffix)
+                        output_file.write(f'{line}')
+                        output_file.write(f'{no_suffix}')
+
+                    # Include names without authors &/or entry year
+                    elif re.search(r"\(", line):
+                        no_author_year = re.sub(r" \((.*)\|", '|', line)
+                        lines_seen.add(line)
+                        lines_seen.add(no_author_year)
+                        output_file.write(f'{line}')
+                        output_file.write(f'{no_author_year}')
+                    
+                    # Extract names in between " "
+                    elif re.search('"(.*)"', line):
+                        no_accents = re.search('"(.*)"', line).group(1)
+                        lines_seen.add(line)
+                        lines_seen.add(no_accents)
+                        output_file.write(f'{line}')
+                        output_file.write(f'{no_accents}')
+
+                    # Don't include irrelevant terms in final file
+                    elif re.search('^algae', line) or re.search('^plants', line) or re.search('^phyla', line) or re.search('^microbiota', line):
+                        lines_seen.add(line)
+
+                    # If none of the specified conditions applies
+                    else:
+                        lines_seen.add(line)
+                        output_file.write(line)
+    
     output_file.close()
-    os.system(f'rm -f {file}')
+    os.system(f'rm -f {original_file}')
 
-    print("Duplicates removed")
-    return new_file
 
+
+def edit_labels_file():
+    """Takes a text file and produces a new file without duplicates and unwanted characters or lines, and added relevant entries
+
+    :param file: path to original file
+    :return: None; outputs unique edited entries and added ones to final file
+    """
+    input_file = file_labels_path
+    output_file = input_file.replace('_templabels', '')
+    edit_file(input_file, output_file)
+
+    return output_file
+
+
+def edit_synonyms_file():
+    """Takes a text file and produces a new file without duplicates and unwanted characters or lines, and added relevant entries
+
+    :param file: path to original file
+    :return: None; outputs unique edited entries and added ones to final file
+    """
+    input_file = file_synonyms_path
+    output_file = input_file.replace('temp', '')
+    edit_file(input_file, output_file)
+
+    return output_file
+
+
+
+def edit_links_file():
+    """Takes a text file and produces a new file without duplicates and unwanted characters or lines, and added relevant entries
+
+    :param file: path to original file
+    :return: None; outputs unique edited entries and added ones to final file
+    """
+    input_file = file_links_path
+    output_file = input_file.replace('temp', 'temp2')
+    edit_file(input_file, output_file)
+
+    return output_file
     
+
+
+def replace_text(file_path, replacement_list): 
+  
+    # Opening the file in read and write mode 
+    with open(file_path,'r+') as f: 
+
+        # Reading the file data and store 
+        # it in a file variable 
+        file = f.read() 
+        
+        for tuple in replacement_list:
+            search_text = tuple[0]
+            replace_text = tuple[1]
+
+            # Replacing the pattern with the string 
+            # in the file data 
+            file = re.sub(search_text, replace_text, file) 
     
+            # Setting the position to the top 
+            # of the page to insert data 
+            f.seek(0) 
+            
+            # Writing replaced data in the file 
+            f.write(file) 
+    
+            # Truncating the file size 
+            f.truncate() 
+        
+
+
+def final_editing():
+    """
+    
+    """
+
+    # Handling labels file: only need to add the extra terms (order is irrelevant)
+    with open(output_labels_file, 'a') as labels_file:
+        labels_file.write(f"pepper\n"
+                          "bell pepper\n"
+                          "red peppers\n"
+                          "Millet\n"
+                          "sunflower\n"
+                          "groundnut\n"
+                          "rapeseed\n"
+                          "mung bean\n"
+                          "moong\n"
+                          "great millet\n"
+                          "grapevine\n"
+                          "grape\n"
+                          "grapes\n"
+                          "French lavender\n"
+                          "jujube\n"
+                          "squash")
+
+    # Handling synonyms file: add extra terms near synonyms (order is IMPORTANT)
+    replace_text(output_synonyms_file,[
+        ("Capsicum annuum", f"Capsicum annuum\npepper\nbell pepper"),
+        ("Capsicum annuum var. annuum",f"Capsicum annuum var. annuum\nred peppers"),
+        ("Poaceae", f"Poaceae\nmillet"),
+        ("Helianthus annuus", f"Helianthus annuus\nsunflower"),
+        ("Arachis hypogaea",f"Arachis hypogaea\ngroundnut"),
+        ("Brassica napus", f"Brassica napus\nrapeseed"),
+        ("Poaceae", f"Poaceae\nmillet"),
+        ("Vigna radiata", f"Vigna radiata\nmung bean\nmoong"),
+        ("Sorghum",f"Sorghum\ngreat millet"),
+        ("Vitis vinifera", f"Vitis vinifera\ngrapevine\ngrapes\ngrape"),
+        ("Lavandula dentata", f"Lavandula dentata\nFrench lavender"),
+        ("Zizyphus jujuba", f"Zizyphus jujuba\njujube"),
+        ("Galega officinalis",f"Galega officinalis\ngoat's rue"),
+        ("Cucurbita", f"Cucurbita\nsquash")
+        ])
+
+    # Handling links file: add extra terms with corresponding links from linked synonym (order is irrelevant)
+    with open(output_links_file, 'a') as links_file:
+        links_file.write(
+        "pepper|http://purl.obolibrary.org/obo/NCBITaxon_4072\n"
+        "bell pepper|http://purl.obolibrary.org/obo/NCBITaxon_4072\n"
+        "red peppers|http://purl.obolibrary.org/obo/NCBITaxon_40321\n"
+        "Millet|http://purl.obolibrary.org/obo/NCBITaxon_4479\n"
+        "sunflower|http://purl.obolibrary.org/obo/NCBITaxon_4232\n"
+        "groundnut|http://purl.obolibrary.org/obo/NCBITaxon_3818\n"
+        "rapeseeed|http://purl.obolibrary.org/obo/NCBITaxon_3708\n"
+        "mung bean|http://purl.obolibrary.org/obo/NCBITaxon_157791\n"
+        "moong|http://purl.obolibrary.org/obo/NCBITaxon_157791\n"
+        "great millet|http://purl.obolibrary.org/obo/NCBITaxon_4557\n"
+        "grapevine|http://purl.obolibrary.org/obo/NCBITaxon_29760\n"
+        "grape|http://purl.obolibrary.org/obo/NCBITaxon_29760\n"
+        "grapes|http://purl.obolibrary.org/obo/NCBITaxon_29760\n"
+        "jujube|http://purl.obolibrary.org/obo/NCBITaxon_326968\n"
+        "goat's rue|http://purl.obolibrary.org/obo/NCBITaxon_47101\n"
+        "squash|http://purl.obolibrary.org/obo/NCBITaxon_3660\n"
+        )
+        # No class mappings for Lavandula dentata
+    
+
 
 def split_labels_into_files(labels):
     """Divides the labels found into different files according to the number of words and uniqueness
     
     :param input_file: path to labels file (.txt)
-    :return: outputs 4 files with different length labels
+    :return: None; outputs 4 files with different length labels
     """
 
     # Open the output files
@@ -150,10 +350,8 @@ def split_labels_into_files(labels):
 
         two_word_seen = set()
 
-        labels_file = remove_duplicates(labels)
-
         # Process each label from the input file
-        with open(labels_file, 'r') as file:
+        with open(labels, 'r') as file:
             for line in file:
                 words = line.strip().split()
 
@@ -181,65 +379,72 @@ def lowercase_links_file(links_file):
     """Lowercases every label for matching with get_entities.sh
     
     :param links_file: labels and IDs file (.txt)
-    :return: outputs lowercase labels and IDs file (.tsv)
+    :return: None; outputs lowercase labels and IDs file (.tsv)
     """
 
-    links_name = links_file.replace('_templinks.txt','')
+    links_name = links_file.replace('_temp2links.txt','')
     with open(links_file,'r') as input_file:
         lines = input_file.readlines()
         with open (f'{links_name}_links.tsv', 'w') as output_file:
             for line in lines:
                 label = line.split('|')[0].lower()
                 id = line.split('|')[1]
-                entity = (f'{label}\t{id}')
+                entity = (f'{label} {id}')
                 output_file.write(entity)
 
 
 
-print(f"Starting")        
+print("----------------------------------------\ncreating lexicon files\n----------------------------------------")        
 
      
+#########################################################
+#   HANDLE SPECIFIC CLASSES FILES FOR EACH DATA TYPE    #
+#########################################################
 
-# Read specific classes file into array
-classes_path = "./class_names_plants.txt" # Classes file you wish to use
-lines = read_classes_into_array(classes_path)    
-print(f"Lines read")
+data_sources = ['microorganisms', 'plants']         # Stress lexicon files were manually created
 
-# Paths to files
-ontology_path = "./ncbitaxon.owl" # Ontology file you wish to use
-filename = classes_path.replace("./class_names_","").replace(".txt","")
+for data_type in data_sources:
+    start_time = time.time() #----------------------------------------------------------------------------------------------- LOG: TIME
 
-# Check whether the specified path exists or not
-if not os.path.exists("./data"):
-   # Create a new directory because it does not exist
-   os.makedirs("./data")
-   print("/data/ directory created")
-file_labels_path = f"./data/{filename}_templabels.txt" # To be created
-file_links_path = f"./data/{filename}_templinks.txt" # To be created
-file_synonyms_path = f"./data/{filename}_synonyms.txt" # To be created
+    print(f'\n{data_type} lexicon data:\n') #---------------------------------------------------------------------------------- LOG: PROGRESS
 
-# Load the ontology
-ontology = get_ontology(ontology_path).load()
-print(f"Ontology loaded")
+    classes_path = f"./classes_{data_type}.txt"     ### CHANGEABLE: Classes files template name ###
+    lines = read_classes_into_array(classes_path)  
 
-# Open output files for writing
-labels_file = open(file_labels_path, 'w')
-links_file = open(file_links_path, 'w')
-synonyms_file = open(file_synonyms_path, 'w')
-print(f"Files created")
+    # Paths to files
+    ontology_path = "./ncbitaxon.owl"               ### CHANGEABLE: Ontology file you're using ###
+    filename = classes_path.replace("./classes_","").replace(".txt","")
+    file_labels_path = f"./data/{filename}_templabels.txt"
+    file_links_path = f"./data/{filename}_templinks.txt"
+    file_synonyms_path = f"./data/{filename}_tempsynonyms.txt"
 
-# Process the ontology file
-start_process_owl_file(ontology, lines, labels_file, links_file, synonyms_file)
-print(f"Processing done")
+    # Load the ontology
+    ontology = get_ontology(ontology_path).load()
 
-# Split the labels file into the required files
-split_labels_into_files(file_labels_path)
-print(f"Label splitting done")
+    # Open output files for writing
+    labels_file = open(file_labels_path, 'w')
+    links_file = open(file_links_path, 'w')
+    synonyms_file = open(file_synonyms_path, 'w')
 
-# Lowercase all labels in links file and removes temporary file
-lowercase_links_file(file_links_path)
-os.system(f'rm -f {file_links_path}')
-print("Final links file obtained")
+    # Process the ontology file and remove duplicates from resulting synonyms file
+    start_process_owl_file(ontology, lines, labels_file, links_file, synonyms_file)
+    output_labels_file = edit_labels_file()
+    output_synonyms_file = edit_synonyms_file()
+    output_links_file = edit_links_file()
 
-labels_file.close()
-links_file.close()
+    if data_type == 'plants':      # Only plants files are subjected to final editing
+        final_editing()
+
+    # Split the labels file into the required files
+    split_labels_into_files(output_labels_file)
+
+    # Lowercase all labels in links file and removes temporary file
+    lowercase_links_file(output_links_file)
+    os.system(f'rm -f {output_links_file}')
+    print(f"\n{data_type} lexicon files have been created at bin/MER/data") #------------------------------------- LOG: PROGRESS
+
+    labels_file.close()
+    links_file.close()
+    end_time = time.time() #----------------------------------------------------------------------------------------------- LOG: TIME
+
+    print(f"elapsed time: {end_time - start_time} seconds\n----------------------------------------") #-------------------- LOG: INFO
