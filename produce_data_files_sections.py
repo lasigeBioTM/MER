@@ -3,6 +3,8 @@ import re
 import time
 from owlready2 import get_ontology
 
+
+
 def read_classes_into_array(file_path):
     """Reads the classes file line by line, strips newline characters and class names,
     and returns the IRIs as a list of strings
@@ -124,13 +126,14 @@ def process_owl_file(ontology, lines, labels_file, links_file, synonyms_file):
                 synonyms_file.write("-\n")
     
 
-    print(f'number of classes with no mappings: {len(no_mappings)}') #------------------------------------- LOG: INFO
-    print(f'class IDs: {no_mappings}') #------------------------------------------------------------------- LOG: INFO
+    print(f'number of classes with no mappings: {len(no_mappings)}') #--------------------------------------------------- LOG: INFO
+    print(f'class IDs: {no_mappings}') #--------------------------------------------------------------------------------- LOG: INFO
 
 
 
 def edit_file(original_file, new_file):
-    """Takes a text file and produces a new file without duplicates and unwanted characters or lines, and added relevant entries
+    """Takes a text file and produces a new file without duplicates and unwanted characters
+    or lines, and added relevant entries
 
     :param file: path to original file
     :return: None; outputs unique edited entries and added ones to final file
@@ -200,11 +203,11 @@ def edit_file(original_file, new_file):
 
 
 def edit_labels_file():
-    """Takes a text file and produces a new file without duplicates and unwanted characters or lines, and added relevant entries
+    """Takes the temporary labels file, edits it and creates the final version
 
-    :param file: path to original file
-    :return: None; outputs unique edited entries and added ones to final file
+    :return: name of the new labels file; outputs unique edited entries and added ones to new file
     """
+
     input_file = file_labels_path
     output_file = input_file.replace('_templabels', '')
     edit_file(input_file, output_file)
@@ -213,11 +216,11 @@ def edit_labels_file():
 
 
 def edit_synonyms_file():
-    """Takes a text file and produces a new file without duplicates and unwanted characters or lines, and added relevant entries
+    """Takes the temporary synonyms file, edits it and creates the final version
 
-    :param file: path to original file
-    :return: None; outputs unique edited entries and added ones to final file
+    :return: name of the new synonyms file; outputs unique edited entries and added ones to new file
     """
+
     input_file = file_synonyms_path
     output_file = input_file.replace('temp', '')
     edit_file(input_file, output_file)
@@ -227,11 +230,11 @@ def edit_synonyms_file():
 
 
 def edit_links_file():
-    """Takes a text file and produces a new file without duplicates and unwanted characters or lines, and added relevant entries
+    """Takes the temporary links file, edits it and creates the version to be lowercased
 
-    :param file: path to original file
-    :return: None; outputs unique edited entries and added ones to final file
+    :return: name of the new links file; outputs unique edited entries and added ones to new file
     """
+
     input_file = file_links_path
     output_file = input_file.replace('temp', 'temp2')
     edit_file(input_file, output_file)
@@ -240,38 +243,39 @@ def edit_links_file():
     
 
 
-def replace_text(file_path, replacement_list): 
-  
-    # Opening the file in read and write mode 
-    with open(file_path,'r+') as f: 
+def replace_text(file_path, replacement_list):
+    """Replaces text in a .txt file without the need to overwrite it entirely or create a new file
 
-        # Reading the file data and store 
-        # it in a file variable 
-        file = f.read() 
+    :param file_path: path to .txt file
+    :param replacement_list: list of tuples with the format (original_text, replacement)
+    :return: None; outputs changes in given .txt file
+    """
+
+    # Open the file in read and write mode 
+    with open(file_path, 'r+') as f: 
+        # Read the file content
+        file_content = f.read()
         
-        for tuple in replacement_list:
-            search_text = tuple[0]
-            replace_text = tuple[1]
-
-            # Replacing the pattern with the string 
-            # in the file data 
-            file = re.sub(search_text, replace_text, file) 
-    
-            # Setting the position to the top 
-            # of the page to insert data 
-            f.seek(0) 
-            
-            # Writing replaced data in the file 
-            f.write(file) 
-    
-            # Truncating the file size 
-            f.truncate() 
+        # Perform all replacements
+        for search_text, replace_text in replacement_list:
+            # Replace the patterns in the file content
+            file_content = re.sub(search_text, replace_text, file_content)
+        
+        # Move the file pointer to the beginning
+        f.seek(0)
+        
+        # Write the modified content once
+        f.write(file_content)
+        
+        # Truncate the file to remove leftover content from the previous version
+        f.truncate()
         
 
 
 def final_editing():
-    """
-    
+    """Manual editing of dataset based on perceived missing values (run only for plants data files)
+
+    :return: None; outputs changes to plants data files
     """
 
     # Handling labels file: only need to add the extra terms (order is irrelevant)
@@ -394,6 +398,9 @@ def lowercase_links_file(links_file):
 
 
 
+
+
+
 print("----------------------------------------\ncreating lexicon files\n----------------------------------------")        
 
      
@@ -406,7 +413,7 @@ data_sources = ['microorganisms', 'plants']         # Stress lexicon files were 
 for data_type in data_sources:
     start_time = time.time() #----------------------------------------------------------------------------------------------- LOG: TIME
 
-    print(f'\n{data_type} lexicon data:\n') #---------------------------------------------------------------------------------- LOG: PROGRESS
+    print(f'\n{data_type} lexicon data:\n') #-------------------------------------------------------------------------------- LOG: PROGRESS
 
     classes_path = f"./classes_{data_type}.txt"     ### CHANGEABLE: Classes files template name ###
     lines = read_classes_into_array(classes_path)  
@@ -441,7 +448,7 @@ for data_type in data_sources:
     # Lowercase all labels in links file and removes temporary file
     lowercase_links_file(output_links_file)
     os.system(f'rm -f {output_links_file}')
-    print(f"\n{data_type} lexicon files have been created at bin/MER/data") #------------------------------------- LOG: PROGRESS
+    print(f"\n{data_type} lexicon files have been created at bin/MER/data") #---------------------------------------------- LOG: PROGRESS
 
     labels_file.close()
     links_file.close()
