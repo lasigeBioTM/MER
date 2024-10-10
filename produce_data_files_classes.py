@@ -9,8 +9,8 @@ def read_classes_into_array(file_path):
     """Reads the classes file line by line, strips newline characters and class names,
     and returns the IRIs as a list of strings
     
-    :param file_path: path to file
-    :return: list of strings
+    :param file_path (str): path to file
+    :return list: list of IRIs
     """
 
     lines = []
@@ -24,8 +24,8 @@ def read_classes_into_array(file_path):
 def strip_label(label):
     """Cleans up labels by removing specific unwanted characters
     
-    :param label: label string 
-    :return: clean label string
+    :param label (str): label 
+    :return str: clean label
     """
 
     return str(label).replace("['", "").replace("']", "")
@@ -36,13 +36,12 @@ def start_process_owl_file(ontology, lines, labels_file, links_file, synonyms_fi
     """Takes a list of classes and iterates over the ontology, extracting labels, synonyms and IRIs
     for each matching class (also handles every subclass)
     
-    :param ontology: ontology (.owl) file
-    :param lines: list of strings (class IRIs)
-    :param labels_file: path to labels file (.txt)
-    :param links_file: path to links ([LABEL] [IRI]) file (.txt)
-    :param synonyms_file: path to file where label and respective synonyms will be stored (.txt)
-    :return: none
-    :output: labels file, synonyms file, and links file
+    :param ontology (str): ontology (.owl) file
+    :param lines (list): list of strings (class IRIs)
+    :param labels_file (str): path to labels file (.txt)
+    :param links_file (str): path to links ([LABEL] [IRI]) file (.txt)
+    :param synonyms_file (str): path to file where label and respective synonyms will be stored (.txt)
+    :return side effect: creates labels file, synonyms file, and links file
     """
 
     ids_to_process = []
@@ -79,13 +78,12 @@ def start_process_owl_file(ontology, lines, labels_file, links_file, synonyms_fi
 def process_owl_file(ontology, lines, labels_file, links_file, synonyms_file):
     """Recursively processes subclasses of the classes identified in 'start_process_owl_file'
     
-    :param ontology: ontology (.owl) file
-    :param lines: list of strings (class IRIs)
-    :param labels_file: path to labels file (.txt)
-    :param links_file: path to links ([LABEL] [IRI]) file (.txt)
-    :param synonyms_file: path to file where label and respective synonyms will be stored (.txt)
-    :return: none
-    :output: labels file, synonyms file, and links file
+    :param ontology (str): ontology (.owl) file
+    :param lines (list): list of strings (class IRIs)
+    :param labels_file (str): path to labels file (.txt)
+    :param links_file (str): path to links ([LABEL] [IRI]) file (.txt)
+    :param synonyms_file (str): path to file where label and respective synonyms will be stored (.txt)
+    :return side effect: creates labels file, synonyms file, and links file
     """
     
     no_mappings = set()
@@ -138,9 +136,9 @@ def edit_file(original_file, new_file):
     """Takes a text file and produces a new file without duplicates and unwanted characters
     or lines, and added relevant entries
 
-    :param file: path to original file
-    :return: none
-    :output: final file with unique edited entries plus additional ones
+    :param original_file (str): path to original file
+    :param new_file (str): path to new file
+    :return side effect: creates file with unique edited entries plus additional ones
     """
 
     lines_seen = set()  # Holds lines already seen
@@ -157,18 +155,22 @@ def edit_file(original_file, new_file):
                 line = re.sub(r'\[', '', line)
                 line = re.sub(r'\]', '', line)
 
+                # If line is a separator, write it to output file
+                if line == '-\n':
+                    output_file.write(line)
+
                 # Only process non-empty lines that haven't been seen before
-                if line not in lines_seen and line != '' and line != '-' and not re.search(r'\(nom\. inval\.\)$', line):
+                elif line not in lines_seen and line != '' and not re.search(r'\(nom\. inval\.\)$', line, re.IGNORECASE):
 
                     # Include common names without the "common" prefix
-                    if re.search('^common', line):
+                    if re.search('^common', line, re.IGNORECASE):
                         no_prefix = line.replace('common ', '')
                         if no_prefix not in lines_seen:
                             lines_seen.add(no_prefix)
                             output_file.write(f'{no_prefix}')
 
                     # Include group names without the "group" suffix
-                    if re.search('group$', line):
+                    if re.search('group$', line, re.IGNORECASE):
                         no_suffix = line.replace(' group', '')
                         if no_suffix not in lines_seen:
                             lines_seen.add(no_suffix)
@@ -189,13 +191,12 @@ def edit_file(original_file, new_file):
                             output_file.write(f'{no_accents}')
 
                     # Skip irrelevant terms
-                    if re.search('^algae', line) or re.search('^plants', line) or re.search('^phyla', line) or re.search('^microbiota', line):
+                    if re.search('^algae', line, re.IGNORECASE) or re.search('^plants', line, re.IGNORECASE) or re.search('^phyla', line, re.IGNORECASE) or re.search('^microbiota', line, re.IGNORECASE):
                         continue
 
-                    # Write the original line if not seen before
-                    if line not in lines_seen:
-                        lines_seen.add(line)
-                        output_file.write(f'{line}')
+                    # Add line to seen list and write it to file
+                    lines_seen.add(line)
+                    output_file.write(f'{line}')
 
     
     output_file.close()
@@ -206,8 +207,8 @@ def edit_file(original_file, new_file):
 def edit_labels_file():
     """Takes the temporary labels file, edits it and creates the final version
 
-    :return: name of the new labels file
-    :output: new file with unique edited entries and additional ones
+    :return str: name of the new labels file
+    :return side effect: creates new file with unique edited entries and additional ones
     """
 
     input_file = file_labels_path
@@ -220,8 +221,8 @@ def edit_labels_file():
 def edit_synonyms_file():
     """Takes the temporary synonyms file, edits it and creates the final version
 
-    :return: name of the new synonyms file
-    :output: new file with unique edited entries and additional ones
+    :return str: name of the new synonyms file
+    :return side effect: creates new file with unique edited entries and additional ones
     """
 
     input_file = file_synonyms_path
@@ -235,8 +236,8 @@ def edit_synonyms_file():
 def edit_links_file():
     """Takes the temporary links file, edits it and creates the version to be lowercased
 
-    :return: name of the new links file
-    :output: new file with unique edited entries and additional ones
+    :return str: name of the new links file
+    :return side effect: new file with unique edited entries and additional ones
     """
 
     input_file = file_links_path
@@ -250,10 +251,9 @@ def edit_links_file():
 def replace_text(file_path, replacement_list):
     """Replaces text in a .txt file without the need to overwrite it entirely or create a new file
 
-    :param file_path: path to .txt file
-    :param replacement_list: list of tuples with the format (original_text, replacement)
-    :return: none
-    :output: changes in given .txt file
+    :param file_path (str): path to .txt file
+    :param replacement_list (list): list of tuples with the format (original_text, replacement)
+    :return side effect: applies changes to given .txt file
     """
 
     # Open the file in read and write mode 
@@ -280,8 +280,7 @@ def replace_text(file_path, replacement_list):
 def final_editing_microorganisms():
     """Manual editing of dataset based on perceived missing values (run only for microorganisms data files)
 
-    :return: none
-    :output: changes to microorganisms data files
+    :return side effect: applies changes to microorganisms data files
     """
 
     # Handling labels file: only need to add the extra terms (order is irrelevant)
@@ -310,8 +309,7 @@ def final_editing_microorganisms():
 def final_editing_plants():
     """Manual editing of dataset based on perceived missing values (run only for plants data files)
 
-    :return: none
-    :output: changes to plants data files
+    :return side effect: applies changes to plants data files
     """
 
     # Handling labels file: only need to add the extra terms (order is irrelevant)
@@ -394,9 +392,8 @@ def final_editing_plants():
 def split_labels_into_files(labels):
     """Divides the labels found into different files according to the number of words and uniqueness
     
-    :param input_file: path to labels file (.txt)
-    :return: none
-    :output: 4 files, each with different length labels
+    :param input_file (str): path to labels file (.txt)
+    :return side effect: creates 4 files, each with different length labels
     """
 
     # Open the output files
@@ -435,9 +432,8 @@ def split_labels_into_files(labels):
 def lowercase_links_file(links_file):
     """Lowercases every label for matching with get_entities.sh
     
-    :param links_file: labels and IDs file (.txt)
-    :return: none
-    :output: lowercase labels and IDs file (.tsv)
+    :param links_file (str): labels and IDs file (.txt)
+    :return side effect: creates lowercase labels and IDs file (.tsv)
     """
 
     links_name = links_file.replace('_temp2links.txt','')
@@ -455,7 +451,7 @@ def lowercase_links_file(links_file):
 
 
 
-print("----------------------------------------\nCreating lexicon files\n----------------------------------------")        
+print("---------------------------\n  CREATING LEXICON FILES\n---------------------------")        
 
      
 #########################################################
@@ -467,7 +463,7 @@ data_sources = ['microorganisms', 'plants']         # Stress lexicon files were 
 for data_type in data_sources:
     start_time = time.time() #----------------------------------------------------------------------------------------------- LOG: TIME
 
-    print(f'\n{data_type.upper()} LEXICON DATA:\n')
+    print(f'\n** {data_type.title()} lexicon data **\n')
 
     classes_path = f"./bin/MER/classes_{data_type}.txt"     ### CHANGEABLE: Classes files template name ###
     lines = read_classes_into_array(classes_path)  
@@ -511,4 +507,4 @@ for data_type in data_sources:
     links_file.close()
     end_time = time.time() #----------------------------------------------------------------------------------------------- LOG: TIME
 
-    print("Elapsed time: {0:8.1f} seconds\n----------------------------------------".format(end_time - start_time)) #-------------------- LOG: INFO
+    print(f'RUNTIME: {end_time - start_time:8.1f} seconds\n----------------------------------------') #-------------------- LOG: INFO
