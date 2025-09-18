@@ -11,6 +11,9 @@ A demo is available at: [MER Demo](https://labs.rd.ciencias.ulisboa.pt/mer/)
 
 ## New Stuff
 
+### 2025
+- **LEXICONS**: Package [here](https://labs.rd.ciencias.ulisboa.pt/mer/lexicons202506.tgz) is available.
+
 ### 2024
 - **LEXICONS**: Package [here](https://labs.rd.ciencias.ulisboa.pt/mer/lexicons202407.tgz) is available.
 - **COMMENTS**: More comments were added to the scripts to improve readability.
@@ -641,8 +644,8 @@ The output should be something like this:
 ##  Processed Lexicons
 ```shell
 cd data
-curl -L -O https://labs.rd.ciencias.ulisboa.pt/mer/data/lexicons202407.tgz
-tar -xzf lexicons202407.tgz
+curl -L -O https://labs.rd.ciencias.ulisboa.pt/mer/data/lexicons202506.tgz
+tar -xzf lexicons202506.tgz
 cd ..
 ```
 
@@ -677,8 +680,8 @@ Before executing the _get_similarity_ script you need to select the following pa
 
 For example, download the database for ChEBI:
 ```shell
-curl -L -O https://labs.rd.ciencias.ulisboa.pt/dishin/chebi202407.db.gz
-gunzip -N chebi202407.db.gz
+curl -L -O https://labs.rd.ciencias.ulisboa.pt/dishin/chebi202506.db.gz
+gunzip -N chebi202506.db.gz
 ```
 
 Then, just execute the _get_similarity_ script using the output of the _get_entities_ script
@@ -697,10 +700,10 @@ The output now includes for each match the most similar term and its similarity:
 
 A multilingual example:
 ```shell
-curl -L -O https://labs.rd.ciencias.ulisboa.pt/dishin/mesh202407.db.gz
-gunzip -N mesh202407.db.gz
-curl -L -O https://labs.rd.ciencias.ulisboa.pt/mer/data/lexicons202407.tgz
-(cd data; tar -xzf ../lexicons202407.tgz --wildcards bireme_decs_por2024*)
+curl -L -O https://labs.rd.ciencias.ulisboa.pt/dishin/mesh202506.db.gz
+gunzip -N mesh202506.db.gz
+curl -L -O https://labs.rd.ciencias.ulisboa.pt/mer/data/lexicons202506.tgz
+(cd data; tar -xzf ../lexicons202506.tgz --wildcards bireme_decs_por2024*)
 ./get_entities.sh "febre, tontura, pneumonia e tosse" bireme_decs_por2024 | ./get_similarity.sh Lin DiShIn . mesh.db
 ```
 
